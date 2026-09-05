@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,6 +26,11 @@
       font-family: 'Roboto', sans-serif;
       background: #000;
       color: #fff;
+    }
+
+    button,
+    input {
+      font-family: 'Roboto', sans-serif;
     }
 
     /* HEADER */
@@ -73,7 +79,6 @@
       color: white;
       font-size: 15px;
       outline: none;
-      font-family: 'Roboto', sans-serif;
     }
 
     .top-search input:focus {
@@ -93,15 +98,16 @@
       display: flex;
       gap: 9px;
       margin-left: 20px;
+      align-items: center;
     }
 
     .login-btn,
-    .signup-btn {
+    .signup-btn,
+    .logout-btn {
       padding: 10px 16px;
       border-radius: 7px;
       cursor: pointer;
       font-weight: 700;
-      font-family: 'Roboto', sans-serif;
     }
 
     .login-btn {
@@ -116,6 +122,12 @@
       border: 1px solid #00d9ff;
     }
 
+    .logout-btn {
+      background: transparent;
+      color: #ff5c5c;
+      border: 1px solid #333;
+    }
+
     .login-btn:hover {
       color: #00d9ff;
       border-color: #00d9ff;
@@ -124,6 +136,21 @@
     .signup-btn:hover {
       background: white;
       border-color: white;
+    }
+
+    .logout-btn:hover {
+      border-color: #ff5c5c;
+    }
+
+    .account-name {
+      display: none;
+      color: #00d9ff;
+      font-size: 14px;
+      font-weight: 700;
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     /* SIDEBAR */
@@ -163,8 +190,6 @@
       cursor: pointer;
       font-size: 15px;
       font-weight: 500;
-      text-decoration: none;
-      font-family: 'Roboto', sans-serif;
     }
 
     .side-link:hover,
@@ -224,7 +249,6 @@
     .hero p {
       color: #999;
       font-size: 19px;
-      font-weight: 400;
       margin-bottom: 30px;
     }
 
@@ -237,7 +261,6 @@
       border: none;
       cursor: pointer;
       font-weight: 700;
-      font-family: 'Roboto', sans-serif;
       text-decoration: none;
     }
 
@@ -312,7 +335,6 @@
     .game-info p {
       color: #888;
       font-size: 14px;
-      font-weight: 400;
       min-height: 38px;
       margin-bottom: 14px;
     }
@@ -320,7 +342,6 @@
     .game-meta {
       color: #666;
       font-size: 12px;
-      font-weight: 500;
       margin-bottom: 15px;
     }
 
@@ -332,7 +353,6 @@
       background: #00d9ff;
       color: #000;
       font-weight: 700;
-      font-family: 'Roboto', sans-serif;
       cursor: pointer;
     }
 
@@ -386,6 +406,8 @@
       margin-bottom: 20px;
     }
 
+    /* PROFILE */
+
     .profile-box {
       display: flex;
       align-items: center;
@@ -393,20 +415,101 @@
     }
 
     .profile-icon {
-      width: 65px;
-      height: 65px;
+      width: 75px;
+      height: 75px;
       border-radius: 50%;
       background: #111;
       border: 1px solid #333;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 30px;
+      font-size: 35px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .profile-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .user-id {
       color: #00d9ff;
       font-weight: 900;
+      font-size: 18px;
+      margin-top: 4px;
+    }
+
+    .change-info {
+      color: #666;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .profile-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .small-btn {
+      padding: 10px 15px;
+      border-radius: 7px;
+      border: 1px solid #333;
+      background: #111;
+      color: white;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .small-btn:hover {
+      border-color: #00d9ff;
+      color: #00d9ff;
+    }
+
+    .small-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* REWARDS */
+
+    .reward-box {
+      background: #050505;
+      border: 1px solid #222;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .reward-count {
+      font-size: 32px;
+      font-weight: 900;
+      color: #00d9ff;
+      margin-bottom: 8px;
+    }
+
+    .reward-text {
+      color: #888;
+      margin-bottom: 15px;
+    }
+
+    .reward-progress {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .reward-dot {
+      height: 8px;
+      flex: 1;
+      background: #222;
+      border-radius: 20px;
+    }
+
+    .reward-dot.active {
+      background: #00d9ff;
     }
 
     /* LANGUAGE */
@@ -420,7 +523,6 @@
       border: 1px solid #292929;
       border-radius: 8px;
       outline: none;
-      font-family: 'Roboto', sans-serif;
     }
 
     .language-search:focus {
@@ -443,7 +545,6 @@
       border-radius: 7px;
       text-align: left;
       cursor: pointer;
-      font-family: 'Roboto', sans-serif;
       font-weight: 500;
     }
 
@@ -489,6 +590,8 @@
     .modal-box {
       width: 100%;
       max-width: 450px;
+      max-height: 90vh;
+      overflow-y: auto;
       background: #090909;
       border: 1px solid #292929;
       border-radius: 14px;
@@ -523,7 +626,6 @@
       border: 1px solid #292929;
       border-radius: 7px;
       outline: none;
-      font-family: 'Roboto', sans-serif;
     }
 
     .modal-box input:focus {
@@ -553,6 +655,28 @@
       color: #999;
       text-align: center;
       line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    /* AD / REWARD MODAL */
+
+    .ad-box {
+      text-align: center;
+      padding: 15px 0;
+    }
+
+    .ad-icon {
+      font-size: 55px;
+      margin-bottom: 12px;
+    }
+
+    .ad-box h2 {
+      margin-bottom: 10px;
+    }
+
+    .ad-box p {
+      color: #888;
+      line-height: 1.5;
       margin-bottom: 20px;
     }
 
@@ -593,8 +717,13 @@
       }
 
       .login-btn,
-      .signup-btn {
+      .signup-btn,
+      .logout-btn {
         padding: 8px 10px;
+      }
+
+      .account-name {
+        display: none !important;
       }
 
       .sidebar {
@@ -665,6 +794,18 @@
         display: block;
         margin-top: 7px;
       }
+
+      .profile-box {
+        align-items: flex-start;
+      }
+
+      .profile-actions {
+        flex-direction: column;
+      }
+
+      .small-btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -692,8 +833,14 @@
 
     <div class="auth-buttons">
 
+      <span
+        class="account-name"
+        id="accountName"
+      ></span>
+
       <button
         class="login-btn"
+        id="loginHeaderBtn"
         onclick="openAuth('login')"
       >
         Login
@@ -701,9 +848,19 @@
 
       <button
         class="signup-btn"
+        id="signupHeaderBtn"
         onclick="openAuth('signup')"
       >
         Sign Up
+      </button>
+
+      <button
+        class="logout-btn"
+        id="logoutHeaderBtn"
+        onclick="logout()"
+        style="display:none;"
+      >
+        Logout
       </button>
 
     </div>
@@ -1036,7 +1193,7 @@
       </p>
 
 
-      <!-- ID FIRST -->
+      <!-- PROFILE -->
 
       <div class="settings-card">
 
@@ -1045,12 +1202,15 @@
         </h2>
 
         <p>
-          Your Gamerex account information.
+          Manage your Gamerex name and profile logo.
         </p>
 
         <div class="profile-box">
 
-          <div class="profile-icon">
+          <div
+            class="profile-icon"
+            id="profileIcon"
+          >
             👤
           </div>
 
@@ -1067,7 +1227,81 @@
               GX-2026-001
             </div>
 
+            <div
+              class="change-info"
+              id="nameChangeInfo"
+            >
+              Name changes today: 0 / 5
+            </div>
+
           </div>
+
+        </div>
+
+        <div class="profile-actions">
+
+          <button
+            class="small-btn"
+            id="changeNameBtn"
+            onclick="changeGamerexName()"
+          >
+            ✏️ Change ID Name
+          </button>
+
+          <button
+            class="small-btn"
+            onclick="changeProfileLogo()"
+          >
+            🖼️ Change Logo
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- REWARDS -->
+
+      <div class="settings-card">
+
+        <h2>
+          🎁 Rewards
+        </h2>
+
+        <p>
+          Complete reward actions to earn Gamerex rewards.
+        </p>
+
+        <div class="reward-box">
+
+          <div
+            class="reward-count"
+            id="rewardCount"
+          >
+            0 / 5
+          </div>
+
+          <div class="reward-text">
+            4 reward actions are available. The 5th action shows an ad, then the cycle starts again.
+          </div>
+
+          <div
+            class="reward-progress"
+            id="rewardProgress"
+          >
+            <div class="reward-dot"></div>
+            <div class="reward-dot"></div>
+            <div class="reward-dot"></div>
+            <div class="reward-dot"></div>
+            <div class="reward-dot"></div>
+          </div>
+
+          <button
+            class="main-btn"
+            onclick="claimReward()"
+          >
+            🎁 Claim Reward
+          </button>
 
         </div>
 
@@ -1236,6 +1470,103 @@
   </div>
 
 
+  <!-- CHANGE NAME MODAL -->
+
+  <div
+    class="modal"
+    id="nameModal"
+  >
+
+    <div class="modal-box">
+
+      <span
+        class="close"
+        onclick="closeModal('nameModal')"
+      >
+        ×
+      </span>
+
+      <h2>
+        ✏️ Change Gamerex ID
+      </h2>
+
+      <input
+        type="text"
+        id="newGamerexName"
+        placeholder="Enter new Gamerex ID"
+        maxlength="25"
+      >
+
+      <button
+        class="main-btn"
+        style="width:100%;"
+        onclick="saveGamerexName()"
+      >
+        Save New ID
+      </button>
+
+      <p class="modal-text">
+        You can change your ID up to 5 times per day.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- LOGO MODAL -->
+
+  <div
+    class="modal"
+    id="logoModal"
+  >
+
+    <div class="modal-box">
+
+      <span
+        class="close"
+        onclick="closeModal('logoModal')"
+      >
+        ×
+      </span>
+
+      <h2>
+        🖼️ Change Profile Logo
+      </h2>
+
+      <p style="color:#888; margin-bottom:15px;">
+        Choose an avatar:
+      </p>
+
+      <div
+        style="
+          display:grid;
+          grid-template-columns:repeat(4,1fr);
+          gap:10px;
+          margin-bottom:20px;
+        "
+      >
+
+        <button class="small-btn" onclick="selectLogo('👤')">👤</button>
+        <button class="small-btn" onclick="selectLogo('🎮')">🎮</button>
+        <button class="small-btn" onclick="selectLogo('😎')">😎</button>
+        <button class="small-btn" onclick="selectLogo('🔥')">🔥</button>
+        <button class="small-btn" onclick="selectLogo('⚡')">⚡</button>
+        <button class="small-btn" onclick="selectLogo('🐯')">🐯</button>
+        <button class="small-btn" onclick="selectLogo('🐺')">🐺</button>
+        <button class="small-btn" onclick="selectLogo('👾')">👾</button>
+
+      </div>
+
+      <p class="modal-text">
+        Select an avatar to save it to your Gamerex profile.
+      </p>
+
+    </div>
+
+  </div>
+
+
   <!-- GAME MODAL -->
 
   <div
@@ -1280,6 +1611,52 @@
       >
         🎮 Start Playing
       </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- REWARD / AD MODAL -->
+
+  <div
+    class="modal"
+    id="rewardModal"
+  >
+
+    <div class="modal-box">
+
+      <span
+        class="close"
+        onclick="closeModal('rewardModal')"
+      >
+        ×
+      </span>
+
+      <div class="ad-box">
+
+        <div class="ad-icon">
+          📺
+        </div>
+
+        <h2>
+          Advertisement
+        </h2>
+
+        <p>
+          This is the Gamerex ad placeholder.
+          Later we can connect a real approved ad network here.
+        </p>
+
+        <button
+          class="main-btn"
+          style="width:100%;"
+          onclick="finishAdReward()"
+        >
+          Continue
+        </button>
+
+      </div>
 
     </div>
 
@@ -1345,29 +1722,115 @@
 
   <script>
 
+    /* =========================
+       GLOBAL VARIABLES
+    ========================= */
+
     let currentCategory = "All";
     let authMode = "login";
     let selectedGame = "";
+    let pendingRewardAfterAd = false;
 
 
-    /* SHOW HOME */
+    /* =========================
+       STORAGE HELPERS
+    ========================= */
+
+    function getAccount() {
+
+      const account =
+        localStorage.getItem("gamerexAccount");
+
+      return account
+        ? JSON.parse(account)
+        : null;
+
+    }
+
+
+    function saveAccount(account) {
+
+      localStorage.setItem(
+        "gamerexAccount",
+        JSON.stringify(account)
+      );
+
+    }
+
+
+    function getLoggedInEmail() {
+
+      return localStorage.getItem(
+        "gamerexLoggedIn"
+      );
+
+    }
+
+
+    function setLoggedInEmail(email) {
+
+      localStorage.setItem(
+        "gamerexLoggedIn",
+        email
+      );
+
+    }
+
+
+    function clearLoggedInEmail() {
+
+      localStorage.removeItem(
+        "gamerexLoggedIn"
+      );
+
+    }
+
+
+    /* =========================
+       DATE HELPER
+    ========================= */
+
+    function todayKey() {
+
+      const date = new Date();
+
+      return date.getFullYear() +
+        "-" +
+        String(date.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(date.getDate()).padStart(2, "0");
+
+    }
+
+
+    /* =========================
+       SHOW HOME
+    ========================= */
 
     function showHome() {
 
-      document.getElementById("homePage").style.display = "block";
-      document.getElementById("settingsPage").style.display = "none";
+      document.getElementById("homePage")
+        .style.display = "block";
+
+      document.getElementById("settingsPage")
+        .style.display = "none";
 
       window.scrollTo(0, 0);
 
     }
 
 
-    /* SHOW GAMES */
+    /* =========================
+       SHOW GAMES
+    ========================= */
 
     function showGames() {
 
-      document.getElementById("homePage").style.display = "block";
-      document.getElementById("settingsPage").style.display = "none";
+      document.getElementById("homePage")
+        .style.display = "block";
+
+      document.getElementById("settingsPage")
+        .style.display = "none";
 
       document
         .getElementById("games")
@@ -1376,19 +1839,28 @@
     }
 
 
-    /* SETTINGS */
+    /* =========================
+       SETTINGS
+    ========================= */
 
     function showSettings() {
 
-      document.getElementById("homePage").style.display = "none";
-      document.getElementById("settingsPage").style.display = "block";
+      document.getElementById("homePage")
+        .style.display = "none";
+
+      document.getElementById("settingsPage")
+        .style.display = "block";
+
+      updateProfileUI();
 
       window.scrollTo(0, 0);
 
     }
 
 
-    /* SEARCH GAMES */
+    /* =========================
+       SEARCH GAMES
+    ========================= */
 
     function searchGames() {
 
@@ -1435,13 +1907,18 @@
 
       updateCount(visible);
 
-      document.getElementById("noGames").style.display =
-        visible === 0 ? "block" : "none";
+      document.getElementById("noGames")
+        .style.display =
+          visible === 0
+            ? "block"
+            : "none";
 
     }
 
 
-    /* CATEGORY */
+    /* =========================
+       CATEGORY
+    ========================= */
 
     function filterCategory(category) {
 
@@ -1454,18 +1931,25 @@
     }
 
 
-    /* COUNT */
+    /* =========================
+       COUNT
+    ========================= */
 
     function updateCount(count) {
 
-      document.getElementById("gameCount").textContent =
-        count +
-        (count === 1 ? " Game" : " Games");
+      document.getElementById("gameCount")
+        .textContent =
+          count +
+          (count === 1
+            ? " Game"
+            : " Games");
 
     }
 
 
-    /* LANGUAGE SEARCH */
+    /* =========================
+       LANGUAGE SEARCH
+    ========================= */
 
     function searchLanguages() {
 
@@ -1481,7 +1965,8 @@
       languages.forEach(language => {
 
         const name =
-          language.textContent.toLowerCase();
+          language.textContent
+            .toLowerCase();
 
         language.style.display =
           name.includes(search)
@@ -1493,25 +1978,33 @@
     }
 
 
-    /* LANGUAGE SELECT */
+    /* =========================
+       LANGUAGE SELECT
+    ========================= */
 
-    document.addEventListener("click", function(event) {
+    document.addEventListener(
+      "click",
+      function(event) {
 
-      if (
-        event.target.classList.contains("language-btn")
-      ) {
+        if (
+          event.target.classList
+            .contains("language-btn")
+        ) {
 
-        alert(
-          "Language selected: " +
-          event.target.textContent
-        );
+          alert(
+            "Language selected: " +
+            event.target.textContent
+          );
+
+        }
 
       }
+    );
 
-    });
 
-
-    /* AUTH */
+    /* =========================
+       AUTH UI
+    ========================= */
 
     function openAuth(mode) {
 
@@ -1553,8 +2046,11 @@
 
       } else {
 
-        title.textContent = "Create Account";
-        button.textContent = "Sign Up";
+        title.textContent =
+          "Create Account";
+
+        button.textContent =
+          "Sign Up";
 
         switchText.textContent =
           "Already have an account?";
@@ -1579,13 +2075,21 @@
     }
 
 
+    /* =========================
+       SIGN UP / LOGIN
+    ========================= */
+
     function handleAuth() {
 
       const email =
-        document.getElementById("email").value;
+        document.getElementById("email")
+          .value
+          .trim()
+          .toLowerCase();
 
       const password =
-        document.getElementById("password").value;
+        document.getElementById("password")
+          .value;
 
       if (!email || !password) {
 
@@ -1597,31 +2101,654 @@
 
       }
 
+
       if (authMode === "signup") {
 
-        localStorage.setItem(
-          "gamerexUser",
-          email
-        );
+        const existingAccount =
+          getAccount();
+
+        if (existingAccount) {
+
+          alert(
+            "An account already exists in this browser. Please Login."
+          );
+
+          return;
+
+        }
+
+
+        const account = {
+
+          email: email,
+
+          password: password,
+
+          gamerexId:
+            generateGamerexId(),
+
+          profileLogo: "👤",
+
+          nameChangesToday: 0,
+
+          nameChangeDate: todayKey(),
+
+          rewardCount: 0
+
+        };
+
+
+        saveAccount(account);
+
+        setLoggedInEmail(email);
+
+        updateProfileUI();
+        updateHeaderUI();
 
         alert(
           "Account created successfully! 🎉"
         );
 
+        closeModal("authModal");
+
+
       } else {
+
+        const account =
+          getAccount();
+
+        if (!account) {
+
+          alert(
+            "No Gamerex account found. Please Sign Up first."
+          );
+
+          return;
+
+        }
+
+
+        if (
+          account.email !== email ||
+          account.password !== password
+        ) {
+
+          alert(
+            "Incorrect email or password."
+          );
+
+          return;
+
+        }
+
+
+        setLoggedInEmail(email);
+
+        updateProfileUI();
+        updateHeaderUI();
 
         alert(
           "Logged in successfully! 🎮"
         );
 
-      }
+        closeModal("authModal");
 
-      closeModal("authModal");
+      }
 
     }
 
 
-    /* GAME LAUNCH */
+    /* =========================
+       GENERATE ID
+    ========================= */
+
+    function generateGamerexId() {
+
+      const number =
+        Math.floor(
+          100000 +
+          Math.random() * 900000
+        );
+
+      return "GX-" + number;
+
+    }
+
+
+    /* =========================
+       HEADER ACCOUNT UI
+    ========================= */
+
+    function updateHeaderUI() {
+
+      const account =
+        getAccount();
+
+      const loggedIn =
+        getLoggedInEmail();
+
+      const loginButton =
+        document.getElementById(
+          "loginHeaderBtn"
+        );
+
+      const signupButton =
+        document.getElementById(
+          "signupHeaderBtn"
+        );
+
+      const logoutButton =
+        document.getElementById(
+          "logoutHeaderBtn"
+        );
+
+      const accountName =
+        document.getElementById(
+          "accountName"
+        );
+
+
+      if (
+        account &&
+        loggedIn === account.email
+      ) {
+
+        loginButton.style.display =
+          "none";
+
+        signupButton.style.display =
+          "none";
+
+        logoutButton.style.display =
+          "block";
+
+        accountName.style.display =
+          "block";
+
+        accountName.textContent =
+          "👤 " + account.gamerexId;
+
+      } else {
+
+        loginButton.style.display =
+          "block";
+
+        signupButton.style.display =
+          "block";
+
+        logoutButton.style.display =
+          "none";
+
+        accountName.style.display =
+          "none";
+
+      }
+
+    }
+
+
+    /* =========================
+       LOGOUT
+    ========================= */
+
+    function logout() {
+
+      clearLoggedInEmail();
+
+      updateHeaderUI();
+
+      alert(
+        "You have been logged out."
+      );
+
+    }
+
+
+    /* =========================
+       PROFILE UI
+    ========================= */
+
+    function updateProfileUI() {
+
+      const account =
+        getAccount();
+
+      const idElement =
+        document.getElementById(
+          "gamerexId"
+        );
+
+      const iconElement =
+        document.getElementById(
+          "profileIcon"
+        );
+
+      const changeInfo =
+        document.getElementById(
+          "nameChangeInfo"
+        );
+
+      const changeButton =
+        document.getElementById(
+          "changeNameBtn"
+        );
+
+      if (!account) {
+
+        idElement.textContent =
+          "GX-2026-001";
+
+        iconElement.innerHTML =
+          "👤";
+
+        changeInfo.textContent =
+          "Login to customize your Gamerex ID.";
+
+        changeButton.disabled =
+          true;
+
+        updateRewardUI(0);
+
+        return;
+
+      }
+
+
+      resetDailyNameLimit(account);
+
+      idElement.textContent =
+        account.gamerexId;
+
+      iconElement.innerHTML =
+        account.profileLogo || "👤";
+
+      changeInfo.textContent =
+        "Name changes today: " +
+        account.nameChangesToday +
+        " / 5";
+
+      changeButton.disabled =
+        account.nameChangesToday >= 5;
+
+      updateRewardUI(
+        account.rewardCount || 0
+      );
+
+    }
+
+
+    /* =========================
+       RESET DAILY NAME LIMIT
+    ========================= */
+
+    function resetDailyNameLimit(account) {
+
+      const today =
+        todayKey();
+
+      if (
+        account.nameChangeDate !== today
+      ) {
+
+        account.nameChangeDate =
+          today;
+
+        account.nameChangesToday =
+          0;
+
+        saveAccount(account);
+
+      }
+
+    }
+
+
+    /* =========================
+       CHANGE GAMEREX NAME
+    ========================= */
+
+    function changeGamerexName() {
+
+      const account =
+        getAccount();
+
+      if (!account) {
+
+        alert(
+          "Please Login or Sign Up first."
+        );
+
+        return;
+
+      }
+
+
+      resetDailyNameLimit(account);
+
+
+      if (
+        account.nameChangesToday >= 5
+      ) {
+
+        alert(
+          "You have reached today's 5 ID changes. Try again tomorrow."
+        );
+
+        return;
+
+      }
+
+
+      document.getElementById(
+        "newGamerexName"
+      ).value =
+        account.gamerexId;
+
+      document.getElementById(
+        "nameModal"
+      ).style.display =
+        "flex";
+
+    }
+
+
+    function saveGamerexName() {
+
+      const account =
+        getAccount();
+
+      if (!account) {
+
+        alert(
+          "Please Login first."
+        );
+
+        return;
+
+      }
+
+
+      resetDailyNameLimit(account);
+
+
+      if (
+        account.nameChangesToday >= 5
+      ) {
+
+        alert(
+          "You have reached today's 5 ID changes."
+        );
+
+        return;
+
+      }
+
+
+      const newName =
+        document.getElementById(
+          "newGamerexName"
+        ).value.trim();
+
+
+      if (!newName) {
+
+        alert(
+          "Please enter a Gamerex ID."
+        );
+
+        return;
+
+      }
+
+
+      if (newName.length < 3) {
+
+        alert(
+          "Gamerex ID must contain at least 3 characters."
+        );
+
+        return;
+
+      }
+
+
+      account.gamerexId =
+        newName;
+
+      account.nameChangesToday++;
+
+      account.nameChangeDate =
+        todayKey();
+
+      saveAccount(account);
+
+      updateProfileUI();
+      updateHeaderUI();
+
+      closeModal("nameModal");
+
+      alert(
+        "Gamerex ID changed successfully! 🎉\n\nChanges today: " +
+        account.nameChangesToday +
+        " / 5"
+      );
+
+    }
+
+
+    /* =========================
+       PROFILE LOGO
+    ========================= */
+
+    function changeProfileLogo() {
+
+      const account =
+        getAccount();
+
+      if (!account) {
+
+        alert(
+          "Please Login or Sign Up first."
+        );
+
+        return;
+
+      }
+
+
+      document.getElementById(
+        "logoModal"
+      ).style.display =
+        "flex";
+
+    }
+
+
+    function selectLogo(logo) {
+
+      const account =
+        getAccount();
+
+      if (!account) {
+
+        alert(
+          "Please Login first."
+        );
+
+        return;
+
+      }
+
+
+      account.profileLogo =
+        logo;
+
+      saveAccount(account);
+
+      updateProfileUI();
+
+      closeModal("logoModal");
+
+      alert(
+        "Profile logo changed successfully! 🖼️"
+      );
+
+    }
+
+
+    /* =========================
+       REWARDS
+    ========================= */
+
+    function updateRewardUI(count) {
+
+      const rewardCount =
+        document.getElementById(
+          "rewardCount"
+        );
+
+      const dots =
+        document.querySelectorAll(
+          ".reward-dot"
+        );
+
+
+      rewardCount.textContent =
+        count + " / 5";
+
+
+      dots.forEach(
+        (dot, index) => {
+
+          dot.classList.toggle(
+            "active",
+            index < count
+          );
+
+        }
+      );
+
+    }
+
+
+    function claimReward() {
+
+      const account =
+        getAccount();
+
+      if (!account) {
+
+        alert(
+          "Please Login or Sign Up to claim rewards."
+        );
+
+        return;
+
+      }
+
+
+      if (
+        typeof account.rewardCount !==
+        "number"
+      ) {
+
+        account.rewardCount =
+          0;
+
+      }
+
+
+      /*
+        1st - 4th:
+        Free reward.
+
+        5th:
+        Show ad placeholder.
+
+        After ad:
+        Reset to 0 and cycle repeats.
+      */
+
+
+      if (
+        account.rewardCount < 4
+      ) {
+
+        account.rewardCount++;
+
+        saveAccount(account);
+
+        updateRewardUI(
+          account.rewardCount
+        );
+
+        alert(
+          "🎁 Free reward unlocked!"
+        );
+
+        return;
+
+      }
+
+
+      if (
+        account.rewardCount === 4
+      ) {
+
+        pendingRewardAfterAd =
+          true;
+
+        document.getElementById(
+          "rewardModal"
+        ).style.display =
+          "flex";
+
+      }
+
+    }
+
+
+    function finishAdReward() {
+
+      const account =
+        getAccount();
+
+      if (!account) {
+
+        closeModal("rewardModal");
+
+        return;
+
+      }
+
+
+      /*
+        Demo ad completed.
+        Real ad network can be connected later.
+      */
+
+      account.rewardCount =
+        0;
+
+      saveAccount(account);
+
+      updateRewardUI(0);
+
+      pendingRewardAfterAd =
+        false;
+
+      closeModal("rewardModal");
+
+      alert(
+        "🎉 Ad completed! Your reward has been unlocked.\n\nThe reward cycle has started again."
+      );
+
+    }
+
+
+    /* =========================
+       GAME LAUNCH
+    ========================= */
 
     function launchGame(
       name,
@@ -1629,19 +2756,28 @@
       description
     ) {
 
-      selectedGame = name;
+      selectedGame =
+        name;
 
-      document.getElementById("launchTitle")
-        .textContent = name;
+      document.getElementById(
+        "launchTitle"
+      ).textContent =
+        name;
 
-      document.getElementById("launchIcon")
-        .textContent = icon;
+      document.getElementById(
+        "launchIcon"
+      ).textContent =
+        icon;
 
-      document.getElementById("launchDescription")
-        .textContent = description;
+      document.getElementById(
+        "launchDescription"
+      ).textContent =
+        description;
 
-      document.getElementById("gameModal")
-        .style.display = "flex";
+      document.getElementById(
+        "gameModal"
+      ).style.display =
+        "flex";
 
     }
 
@@ -1657,12 +2793,16 @@
     }
 
 
-    /* DEVELOPER */
+    /* =========================
+       DEVELOPER
+    ========================= */
 
     function openDeveloper() {
 
-      document.getElementById("developerModal")
-        .style.display = "flex";
+      document.getElementById(
+        "developerModal"
+      ).style.display =
+        "flex";
 
     }
 
@@ -1673,36 +2813,85 @@
         "🎮 Thanks! Your game submission has been received."
       );
 
-      closeModal("developerModal");
+      closeModal(
+        "developerModal"
+      );
 
     }
 
 
-    /* CLOSE MODALS */
+    /* =========================
+       CLOSE MODALS
+    ========================= */
 
     function closeModal(id) {
 
       document.getElementById(id)
-        .style.display = "none";
+        .style.display =
+        "none";
 
     }
 
 
-    /* OUTSIDE CLICK */
+    /* =========================
+       OUTSIDE CLICK
+    ========================= */
 
-    window.onclick = function(event) {
+    window.onclick =
+      function(event) {
 
-      if (
-        event.target.classList.contains("modal")
-      ) {
+        if (
+          event.target.classList
+            .contains("modal")
+        ) {
 
-        event.target.style.display = "none";
+          event.target.style.display =
+            "none";
+
+        }
+
+      };
+
+
+    /* =========================
+       PAGE LOAD
+    ========================= */
+
+    window.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        const account =
+          getAccount();
+
+        if (account) {
+
+          resetDailyNameLimit(
+            account
+          );
+
+          if (
+            typeof account.rewardCount !==
+            "number"
+          ) {
+
+            account.rewardCount =
+              0;
+
+            saveAccount(account);
+
+          }
+
+        }
+
+        updateHeaderUI();
+        updateProfileUI();
 
       }
-
-    };
+    );
 
   </script>
 
 </body>
 </html>
+```
