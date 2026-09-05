@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Gamerex - Free Online Games</title>
 
   <style>
@@ -26,54 +25,73 @@
     /* HEADER */
 
     header {
+      height: 70px;
       background: #050505;
-      padding: 18px 50px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       border-bottom: 1px solid #222;
-      position: sticky;
+      display: flex;
+      align-items: center;
+      padding: 0 25px;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 1000;
     }
 
     .logo {
-      font-size: 29px;
+      font-size: 28px;
       font-weight: bold;
-      color: #fff;
+      color: white;
       letter-spacing: 1px;
+      min-width: 190px;
     }
 
     .logo span {
       color: #00d9ff;
     }
 
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 25px;
+    /* TOP SEARCH */
+
+    .top-search {
+      flex: 1;
+      max-width: 650px;
+      margin: 0 auto;
+      position: relative;
     }
 
-    nav a {
-      color: #ddd;
-      text-decoration: none;
+    .top-search input {
+      width: 100%;
+      padding: 13px 20px 13px 45px;
+      background: #0c0c0c;
+      border: 1px solid #292929;
+      border-radius: 9px;
+      color: white;
       font-size: 15px;
-      transition: 0.2s;
+      outline: none;
     }
 
-    nav a:hover {
-      color: #00d9ff;
+    .top-search input:focus {
+      border-color: #00d9ff;
     }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 12px;
+      color: #777;
+    }
+
+    /* AUTH */
 
     .auth-buttons {
       display: flex;
-      gap: 10px;
+      gap: 9px;
+      margin-left: 20px;
     }
 
     .login-btn,
     .signup-btn {
-      border: none;
-      padding: 10px 17px;
+      padding: 10px 16px;
       border-radius: 7px;
       cursor: pointer;
       font-weight: bold;
@@ -88,38 +106,103 @@
     .signup-btn {
       background: #00d9ff;
       color: #000;
+      border: 1px solid #00d9ff;
     }
 
     .login-btn:hover {
-      border-color: #00d9ff;
       color: #00d9ff;
+      border-color: #00d9ff;
     }
 
     .signup-btn:hover {
-      background: #00b8d9;
+      background: white;
+      border-color: white;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      bottom: 0;
+      width: 245px;
+      background: #050505;
+      border-right: 1px solid #222;
+      padding: 25px 15px;
+      overflow-y: auto;
+      z-index: 900;
+    }
+
+    .sidebar-title {
+      color: #666;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 8px 12px 10px;
+    }
+
+    .side-link {
+      width: 100%;
+      display: block;
+      padding: 13px 14px;
+      margin-bottom: 5px;
+      border-radius: 8px;
+      background: transparent;
+      color: #ccc;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      font-size: 15px;
+      text-decoration: none;
+    }
+
+    .side-link:hover,
+    .side-link.active {
+      background: #111;
+      color: #00d9ff;
+    }
+
+    .side-category {
+      padding-left: 25px;
+      font-size: 14px;
+      color: #999;
+    }
+
+    .side-category:hover {
+      color: #00d9ff;
+    }
+
+    .sidebar-divider {
+      border: 0;
+      border-top: 1px solid #222;
+      margin: 18px 5px;
+    }
+
+    /* MAIN */
+
+    .main {
+      margin-left: 245px;
+      padding-top: 70px;
+      min-height: 100vh;
     }
 
     /* HERO */
 
     .hero {
-      min-height: 500px;
+      min-height: 440px;
       display: flex;
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 80px 20px;
+      padding: 60px 25px;
       background:
-        radial-gradient(circle at center, #111 0%, #050505 40%, #000 75%);
-    }
-
-    .hero-content {
-      max-width: 800px;
+        radial-gradient(circle at center, #111 0%, #050505 45%, #000 80%);
     }
 
     .hero h1 {
-      font-size: 64px;
-      margin-bottom: 20px;
-      font-weight: 800;
+      font-size: 60px;
+      margin-bottom: 18px;
     }
 
     .hero h1 span {
@@ -127,96 +210,32 @@
     }
 
     .hero p {
-      color: #aaa;
-      font-size: 20px;
-      margin-bottom: 35px;
+      color: #999;
+      font-size: 19px;
+      margin-bottom: 30px;
     }
 
     .main-btn {
       display: inline-block;
       background: #00d9ff;
       color: #000;
-      padding: 14px 30px;
+      padding: 13px 25px;
       border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
       border: none;
       cursor: pointer;
-      transition: 0.2s;
+      font-weight: bold;
+      text-decoration: none;
     }
 
     .main-btn:hover {
-      background: #fff;
+      background: white;
       transform: translateY(-2px);
-    }
-
-    /* SEARCH */
-
-    .search-section {
-      padding: 35px 50px 10px;
-      background: #000;
-    }
-
-    .search-box {
-      max-width: 700px;
-      margin: auto;
-      position: relative;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 17px 20px;
-      background: #0b0b0b;
-      border: 1px solid #292929;
-      border-radius: 10px;
-      color: white;
-      font-size: 16px;
-      outline: none;
-    }
-
-    .search-box input:focus {
-      border-color: #00d9ff;
-    }
-
-    /* CATEGORIES */
-
-    .categories {
-      padding: 30px 50px;
-      text-align: center;
-    }
-
-    .categories h2 {
-      margin-bottom: 20px;
-      font-size: 25px;
-    }
-
-    .category-buttons {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .category-btn {
-      background: #0b0b0b;
-      color: #ccc;
-      border: 1px solid #292929;
-      padding: 9px 17px;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-
-    .category-btn:hover,
-    .category-btn.active {
-      background: #00d9ff;
-      color: #000;
-      border-color: #00d9ff;
     }
 
     /* GAMES */
 
     .games {
-      padding: 40px 50px 70px;
+      padding: 50px 45px 70px;
       max-width: 1400px;
       margin: auto;
     }
@@ -225,20 +244,20 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 30px;
+      margin-bottom: 28px;
     }
 
     .games-title h2 {
-      font-size: 32px;
+      font-size: 30px;
     }
 
     .game-count {
-      color: #777;
+      color: #666;
     }
 
     .game-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 22px;
     }
 
@@ -251,18 +270,17 @@
     }
 
     .game-card:hover {
-      transform: translateY(-6px);
+      transform: translateY(-5px);
       border-color: #00d9ff;
-      box-shadow: 0 8px 30px rgba(0, 217, 255, 0.08);
     }
 
     .game-image {
-      height: 150px;
+      height: 145px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 65px;
       background: #111;
+      font-size: 65px;
     }
 
     .game-info {
@@ -270,15 +288,15 @@
     }
 
     .game-info h3 {
-      font-size: 20px;
       margin-bottom: 8px;
+      font-size: 19px;
     }
 
     .game-info p {
       color: #888;
       font-size: 14px;
       min-height: 38px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .game-meta {
@@ -290,62 +308,161 @@
     .launch-btn {
       width: 100%;
       padding: 11px;
-      background: #00d9ff;
-      color: #000;
       border: none;
       border-radius: 7px;
+      background: #00d9ff;
+      color: #000;
       font-weight: bold;
       cursor: pointer;
     }
 
     .launch-btn:hover {
-      background: #fff;
+      background: white;
     }
 
     .no-games {
-      text-align: center;
-      padding: 60px;
-      color: #777;
       display: none;
-    }
-
-    /* DEVELOPER SECTION */
-
-    .developer-section {
-      margin: 20px 50px 70px;
-      padding: 50px;
-      border: 1px solid #222;
-      border-radius: 15px;
       text-align: center;
-      background: #060606;
+      padding: 50px;
+      color: #777;
     }
 
-    .developer-section h2 {
-      font-size: 30px;
-      margin-bottom: 12px;
+    /* SETTINGS */
+
+    .settings-page {
+      display: none;
+      padding: 45px;
+      max-width: 1100px;
+      margin: auto;
     }
 
-    .developer-section p {
+    .settings-page h1 {
+      font-size: 38px;
+      margin-bottom: 8px;
+    }
+
+    .settings-subtitle {
+      color: #777;
+      margin-bottom: 30px;
+    }
+
+    .settings-card {
+      background: #080808;
+      border: 1px solid #252525;
+      border-radius: 14px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+
+    .settings-card h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .settings-card p {
       color: #888;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
-    /* MODAL */
+    .profile-box {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .profile-icon {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: #111;
+      border: 1px solid #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+    }
+
+    .user-id {
+      color: #00d9ff;
+      font-weight: bold;
+    }
+
+    /* LANGUAGE */
+
+    .language-search {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 15px;
+      background: #000;
+      color: white;
+      border: 1px solid #292929;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .language-search:focus {
+      border-color: #00d9ff;
+    }
+
+    .language-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 8px;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    .language-btn {
+      padding: 11px;
+      background: #0d0d0d;
+      color: #bbb;
+      border: 1px solid #222;
+      border-radius: 7px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .language-btn:hover {
+      border-color: #00d9ff;
+      color: #00d9ff;
+    }
+
+    /* DEVELOPER */
+
+    .developer-big {
+      border: 1px solid #252525;
+      background: #080808;
+      border-radius: 14px;
+      padding: 35px;
+    }
+
+    .developer-big h2 {
+      font-size: 27px;
+      margin-bottom: 10px;
+    }
+
+    .developer-big p {
+      color: #888;
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    /* MODALS */
 
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.85);
+      background: rgba(0,0,0,0.88);
       justify-content: center;
       align-items: center;
-      z-index: 2000;
+      z-index: 3000;
       padding: 20px;
     }
 
     .modal-box {
       width: 100%;
-      max-width: 430px;
+      max-width: 450px;
       background: #090909;
       border: 1px solid #292929;
       border-radius: 14px;
@@ -360,8 +477,8 @@
     .close {
       position: absolute;
       right: 20px;
-      top: 15px;
-      font-size: 25px;
+      top: 13px;
+      font-size: 27px;
       color: #777;
       cursor: pointer;
     }
@@ -375,9 +492,9 @@
       padding: 13px;
       margin-bottom: 12px;
       background: #000;
+      color: white;
       border: 1px solid #292929;
       border-radius: 7px;
-      color: white;
       outline: none;
     }
 
@@ -385,16 +502,11 @@
       border-color: #00d9ff;
     }
 
-    .modal-box button {
-      width: 100%;
-      margin-top: 8px;
-    }
-
     .modal-text {
       color: #777;
-      font-size: 13px;
-      margin-top: 15px;
       text-align: center;
+      margin-top: 15px;
+      font-size: 13px;
     }
 
     .modal-link {
@@ -402,26 +514,24 @@
       cursor: pointer;
     }
 
-    /* GAME LAUNCH MODAL */
-
     .launch-game-icon {
-      font-size: 70px;
       text-align: center;
-      margin: 15px;
+      font-size: 70px;
+      margin-bottom: 10px;
     }
 
     .launch-game-description {
       color: #999;
+      text-align: center;
       line-height: 1.6;
       margin-bottom: 20px;
-      text-align: center;
     }
 
     /* FOOTER */
 
     footer {
       border-top: 1px solid #222;
-      padding: 35px 20px;
+      padding: 30px;
       text-align: center;
       color: #666;
       background: #030303;
@@ -433,49 +543,88 @@
 
     /* MOBILE */
 
-    @media (max-width: 800px) {
+    @media (max-width: 850px) {
 
       header {
-        padding: 15px 20px;
-        flex-wrap: wrap;
-        gap: 15px;
+        padding: 10px 15px;
       }
 
-      nav {
-        gap: 12px;
+      .logo {
+        min-width: auto;
+        font-size: 22px;
       }
 
-      nav a {
-        font-size: 13px;
+      .top-search {
+        margin-left: 15px;
       }
 
       .auth-buttons {
-        width: 100%;
+        margin-left: 10px;
       }
 
-      .auth-buttons button {
-        flex: 1;
+      .login-btn,
+      .signup-btn {
+        padding: 8px 10px;
+      }
+
+      .sidebar {
+        width: 200px;
+      }
+
+      .main {
+        margin-left: 200px;
       }
 
       .hero h1 {
-        font-size: 43px;
+        font-size: 42px;
       }
 
-      .hero p {
-        font-size: 17px;
-      }
-
-      .search-section,
-      .categories,
       .games {
-        padding-left: 20px;
-        padding-right: 20px;
+        padding: 35px 20px;
       }
 
-      .developer-section {
-        margin-left: 20px;
-        margin-right: 20px;
+      .settings-page {
         padding: 30px 20px;
+      }
+    }
+
+    @media (max-width: 650px) {
+
+      header {
+        height: auto;
+        min-height: 65px;
+        flex-wrap: wrap;
+      }
+
+      .top-search {
+        order: 3;
+        width: 100%;
+        max-width: none;
+        margin: 8px 0;
+      }
+
+      .sidebar {
+        width: 170px;
+      }
+
+      .main {
+        margin-left: 170px;
+      }
+
+      .auth-buttons {
+        margin-left: auto;
+      }
+
+      .signup-btn {
+        display: none;
+      }
+
+      .hero {
+        min-height: 400px;
+      }
+
+      .hero h1 {
+        font-size: 34px;
       }
 
       .games-title {
@@ -500,301 +649,500 @@
       🎮 GAME<span>REX</span>
     </div>
 
-    <nav>
-      <a href="#">Home</a>
-      <a href="#games">Games</a>
-      <a href="#developers">Developers</a>
-    </nav>
+    <div class="top-search">
+      <span class="search-icon">🔎</span>
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search games..."
+        onkeyup="searchGames()"
+      >
+    </div>
 
     <div class="auth-buttons">
-      <button class="login-btn" onclick="openAuth('login')">
-        Sign In
+
+      <button
+        class="login-btn"
+        onclick="openAuth('login')"
+      >
+        Login
       </button>
 
-      <button class="signup-btn" onclick="openAuth('signup')">
+      <button
+        class="signup-btn"
+        onclick="openAuth('signup')"
+      >
         Sign Up
       </button>
+
     </div>
 
   </header>
 
 
-  <!-- HERO -->
+  <!-- SIDEBAR -->
 
-  <section class="hero">
+  <aside class="sidebar">
 
-    <div class="hero-content">
-
-      <h1>
-        Welcome to <span>Gamerex</span>
-      </h1>
-
-      <p>
-        Discover and play awesome games online.
-      </p>
-
-      <a href="#games" class="main-btn">
-        🎮 Explore Games
-      </a>
-
+    <div class="sidebar-title">
+      Menu
     </div>
-
-  </section>
-
-
-  <!-- SEARCH -->
-
-  <section class="search-section">
-
-    <div class="search-box">
-
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="🔎 Search games..."
-        onkeyup="searchGames()"
-      >
-
-    </div>
-
-  </section>
-
-
-  <!-- CATEGORIES -->
-
-  <section class="categories">
-
-    <h2>Game Categories</h2>
-
-    <div class="category-buttons">
-
-      <button
-        class="category-btn active"
-        onclick="filterCategory('All', this)">
-        All
-      </button>
-
-      <button
-        class="category-btn"
-        onclick="filterCategory('Racing', this)">
-        🏎 Racing
-      </button>
-
-      <button
-        class="category-btn"
-        onclick="filterCategory('Sports', this)">
-        ⚽ Sports
-      </button>
-
-      <button
-        class="category-btn"
-        onclick="filterCategory('Puzzle', this)">
-        🧩 Puzzle
-      </button>
-
-      <button
-        class="category-btn"
-        onclick="filterCategory('Adventure', this)">
-        🚀 Adventure
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- GAMES -->
-
-  <section class="games" id="games">
-
-    <div class="games-title">
-
-      <h2>🔥 Featured Games</h2>
-
-      <span class="game-count" id="gameCount">
-        4 Games
-      </span>
-
-    </div>
-
-
-    <div class="game-grid" id="gameGrid">
-
-
-      <!-- GAME 1 -->
-
-      <div
-        class="game-card"
-        data-name="Racing Rush"
-        data-category="Racing"
-      >
-
-        <div class="game-image">
-          🚗
-        </div>
-
-        <div class="game-info">
-
-          <h3>Racing Rush</h3>
-
-          <p>
-            Race your way to victory!
-          </p>
-
-          <div class="game-meta">
-            🏎 Racing • Free
-          </div>
-
-          <button
-            class="launch-btn"
-            onclick="launchGame('Racing Rush','🚗','Race your way to victory!')"
-          >
-            🚀 Launch Game
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- GAME 2 -->
-
-      <div
-        class="game-card"
-        data-name="Football Pro"
-        data-category="Sports"
-      >
-
-        <div class="game-image">
-          ⚽
-        </div>
-
-        <div class="game-info">
-
-          <h3>Football Pro</h3>
-
-          <p>
-            Score goals and become champion.
-          </p>
-
-          <div class="game-meta">
-            ⚽ Sports • Free
-          </div>
-
-          <button
-            class="launch-btn"
-            onclick="launchGame('Football Pro','⚽','Score goals and become champion.')"
-          >
-            🚀 Launch Game
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- GAME 3 -->
-
-      <div
-        class="game-card"
-        data-name="Brain Puzzle"
-        data-category="Puzzle"
-      >
-
-        <div class="game-image">
-          🧩
-        </div>
-
-        <div class="game-info">
-
-          <h3>Brain Puzzle</h3>
-
-          <p>
-            Challenge your brain with puzzles.
-          </p>
-
-          <div class="game-meta">
-            🧩 Puzzle • Free
-          </div>
-
-          <button
-            class="launch-btn"
-            onclick="launchGame('Brain Puzzle','🧩','Challenge your brain with puzzles.')"
-          >
-            🚀 Launch Game
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- GAME 4 -->
-
-      <div
-        class="game-card"
-        data-name="Space Adventure"
-        data-category="Adventure"
-      >
-
-        <div class="game-image">
-          🚀
-        </div>
-
-        <div class="game-info">
-
-          <h3>Space Adventure</h3>
-
-          <p>
-            Explore the universe.
-          </p>
-
-          <div class="game-meta">
-            🚀 Adventure • Free
-          </div>
-
-          <button
-            class="launch-btn"
-            onclick="launchGame('Space Adventure','🚀','Explore the universe and discover new worlds.')"
-          >
-            🚀 Launch Game
-          </button>
-
-        </div>
-
-      </div>
-
-
-    </div>
-
-    <div class="no-games" id="noGames">
-      😕 No games found.
-    </div>
-
-  </section>
-
-
-  <!-- DEVELOPER SECTION -->
-
-  <section
-    class="developer-section"
-    id="developers"
-  >
-
-    <h2>🎮 Are You a Game Developer?</h2>
-
-    <p>
-      Bring your game to Gamerex and reach new players.
-    </p>
 
     <button
-      class="main-btn"
-      onclick="openDeveloper()"
+      class="side-link active"
+      onclick="showHome()"
     >
-      🚀 Submit Your Game
+      🏠 Home
     </button>
 
-  </section>
+    <button
+      class="side-link"
+      onclick="showGames()"
+    >
+      🎮 All Games
+    </button>
+
+    <hr class="sidebar-divider">
+
+    <div class="sidebar-title">
+      Categories
+    </div>
+
+    <button
+      class="side-link side-category"
+      onclick="filterCategory('Racing')"
+    >
+      🏎️ Racing
+    </button>
+
+    <button
+      class="side-link side-category"
+      onclick="filterCategory('Sports')"
+    >
+      ⚽ Sports
+    </button>
+
+    <button
+      class="side-link side-category"
+      onclick="filterCategory('Puzzle')"
+    >
+      🧩 Puzzle
+    </button>
+
+    <button
+      class="side-link side-category"
+      onclick="filterCategory('Adventure')"
+    >
+      🚀 Adventure
+    </button>
+
+    <hr class="sidebar-divider">
+
+    <button
+      class="side-link"
+      onclick="showSettings()"
+    >
+      ⚙️ Settings
+    </button>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+    <!-- HOME -->
+
+    <div id="homePage">
+
+      <section class="hero">
+
+        <div>
+
+          <h1>
+            Welcome to <span>Gamerex</span>
+          </h1>
+
+          <p>
+            Discover and play awesome games online.
+          </p>
+
+          <a
+            href="#games"
+            class="main-btn"
+            onclick="showGames()"
+          >
+            🎮 Explore Games
+          </a>
+
+        </div>
+
+      </section>
+
+
+      <section
+        class="games"
+        id="games"
+      >
+
+        <div class="games-title">
+
+          <h2>
+            🔥 Featured Games
+          </h2>
+
+          <span
+            class="game-count"
+            id="gameCount"
+          >
+            4 Games
+          </span>
+
+        </div>
+
+
+        <div
+          class="game-grid"
+          id="gameGrid"
+        >
+
+          <!-- GAME 1 -->
+
+          <div
+            class="game-card"
+            data-name="Racing Rush"
+            data-category="Racing"
+          >
+
+            <div class="game-image">
+              🚗
+            </div>
+
+            <div class="game-info">
+
+              <h3>
+                Racing Rush
+              </h3>
+
+              <p>
+                Race your way to victory!
+              </p>
+
+              <div class="game-meta">
+                🏎️ Racing • Free
+              </div>
+
+              <button
+                class="launch-btn"
+                onclick="launchGame(
+                  'Racing Rush',
+                  '🚗',
+                  'Race your way to victory!'
+                )"
+              >
+                🚀 Launch Game
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- GAME 2 -->
+
+          <div
+            class="game-card"
+            data-name="Football Pro"
+            data-category="Sports"
+          >
+
+            <div class="game-image">
+              ⚽
+            </div>
+
+            <div class="game-info">
+
+              <h3>
+                Football Pro
+              </h3>
+
+              <p>
+                Score goals and become champion.
+              </p>
+
+              <div class="game-meta">
+                ⚽ Sports • Free
+              </div>
+
+              <button
+                class="launch-btn"
+                onclick="launchGame(
+                  'Football Pro',
+                  '⚽',
+                  'Score goals and become champion.'
+                )"
+              >
+                🚀 Launch Game
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- GAME 3 -->
+
+          <div
+            class="game-card"
+            data-name="Brain Puzzle"
+            data-category="Puzzle"
+          >
+
+            <div class="game-image">
+              🧩
+            </div>
+
+            <div class="game-info">
+
+              <h3>
+                Brain Puzzle
+              </h3>
+
+              <p>
+                Challenge your brain with puzzles.
+              </p>
+
+              <div class="game-meta">
+                🧩 Puzzle • Free
+              </div>
+
+              <button
+                class="launch-btn"
+                onclick="launchGame(
+                  'Brain Puzzle',
+                  '🧩',
+                  'Challenge your brain with puzzles.'
+                )"
+              >
+                🚀 Launch Game
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- GAME 4 -->
+
+          <div
+            class="game-card"
+            data-name="Space Adventure"
+            data-category="Adventure"
+          >
+
+            <div class="game-image">
+              🚀
+            </div>
+
+            <div class="game-info">
+
+              <h3>
+                Space Adventure
+              </h3>
+
+              <p>
+                Explore the universe.
+              </p>
+
+              <div class="game-meta">
+                🚀 Adventure • Free
+              </div>
+
+              <button
+                class="launch-btn"
+                onclick="launchGame(
+                  'Space Adventure',
+                  '🚀',
+                  'Explore the universe and discover new worlds.'
+                )"
+              >
+                🚀 Launch Game
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="no-games"
+          id="noGames"
+        >
+          😕 No games found.
+        </div>
+
+      </section>
+
+    </div>
+
+
+    <!-- SETTINGS -->
+
+    <section
+      class="settings-page"
+      id="settingsPage"
+    >
+
+      <h1>
+        ⚙️ Settings
+      </h1>
+
+      <p class="settings-subtitle">
+        Manage your Gamerex account and preferences.
+      </p>
+
+
+      <!-- ID FIRST -->
+
+      <div class="settings-card">
+
+        <h2>
+          👤 Your ID
+        </h2>
+
+        <p>
+          Your Gamerex account information.
+        </p>
+
+        <div class="profile-box">
+
+          <div class="profile-icon">
+            👤
+          </div>
+
+          <div>
+
+            <div>
+              Gamerex ID
+            </div>
+
+            <div
+              class="user-id"
+              id="gamerexId"
+            >
+              GX-2026-001
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- LANGUAGE -->
+
+      <div class="settings-card">
+
+        <h2>
+          🌐 Language
+        </h2>
+
+        <p>
+          Choose the language you want to use on Gamerex.
+        </p>
+
+        <input
+          class="language-search"
+          id="languageSearch"
+          placeholder="🔎 Search language..."
+          onkeyup="searchLanguages()"
+        >
+
+        <div
+          class="language-list"
+          id="languageList"
+        >
+
+          <button class="language-btn">English</button>
+          <button class="language-btn">Urdu</button>
+          <button class="language-btn">Arabic</button>
+          <button class="language-btn">Chinese</button>
+          <button class="language-btn">Spanish</button>
+          <button class="language-btn">French</button>
+          <button class="language-btn">German</button>
+          <button class="language-btn">Portuguese</button>
+          <button class="language-btn">Russian</button>
+          <button class="language-btn">Japanese</button>
+          <button class="language-btn">Korean</button>
+          <button class="language-btn">Turkish</button>
+          <button class="language-btn">Italian</button>
+          <button class="language-btn">Hindi</button>
+          <button class="language-btn">Bengali</button>
+          <button class="language-btn">Persian</button>
+          <button class="language-btn">Dutch</button>
+          <button class="language-btn">Polish</button>
+          <button class="language-btn">Swedish</button>
+          <button class="language-btn">Norwegian</button>
+          <button class="language-btn">Danish</button>
+          <button class="language-btn">Finnish</button>
+          <button class="language-btn">Greek</button>
+          <button class="language-btn">Hebrew</button>
+          <button class="language-btn">Thai</button>
+          <button class="language-btn">Vietnamese</button>
+          <button class="language-btn">Indonesian</button>
+          <button class="language-btn">Malay</button>
+          <button class="language-btn">Filipino</button>
+          <button class="language-btn">Ukrainian</button>
+          <button class="language-btn">Romanian</button>
+          <button class="language-btn">Czech</button>
+          <button class="language-btn">Hungarian</button>
+          <button class="language-btn">Swahili</button>
+          <button class="language-btn">Afrikaans</button>
+
+        </div>
+
+      </div>
+
+
+      <!-- GAME DEVELOPING -->
+
+      <div class="developer-big">
+
+        <h2>
+          🎮 Game Developing
+        </h2>
+
+        <p>
+          Are you a game developer? Submit your game
+          to Gamerex and give players a chance to discover
+          your game.
+        </p>
+
+        <button
+          class="main-btn"
+          onclick="openDeveloper()"
+        >
+          🚀 Develop / Submit Your Game
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <footer>
+
+      © 2026 <span>Gamerex</span>.
+      All rights reserved.
+
+    </footer>
+
+  </main>
 
 
   <!-- AUTH MODAL -->
@@ -814,7 +1162,7 @@
       </span>
 
       <h2 id="authTitle">
-        Sign In
+        Login
       </h2>
 
       <input
@@ -831,10 +1179,10 @@
 
       <button
         class="main-btn"
-        onclick="handleAuth()"
         id="authButton"
+        onclick="handleAuth()"
       >
-        Sign In
+        Login
       </button>
 
       <p class="modal-text">
@@ -845,8 +1193,8 @@
 
         <span
           class="modal-link"
-          onclick="switchAuth()"
           id="authSwitch"
+          onclick="switchAuth()"
         >
           Sign Up
         </span>
@@ -858,7 +1206,7 @@
   </div>
 
 
-  <!-- LAUNCH GAME MODAL -->
+  <!-- GAME MODAL -->
 
   <div
     class="modal"
@@ -897,6 +1245,7 @@
 
       <button
         class="main-btn"
+        style="width:100%;"
         onclick="startGame()"
       >
         🎮 Start Playing
@@ -923,7 +1272,9 @@
         ×
       </span>
 
-      <h2>🚀 Submit Your Game</h2>
+      <h2>
+        🚀 Submit Your Game
+      </h2>
 
       <input
         type="text"
@@ -947,6 +1298,7 @@
 
       <button
         class="main-btn"
+        style="width:100%;"
         onclick="submitGame()"
       >
         Submit Game
@@ -961,18 +1313,6 @@
   </div>
 
 
-  <!-- FOOTER -->
-
-  <footer>
-
-    © 2026 <span>Gamerex</span>.
-    All rights reserved.
-
-  </footer>
-
-
-  <!-- JAVASCRIPT -->
-
   <script>
 
     let currentCategory = "All";
@@ -980,7 +1320,45 @@
     let selectedGame = "";
 
 
-    /* SEARCH */
+    /* SHOW HOME */
+
+    function showHome() {
+
+      document.getElementById("homePage").style.display = "block";
+      document.getElementById("settingsPage").style.display = "none";
+
+      window.scrollTo(0, 0);
+
+    }
+
+
+    /* SHOW GAMES */
+
+    function showGames() {
+
+      document.getElementById("homePage").style.display = "block";
+      document.getElementById("settingsPage").style.display = "none";
+
+      document
+        .getElementById("games")
+        .scrollIntoView();
+
+    }
+
+
+    /* SETTINGS */
+
+    function showSettings() {
+
+      document.getElementById("homePage").style.display = "none";
+      document.getElementById("settingsPage").style.display = "block";
+
+      window.scrollTo(0, 0);
+
+    }
+
+
+    /* SEARCH GAMES */
 
     function searchGames() {
 
@@ -1035,17 +1413,11 @@
 
     /* CATEGORY */
 
-    function filterCategory(category, button) {
+    function filterCategory(category) {
 
       currentCategory = category;
 
-      document
-        .querySelectorAll(".category-btn")
-        .forEach(btn => {
-          btn.classList.remove("active");
-        });
-
-      button.classList.add("active");
+      showGames();
 
       searchGames();
 
@@ -1057,9 +1429,56 @@
     function updateCount(count) {
 
       document.getElementById("gameCount").textContent =
-        count + (count === 1 ? " Game" : " Games");
+        count +
+        (count === 1 ? " Game" : " Games");
 
     }
+
+
+    /* LANGUAGE SEARCH */
+
+    function searchLanguages() {
+
+      const search =
+        document
+          .getElementById("languageSearch")
+          .value
+          .toLowerCase();
+
+      const languages =
+        document.querySelectorAll(".language-btn");
+
+      languages.forEach(language => {
+
+        const name =
+          language.textContent.toLowerCase();
+
+        language.style.display =
+          name.includes(search)
+            ? "block"
+            : "none";
+
+      });
+
+    }
+
+
+    /* LANGUAGE SELECT */
+
+    document.addEventListener("click", function(event) {
+
+      if (
+        event.target.classList.contains("language-btn")
+      ) {
+
+        alert(
+          "Language selected: " +
+          event.target.textContent
+        );
+
+      }
+
+    });
 
 
     /* AUTH */
@@ -1068,8 +1487,8 @@
 
       authMode = mode;
 
-      document.getElementById("authModal").style.display =
-        "flex";
+      document.getElementById("authModal")
+        .style.display = "flex";
 
       updateAuthUI();
 
@@ -1093,19 +1512,25 @@
 
       if (authMode === "login") {
 
-        title.textContent = "Sign In";
-        button.textContent = "Sign In";
+        title.textContent = "Login";
+        button.textContent = "Login";
+
         switchText.textContent =
           "Don't have an account?";
-        switchButton.textContent = "Sign Up";
+
+        switchButton.textContent =
+          "Sign Up";
 
       } else {
 
         title.textContent = "Create Account";
         button.textContent = "Sign Up";
+
         switchText.textContent =
           "Already have an account?";
-        switchButton.textContent = "Sign In";
+
+        switchButton.textContent =
+          "Login";
 
       }
 
@@ -1134,7 +1559,9 @@
 
       if (!email || !password) {
 
-        alert("Please enter your email and password.");
+        alert(
+          "Please enter your email and password."
+        );
 
         return;
 
@@ -1154,7 +1581,7 @@
       } else {
 
         alert(
-          "Signed in successfully! 🎮"
+          "Logged in successfully! 🎮"
         );
 
       }
@@ -1164,9 +1591,13 @@
     }
 
 
-    /* LAUNCH GAME */
+    /* GAME LAUNCH */
 
-    function launchGame(name, icon, description) {
+    function launchGame(
+      name,
+      icon,
+      description
+    ) {
 
       selectedGame = name;
 
@@ -1187,15 +1618,10 @@
 
     function startGame() {
 
-      /*
-        Yahan baad mein real game URL
-        add karenge.
-      */
-
       alert(
         "🚀 " +
         selectedGame +
-        " launch system ready! Real game URL hum next step mein add karenge."
+        " launch system ready! Real game URL next step mein add karenge."
       );
 
     }
@@ -1205,9 +1631,8 @@
 
     function openDeveloper() {
 
-      document.getElementById(
-        "developerModal"
-      ).style.display = "flex";
+      document.getElementById("developerModal")
+        .style.display = "flex";
 
     }
 
@@ -1233,7 +1658,7 @@
     }
 
 
-    /* CLOSE WHEN CLICKING OUTSIDE */
+    /* OUTSIDE CLICK */
 
     window.onclick = function(event) {
 
