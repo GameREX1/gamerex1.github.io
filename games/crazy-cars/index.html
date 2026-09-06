@@ -282,6 +282,7 @@ button.active{
         <button class="touch left" data-key="a">◀</button>
         <button class="touch right" data-key="d">▶</button>
     </div>
+
     <div class="pad" id="padRight">
         <button class="touch up" data-key="ArrowUp">▲</button>
         <button class="touch down" data-key="ArrowDown">▼</button>
@@ -294,68 +295,183 @@ button.active{
 <div id="notice"></div>
 
 <script>
-/*
-    CRAZY CARS - ORIGINAL HTML5 CANVAS VERSION
-    No external libraries.
-    No CDN.
-    Designed to work on GitHub Pages without loading a third-party engine.
-*/
 
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
 
-let W = innerWidth;
-let H = innerHeight;
-let dpr = Math.min(devicePixelRatio || 1,2);
+let W=innerWidth;
+let H=innerHeight;
+let dpr=Math.min(devicePixelRatio||1,2);
 
 function resize(){
-    W = innerWidth;
-    H = innerHeight;
-    canvas.width = Math.floor(W*dpr);
-    canvas.height = Math.floor(H*dpr);
-    canvas.style.width = W+"px";
-    canvas.style.height = H+"px";
+    W=innerWidth;
+    H=innerHeight;
+
+    canvas.width=Math.floor(W*dpr);
+    canvas.height=Math.floor(H*dpr);
+
+    canvas.style.width=W+"px";
+    canvas.style.height=H+"px";
+
     ctx.setTransform(dpr,0,0,dpr,0,0);
 }
+
 addEventListener("resize",resize);
 resize();
 
-/* -------------------------
+/* =========================================================
    GAME SETTINGS
-------------------------- */
+========================================================= */
 
-const cars = [
-    {name:"Falcon", color:"#e53935", accent:"#8b1010", speed:8.0, accel:.18, handling:.055},
-    {name:"Viper", color:"#16a085", accent:"#0a6655", speed:8.5, accel:.17, handling:.060},
-    {name:"Storm", color:"#3498db", accent:"#15568a", speed:9.0, accel:.19, handling:.058},
-    {name:"Phantom", color:"#8e44ad", accent:"#522466", speed:8.7, accel:.18, handling:.062},
-    {name:"Raptor", color:"#f39c12", accent:"#8a5700", speed:9.2, accel:.20, handling:.052},
-    {name:"Blaze", color:"#ff5722", accent:"#8e260c", speed:9.4, accel:.21, handling:.050},
-    {name:"Shadow", color:"#20252b", accent:"#050608", speed:9.0, accel:.18, handling:.065},
-    {name:"Volt", color:"#00bcd4", accent:"#006879", speed:9.7, accel:.20, handling:.060},
-    {name:"Titan", color:"#607d8b", accent:"#34454d", speed:8.0, accel:.25, handling:.045},
-    {name:"Turbo", color:"#ec407a", accent:"#8d2047", speed:10.0, accel:.19, handling:.057},
-    {name:"Nitro", color:"#f1c40f", accent:"#8c7300", speed:10.3, accel:.22, handling:.055},
-    {name:"Comet", color:"#9b59b6", accent:"#5b3370", speed:9.6, accel:.23, handling:.065},
-    {name:"Bullet", color:"#ecf0f1", accent:"#899295", speed:10.5, accel:.20, handling:.052},
-    {name:"Apex", color:"#2ecc71", accent:"#14753d", speed:9.8, accel:.24, handling:.063},
-    {name:"Inferno", color:"#ff1744", accent:"#760b21", speed:10.8, accel:.22, handling:.050}
+const cars=[
+    {
+        name:"Falcon",
+        color:"#d71920",
+        accent:"#7e090e",
+        speed:8.0,
+        accel:.18,
+        handling:.055,
+        type:"super"
+    },
+    {
+        name:"Viper",
+        color:"#16a085",
+        accent:"#075d4e",
+        speed:8.5,
+        accel:.17,
+        handling:.060,
+        type:"super"
+    },
+    {
+        name:"Storm",
+        color:"#2779c9",
+        accent:"#123e69",
+        speed:9.0,
+        accel:.19,
+        handling:.058,
+        type:"coupe"
+    },
+    {
+        name:"Phantom",
+        color:"#7736a0",
+        accent:"#35154d",
+        speed:8.7,
+        accel:.18,
+        handling:.062,
+        type:"super"
+    },
+    {
+        name:"Raptor",
+        color:"#e98c09",
+        accent:"#754500",
+        speed:9.2,
+        accel:.20,
+        handling:.052,
+        type:"muscle"
+    },
+    {
+        name:"Blaze",
+        color:"#ed4a1b",
+        accent:"#7a1d09",
+        speed:9.4,
+        accel:.21,
+        handling:.050,
+        type:"super"
+    },
+    {
+        name:"Shadow",
+        color:"#20242a",
+        accent:"#050608",
+        speed:9.0,
+        accel:.18,
+        handling:.065,
+        type:"super"
+    },
+    {
+        name:"Volt",
+        color:"#00a9c0",
+        accent:"#00515d",
+        speed:9.7,
+        accel:.20,
+        handling:.060,
+        type:"coupe"
+    },
+    {
+        name:"Titan",
+        color:"#687b87",
+        accent:"#2f414b",
+        speed:8.0,
+        accel:.25,
+        handling:.045,
+        type:"muscle"
+    },
+    {
+        name:"Turbo",
+        color:"#d92c6b",
+        accent:"#721338",
+        speed:10.0,
+        accel:.19,
+        handling:.057,
+        type:"super"
+    },
+    {
+        name:"Nitro",
+        color:"#d6a900",
+        accent:"#725900",
+        speed:10.3,
+        accel:.22,
+        handling:.055,
+        type:"super"
+    },
+    {
+        name:"Comet",
+        color:"#9144a9",
+        accent:"#4a2258",
+        speed:9.6,
+        accel:.23,
+        handling:.065,
+        type:"coupe"
+    },
+    {
+        name:"Bullet",
+        color:"#d9dde0",
+        accent:"#737b80",
+        speed:10.5,
+        accel:.20,
+        handling:.052,
+        type:"super"
+    },
+    {
+        name:"Apex",
+        color:"#20a957",
+        accent:"#0b592c",
+        speed:9.8,
+        accel:.24,
+        handling:.063,
+        type:"super"
+    },
+    {
+        name:"Inferno",
+        color:"#e5163f",
+        accent:"#690a1c",
+        speed:10.8,
+        accel:.22,
+        handling:.050,
+        type:"super"
+    }
 ];
 
-let selectedCar = 0;
-let players = 1;
-let worldType = "city";
-let gameMode = "free";
-let running = false;
-let paused = false;
-let lastTime = 0;
-let coins = Number(localStorage.getItem("gamerex_coins") || 0);
+let selectedCar=0;
+let players=1;
+let worldType="city";
+let gameMode="free";
+let running=false;
+let paused=false;
+let lastTime=0;
 
-/* -------------------------
-   WORLD
-------------------------- */
+let coins=Number(localStorage.getItem("gamerex_coins")||0);
 
-const world = {
+const world={
     size:4200,
     roads:[],
     buildings:[],
@@ -367,22 +483,28 @@ const world = {
     decorations:[]
 };
 
-const keys = {};
+const keys={};
+
+let car1=null;
+let car2=null;
+
+/* =========================================================
+   INPUT
+========================================================= */
 
 addEventListener("keydown",e=>{
-    keys[e.key] = true;
+
+    keys[e.key]=true;
 
     if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," "].includes(e.key)){
         e.preventDefault();
     }
 
-    if(e.key==="Escape"){
-        if(running){
-            running=false;
-            document.getElementById("menu").style.display="flex";
-            document.getElementById("hud").style.display="none";
-            document.getElementById("mobile").style.display="none";
-        }
+    if(e.key==="Escape" && running){
+        running=false;
+        document.getElementById("menu").style.display="flex";
+        document.getElementById("hud").style.display="none";
+        document.getElementById("mobile").style.display="none";
     }
 
     if(e.key.toLowerCase()==="p" && running){
@@ -392,54 +514,86 @@ addEventListener("keydown",e=>{
     if(e.key.toLowerCase()==="r" && running){
         resetCars();
     }
+
 });
 
 addEventListener("keyup",e=>{
     keys[e.key]=false;
 });
 
-/* -------------------------
+/* =========================================================
    MENU
-------------------------- */
+========================================================= */
 
-const carGrid = document.getElementById("carGrid");
+const carGrid=document.getElementById("carGrid");
 
 cars.forEach((car,i)=>{
+
     const b=document.createElement("button");
+
     b.className="carChoice"+(i===0?" active":"");
+
     b.innerHTML=
         `<div class="carColor" style="background:${car.color}"></div>
          <div class="carName">${car.name}</div>`;
+
     b.onclick=()=>{
+
         selectedCar=i;
-        document.querySelectorAll(".carChoice").forEach(x=>x.classList.remove("active"));
+
+        document
+        .querySelectorAll(".carChoice")
+        .forEach(x=>x.classList.remove("active"));
+
         b.classList.add("active");
     };
+
     carGrid.appendChild(b);
 });
 
 document.querySelectorAll(".playerBtn").forEach(b=>{
+
     b.onclick=()=>{
+
         players=Number(b.dataset.players);
-        document.querySelectorAll(".playerBtn").forEach(x=>x.classList.remove("active"));
+
+        document
+        .querySelectorAll(".playerBtn")
+        .forEach(x=>x.classList.remove("active"));
+
         b.classList.add("active");
     };
+
 });
 
 document.querySelectorAll(".worldBtn").forEach(b=>{
+
     b.onclick=()=>{
+
         worldType=b.dataset.world;
-        document.querySelectorAll(".worldBtn").forEach(x=>x.classList.remove("active"));
+
+        document
+        .querySelectorAll(".worldBtn")
+        .forEach(x=>x.classList.remove("active"));
+
         b.classList.add("active");
     };
+
 });
 
 document.querySelectorAll(".modeBtn").forEach(b=>{
+
     b.onclick=()=>{
+
         gameMode=b.dataset.mode;
-        document.querySelectorAll(".modeBtn").forEach(x=>x.classList.remove("active"));
+
+        document
+        .querySelectorAll(".modeBtn")
+        .forEach(x=>x.classList.remove("active"));
+
         b.classList.add("active");
     };
+
 });
 
 document.getElementById("startBtn").onclick=startGame;
@@ -448,11 +602,12 @@ document.getElementById("pauseBtn").onclick=()=>{
     paused=!paused;
 };
 
-/* -------------------------
-   INPUT
-------------------------- */
+/* =========================================================
+   MOBILE INPUT
+========================================================= */
 
 document.querySelectorAll(".touch").forEach(btn=>{
+
     const key=btn.dataset.key;
 
     const down=e=>{
@@ -471,68 +626,30 @@ document.querySelectorAll(".touch").forEach(btn=>{
     btn.addEventListener("pointerleave",up);
 });
 
-/* -------------------------
-   CAR
-------------------------- */
-
-function createCar(x,z,index,player){
-    return {
-        x,
-        z,
-        angle:0,
-        speed:0,
-        vertical:0,
-        jump:0,
-        color:cars[index].color,
-        accent:cars[index].accent,
-        carIndex:index,
-        player,
-        width:38,
-        length:70,
-        checkpoint:0,
-        coins:0,
-        lap:0,
-        offroad:0
-    };
-}
-
-let car1,car2;
-
-function resetCars(){
-    if(car1){
-        car1.x=0;
-        car1.z=80;
-        car1.angle=0;
-        car1.speed=0;
-        car1.jump=0;
-    }
-
-    if(car2){
-        car2.x=0;
-        car2.z=160;
-        car2.angle=0;
-        car2.speed=0;
-        car2.jump=0;
-    }
-}
-
-/* -------------------------
-   WORLD CREATION
-------------------------- */
-
-function clearWorld(){
-    world.roads=[];
-    world.buildings=[];
-    world.trees=[];
-    world.rocks=[];
-    world.ramps=[];
-    world.coins=[];
-    world.checkpoints=[];
-    world.decorations=[];
-}
+/* =========================================================
+   WORLD HELPERS
+========================================================= */
 
 function rand(a,b){
     return a+Math.random()*(b-a);
+}
+
+function shadeColor(hex,percent){
+
+    let n=parseInt(hex.slice(1),16);
+
+    let r=n>>16;
+    let g=(n>>8)&255;
+    let b=n&255;
+
+    r=Math.max(0,Math.min(255,r*(100+percent)/100));
+    g=Math.max(0,Math.min(255,g*(100+percent)/100));
+    b=Math.max(0,Math.min(255,b*(100+percent)/100));
+
+    return "#"+
+        ((1<<24)+(r<<16)+(g<<8)+b)
+        .toString(16)
+        .slice(1);
 }
 
 function addRoad(x,z,w,h){
@@ -540,6 +657,7 @@ function addRoad(x,z,w,h){
 }
 
 function addBuilding(x,z,w,h,d,color){
+
     world.buildings.push({
         x,z,w,h,d,
         color,
@@ -560,59 +678,57 @@ function addRamp(x,z,w=100,d=170,angle=0){
 }
 
 function addCoin(x,z){
+
     world.coins.push({
-        x,z,
+        x,
+        z,
         taken:false,
         spin:Math.random()*Math.PI*2
     });
 }
 
 function addCheckpoint(x,z){
-    world.checkpoints.push({x,z,passed:false});
+    world.checkpoints.push({
+        x,
+        z,
+        passed:false
+    });
 }
 
-function shadeColor(hex,percent){
-    let n=parseInt(hex.slice(1),16);
-    let r=n>>16;
-    let g=(n>>8)&255;
-    let b=n&255;
+function clearWorld(){
 
-    r=Math.max(0,Math.min(255,r*(100+percent)/100));
-    g=Math.max(0,Math.min(255,g*(100+percent)/100));
-    b=Math.max(0,Math.min(255,b*(100+percent)/100));
-
-    return "#"+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+    world.roads=[];
+    world.buildings=[];
+    world.trees=[];
+    world.rocks=[];
+    world.ramps=[];
+    world.coins=[];
+    world.checkpoints=[];
+    world.decorations=[];
 }
+
+/* =========================================================
+   WORLD CREATION
+========================================================= */
 
 function createWorld(){
+
     clearWorld();
 
-    /* MAIN ROAD NETWORK */
     addRoad(0,0,170,world.size);
     addRoad(0,0,world.size,170);
 
     for(let p=-1800;p<=1800;p+=600){
+
         addRoad(p,0,125,world.size);
         addRoad(0,p,world.size,125);
     }
 
-    if(worldType==="city"){
-        createCity();
-    }
+    if(worldType==="city")createCity();
+    if(worldType==="desert")createDesert();
+    if(worldType==="forest")createForest();
+    if(worldType==="stunts")createStuntWorld();
 
-    if(worldType==="desert"){
-        createDesert();
-    }
-
-    if(worldType==="forest"){
-        createForest();
-    }
-
-    if(worldType==="stunts"){
-        createStuntWorld();
-    }
-
-    /* CHECKPOINT RING */
     const cps=[
         {x:0,z:-900},
         {x:900,z:-900},
@@ -626,17 +742,19 @@ function createWorld(){
 
     cps.forEach(p=>addCheckpoint(p.x,p.z));
 
-    /* COINS */
     for(let i=0;i<75;i++){
+
         let x=rand(-1850,1850);
         let z=rand(-1850,1850);
 
         if(Math.random()<.65){
+
             if(Math.random()<.5){
                 x=Math.round(x/600)*600+rand(-40,40);
             }else{
                 z=Math.round(z/600)*600+rand(-40,40);
             }
+
         }
 
         if(!collidesBuilding(x,z,18)){
@@ -646,6 +764,7 @@ function createWorld(){
 }
 
 function createCity(){
+
     const colors=[
         "#66717d",
         "#52616f",
@@ -655,15 +774,16 @@ function createCity(){
         "#5b6773"
     ];
 
-    /* LARGE BLOCKS WITH REAL SOLID BUILDINGS */
     for(let gx=-1500;gx<=1500;gx+=600){
+
         for(let gz=-1500;gz<=1500;gz+=600){
 
-            if(Math.abs(gx)<250 || Math.abs(gz)<250) continue;
+            if(Math.abs(gx)<250 || Math.abs(gz)<250)continue;
 
             const count=2+Math.floor(Math.random()*3);
 
             for(let i=0;i<count;i++){
+
                 const bw=150+Math.random()*120;
                 const bd=150+Math.random()*120;
                 const bh=160+Math.random()*430;
@@ -672,21 +792,24 @@ function createCity(){
                 const z=gz+rand(-170,170);
 
                 addBuilding(
-                    x,z,bw,bh,bd,
+                    x,
+                    z,
+                    bw,
+                    bh,
+                    bd,
                     colors[Math.floor(Math.random()*colors.length)]
                 );
             }
         }
     }
 
-    /* SPECIAL SKYSCRAPERS */
     addBuilding(-1050,-1050,240,650,240,"#3f566b");
     addBuilding(1050,-1050,250,720,250,"#4b5c6d");
     addBuilding(1050,1050,260,600,260,"#59646e");
     addBuilding(-1050,1050,230,520,230,"#485b68");
 
-    /* PARK TREES */
     for(let i=0;i<80;i++){
+
         let x=rand(-1800,1800);
         let z=rand(-1800,1800);
 
@@ -695,20 +818,39 @@ function createCity(){
         }
     }
 
-    /* STREET LAMPS */
     for(let p=-1800;p<=1800;p+=120){
-        world.decorations.push({type:"lamp",x:82,z:p});
-        world.decorations.push({type:"lamp",x:-82,z:p});
-        world.decorations.push({type:"lamp",x:p,z:82});
-        world.decorations.push({type:"lamp",x:p,z:-82});
+
+        world.decorations.push({
+            type:"lamp",
+            x:82,
+            z:p
+        });
+
+        world.decorations.push({
+            type:"lamp",
+            x:-82,
+            z:p
+        });
+
+        world.decorations.push({
+            type:"lamp",
+            x:p,
+            z:82
+        });
+
+        world.decorations.push({
+            type:"lamp",
+            x:p,
+            z:-82
+        });
     }
 
-    /* CITY RAMPS */
     addRamp(430,430,110,180,0);
     addRamp(-430,430,110,180,0);
 }
 
 function createDesert(){
+
     world.roads=[];
 
     addRoad(0,0,190,world.size);
@@ -719,18 +861,21 @@ function createDesert(){
     addRoad(0,900,world.size,120);
 
     for(let i=0;i<170;i++){
+
         const x=rand(-1950,1950);
         const z=rand(-1950,1950);
 
-        if(Math.abs(x)<130 || Math.abs(z)<130) continue;
+        if(Math.abs(x)<130 || Math.abs(z)<130)continue;
 
         addRock(x,z,rand(.5,1.8));
     }
 
     for(let i=0;i<65;i++){
-        const x=rand(-1800,1800);
-        const z=rand(-1800,1800);
-        addTree(x,z,rand(.7,1.3));
+        addTree(
+            rand(-1800,1800),
+            rand(-1800,1800),
+            rand(.7,1.3)
+        );
     }
 
     addRamp(450,300,150,240,0);
@@ -738,6 +883,7 @@ function createDesert(){
 }
 
 function createForest(){
+
     world.roads=[];
 
     addRoad(0,0,180,world.size);
@@ -748,28 +894,35 @@ function createForest(){
     addRoad(0,-600,world.size,110);
 
     for(let i=0;i<350;i++){
+
         const x=rand(-2000,2000);
         const z=rand(-2000,2000);
 
-        if(Math.abs(x)<130 || Math.abs(z)<130) continue;
+        if(Math.abs(x)<130 || Math.abs(z)<130)continue;
 
         addTree(x,z,rand(.7,1.5));
     }
 
     for(let i=0;i<80;i++){
-        addRock(rand(-1900,1900),rand(-1900,1900),rand(.5,1.4));
+        addRock(
+            rand(-1900,1900),
+            rand(-1900,1900),
+            rand(.5,1.4)
+        );
     }
 
     addRamp(350,350,130,190,0);
 }
 
 function createStuntWorld(){
+
     world.roads=[];
 
     addRoad(0,0,200,world.size);
     addRoad(0,0,world.size,200);
 
     for(let i=0;i<18;i++){
+
         addRamp(
             rand(-1500,1500),
             rand(-1500,1500),
@@ -780,11 +933,16 @@ function createStuntWorld(){
     }
 
     for(let i=0;i<100;i++){
-        addRock(rand(-1900,1900),rand(-1900,1900),rand(.4,1.2));
+
+        addRock(
+            rand(-1900,1900),
+            rand(-1900,1900),
+            rand(.4,1.2)
+        );
     }
 
-    /* STUNT PLATFORMS */
     for(let i=0;i<12;i++){
+
         world.decorations.push({
             type:"platform",
             x:rand(-1400,1400),
@@ -795,143 +953,279 @@ function createStuntWorld(){
     }
 }
 
-/* -------------------------
+/* =========================================================
    COLLISION
-------------------------- */
+========================================================= */
 
 function rectCircleCollision(cx,cz,r,b){
-    const nearestX=Math.max(b.x-b.w/2,Math.min(cx,b.x+b.w/2));
-    const nearestZ=Math.max(b.z-b.d/2,Math.min(cz,b.z+b.d/2));
+
+    const nearestX=Math.max(
+        b.x-b.w/2,
+        Math.min(cx,b.x+b.w/2)
+    );
+
+    const nearestZ=Math.max(
+        b.z-b.d/2,
+        Math.min(cz,b.z+b.d/2)
+    );
 
     const dx=cx-nearestX;
     const dz=cz-nearestZ;
 
-    return dx*dx+dz*dz < r*r;
+    return dx*dx+dz*dz<r*r;
 }
 
 function collidesBuilding(x,z,r=22){
+
     for(const b of world.buildings){
-        if(rectCircleCollision(x,z,r,b)) return true;
+
+        if(rectCircleCollision(x,z,r,b)){
+            return true;
+        }
     }
+
     return false;
 }
 
 function collidesAnyObstacle(x,z,r=22){
-    if(collidesBuilding(x,z,r)) return true;
+
+    if(collidesBuilding(x,z,r))return true;
 
     for(const rock of world.rocks){
+
         const rr=25*rock.s;
+
         const dx=x-rock.x;
         const dz=z-rock.z;
 
-        if(dx*dx+dz*dz < (r+rr)*(r+rr)) return true;
+        if(dx*dx+dz*dz<(r+rr)*(r+rr)){
+            return true;
+        }
     }
 
     return false;
 }
 
-/* -------------------------
-   CAR UPDATE
-------------------------- */
+/* =========================================================
+   CAR
+========================================================= */
+
+function createCar(x,z,index,player){
+
+    return {
+
+        x,
+        z,
+
+        angle:0,
+
+        speed:0,
+
+        jump:0,
+
+        vertical:0,
+
+        color:cars[index].color,
+        accent:cars[index].accent,
+
+        carIndex:index,
+
+        player,
+
+        width:46,
+        length:78,
+
+        checkpoint:0,
+        coins:0,
+        lap:0,
+        offroad:0,
+
+        /* SMOOTH CAMERA */
+        camX:x,
+        camZ:z-360,
+        camAngle:0,
+
+        /* VISUAL BODY */
+        steeringVisual:0,
+        wheelSpin:0,
+        bodyBounce:0
+    };
+}
+
+function resetCars(){
+
+    if(car1){
+
+        car1.x=0;
+        car1.z=80;
+        car1.angle=0;
+        car1.speed=0;
+        car1.jump=0;
+
+        car1.camX=0;
+        car1.camZ=-280;
+        car1.camAngle=0;
+    }
+
+    if(car2){
+
+        car2.x=0;
+        car2.z=160;
+        car2.angle=0;
+        car2.speed=0;
+        car2.jump=0;
+
+        car2.camX=0;
+        car2.camZ=-120;
+        car2.camAngle=0;
+    }
+}
+
+/* =========================================================
+   CAR PHYSICS
+========================================================= */
 
 function updateCar(car,dt,p1){
-    const prefix=p1?1:2;
 
-    const up=p1 ? keys["w"] : keys["ArrowUp"];
-    const down=p1 ? keys["s"] : keys["ArrowDown"];
-    const left=p1 ? keys["a"] : keys["ArrowLeft"];
-    const right=p1 ? keys["d"] : keys["ArrowRight"];
+    const up=p1?keys["w"]:keys["ArrowUp"];
+    const down=p1?keys["s"]:keys["ArrowDown"];
+    const left=p1?keys["a"]:keys["ArrowLeft"];
+    const right=p1?keys["d"]:keys["ArrowRight"];
+
     const brake=keys[" "];
 
     const spec=cars[car.carIndex];
 
     if(up){
-        car.speed += spec.accel*dt*60;
-    }else if(down){
-        car.speed -= spec.accel*dt*45;
-    }else{
-        car.speed *= Math.pow(.985,dt*60);
+        car.speed+=spec.accel*dt*60;
+    }
+    else if(down){
+        car.speed-=spec.accel*dt*45;
+    }
+    else{
+        car.speed*=Math.pow(.985,dt*60);
     }
 
     if(brake){
-        car.speed *= Math.pow(.90,dt*60);
+        car.speed*=Math.pow(.90,dt*60);
     }
 
-    car.speed=Math.max(-3.5,Math.min(spec.speed,car.speed));
+    car.speed=Math.max(
+        -3.5,
+        Math.min(spec.speed,car.speed)
+    );
 
     const steering=(left?-1:0)+(right?1:0);
-    const steerPower=spec.handling*(Math.abs(car.speed)/Math.max(spec.speed,1))*dt*60;
 
-    car.angle += steering*steerPower;
+    const steerPower=
+        spec.handling*
+        (Math.abs(car.speed)/Math.max(spec.speed,1))*
+        dt*60;
+
+    car.angle+=steering*steerPower;
+
+    /* visual wheel steering */
+    car.steeringVisual+=(steering-car.steeringVisual)*Math.min(1,dt*12);
 
     const oldX=car.x;
     const oldZ=car.z;
 
-    car.x += Math.sin(car.angle)*car.speed*dt*60;
-    car.z += Math.cos(car.angle)*car.speed*dt*60;
+    car.x+=Math.sin(car.angle)*car.speed*dt*60;
+    car.z+=Math.cos(car.angle)*car.speed*dt*60;
 
     const half=world.size/2-40;
 
     car.x=Math.max(-half,Math.min(half,car.x));
     car.z=Math.max(-half,Math.min(half,car.z));
 
-    /* HARD BUILDING COLLISION */
-    if(collidesAnyObstacle(car.x,car.z,24)){
+    if(collidesAnyObstacle(car.x,car.z,25)){
+
         car.x=oldX;
         car.z=oldZ;
-        car.speed *= -0.28;
+
+        car.speed*=-.28;
     }
 
-    /* ROAD VS GRASS */
     if(!onRoad(car.x,car.z)){
-        car.speed *= Math.pow(.985,dt*60);
+
+        car.speed*=Math.pow(.985,dt*60);
         car.offroad+=dt;
+
     }else{
+
         car.offroad=0;
     }
 
-    /* RAMPS */
     for(const ramp of world.ramps){
-        if(Math.abs(car.x-ramp.x)<ramp.w/2 && Math.abs(car.z-ramp.z)<ramp.d/2){
+
+        if(
+            Math.abs(car.x-ramp.x)<ramp.w/2 &&
+            Math.abs(car.z-ramp.z)<ramp.d/2
+        ){
+
             if(Math.abs(car.speed)>3){
-                car.jump=Math.min(1,car.jump+dt*1.8);
+
+                car.jump=Math.min(
+                    1,
+                    car.jump+dt*1.8
+                );
             }
         }
     }
 
     if(car.jump>0){
+
         car.jump-=dt*.8;
-        if(car.jump<0)car.jump=0;
+
+        if(car.jump<0){
+            car.jump=0;
+        }
     }
 
-    /* COINS */
+    car.wheelSpin+=Math.abs(car.speed)*dt*3;
+
+    car.bodyBounce=
+        Math.sin(performance.now()*.012)*
+        Math.min(.8,Math.abs(car.speed)/10);
+
     for(const c of world.coins){
+
         if(c.taken)continue;
 
         const dx=car.x-c.x;
         const dz=car.z-c.z;
 
         if(dx*dx+dz*dz<38*38){
+
             c.taken=true;
+
             coins++;
             car.coins++;
-            localStorage.setItem("gamerex_coins",coins);
+
+            localStorage.setItem(
+                "gamerex_coins",
+                coins
+            );
         }
     }
 
-    /* CHECKPOINTS */
     if(world.checkpoints.length){
+
         const cp=world.checkpoints[car.checkpoint];
 
         if(cp){
+
             const dx=car.x-cp.x;
             const dz=car.z-cp.z;
 
             if(dx*dx+dz*dz<90*90){
+
                 cp.passed=true;
+
                 car.checkpoint++;
 
                 if(car.checkpoint>=world.checkpoints.length){
+
                     car.checkpoint=0;
 
                     if(gameMode==="race"){
@@ -944,38 +1238,89 @@ function updateCar(car,dt,p1){
 }
 
 function onRoad(x,z){
+
     for(const r of world.roads){
+
         if(
             x>=r.x-r.w/2 &&
             x<=r.x+r.w/2 &&
             z>=r.z-r.h/2 &&
             z<=r.z+r.h/2
-        ) return true;
+        ){
+            return true;
+        }
     }
+
     return false;
 }
 
-/* -------------------------
-   CAMERA
-------------------------- */
+/* =========================================================
+   NEW SMOOTH CHASE CAMERA
+========================================================= */
 
-function cameraFor(car){
-    const distance=480;
-    const side=0;
+function updateCamera(car,dt){
+
+    /*
+       Camera is positioned behind the car.
+       It smoothly follows position and rotation.
+    */
+
+    const speedRatio=
+        Math.min(
+            1,
+            Math.abs(car.speed)/10
+        );
+
+    const distance=
+        300+
+        speedRatio*70;
+
+    const height=
+        100+
+        speedRatio*30;
+
+    const targetX=
+        car.x-
+        Math.sin(car.angle)*distance;
+
+    const targetZ=
+        car.z-
+        Math.cos(car.angle)*distance;
+
+    const smooth=
+        1-Math.pow(.0008,dt);
+
+    car.camX+=(targetX-car.camX)*smooth;
+    car.camZ+=(targetZ-car.camZ)*smooth;
+
+    let angleDiff=
+        car.angle-car.camAngle;
+
+    while(angleDiff>Math.PI){
+        angleDiff-=Math.PI*2;
+    }
+
+    while(angleDiff<-Math.PI){
+        angleDiff+=Math.PI*2;
+    }
+
+    car.camAngle+=angleDiff*
+        Math.min(1,dt*6);
 
     return {
-        x:car.x-Math.sin(car.angle)*distance,
-        z:car.z-Math.cos(car.angle)*distance,
-        angle:car.angle,
-        zoom:1
+        x:car.camX,
+        z:car.camZ,
+        angle:car.camAngle,
+        height
     };
 }
 
-/* -------------------------
-   WORLD TO SCREEN
-------------------------- */
+/* =========================================================
+   PROJECTION
+========================================================= */
 
 function project(wx,wz,cam){
+
     const dx=wx-cam.x;
     const dz=wz-cam.z;
 
@@ -985,152 +1330,274 @@ function project(wx,wz,cam){
     const x=dx*cos-dz*sin;
     const y=dx*sin+dz*cos;
 
-    const horizon=H*.43;
-    const focal=620;
+    const horizon=H*.40;
 
-    const depth=y+900;
+    const focal=720;
 
-    if(depth<=20)return null;
+    const depth=y+950;
+
+    if(depth<=20){
+        return null;
+    }
 
     const scale=focal/depth;
 
     return {
         x:W/2+x*scale,
-        y:horizon+(zDepth(y))*scale,
-        scale
+        y:horizon+(-y*.52)*scale,
+        scale,
+        depth
     };
 }
 
-function zDepth(y){
-    return -y*.55;
-}
-
-/* -------------------------
-   DRAWING
-------------------------- */
+/* =========================================================
+   WORLD DRAW
+========================================================= */
 
 function drawWorld(cam,viewX=0,viewW=W){
+
     ctx.save();
 
     ctx.beginPath();
     ctx.rect(viewX,0,viewW,H);
     ctx.clip();
 
-    /* SKY */
-    const sky=ctx.createLinearGradient(0,0,0,H*.55);
+    let skyTop="#568cb4";
+    let skyBottom="#c3d2d4";
 
     if(worldType==="desert"){
-        sky.addColorStop(0,"#65a9d6");
-        sky.addColorStop(1,"#d8bd7b");
-    }else if(worldType==="forest"){
-        sky.addColorStop(0,"#6da5c7");
-        sky.addColorStop(1,"#b7d1c1");
-    }else{
-        sky.addColorStop(0,"#5b91ba");
-        sky.addColorStop(1,"#c5d4d7");
+        skyTop="#62a2cf";
+        skyBottom="#d8bd7b";
     }
+
+    if(worldType==="forest"){
+        skyTop="#5f9abd";
+        skyBottom="#b8d0bf";
+    }
+
+    const sky=
+        ctx.createLinearGradient(
+            0,0,0,H*.55
+        );
+
+    sky.addColorStop(0,skyTop);
+    sky.addColorStop(1,skyBottom);
 
     ctx.fillStyle=sky;
     ctx.fillRect(viewX,0,viewW,H);
 
     /* SUN */
+
     ctx.fillStyle="rgba(255,235,170,.75)";
+
     ctx.beginPath();
-    ctx.arc(viewX+viewW*.78,H*.16,45,0,Math.PI*2);
+
+    ctx.arc(
+        viewX+viewW*.78,
+        H*.15,
+        45,
+        0,
+        Math.PI*2
+    );
+
     ctx.fill();
 
     /* GROUND */
+
     ctx.fillStyle=
         worldType==="desert" ? "#c6a665" :
         worldType==="forest" ? "#4c7d42" :
         worldType==="stunts" ? "#50585e" :
         "#6b9257";
 
-    ctx.fillRect(viewX,H*.43,viewW,H*.57);
+    ctx.fillRect(
+        viewX,
+        H*.40,
+        viewW,
+        H*.60
+    );
 
-    /* ROADS */
+    /* ROAD */
+
     for(const r of world.roads){
-        drawRoad(r,cam,viewX,viewW);
+        drawRoad(r,cam);
     }
 
     /* BUILDINGS */
-    const visibleBuildings=world.buildings
-        .map(b=>({b, p:project(b.x,b.z,cam)}))
+
+    const visibleBuildings=
+        world.buildings
+        .map(b=>({
+            b,
+            p:project(b.x,b.z,cam)
+        }))
         .filter(o=>o.p)
-        .sort((a,b)=>b.p.scale-a.p.scale);
+        .sort((a,b)=>b.p.depth-a.p.depth);
 
     for(const o of visibleBuildings){
         drawBuilding(o.b,cam);
     }
 
     /* TREES */
+
     for(const t of world.trees){
-        const p=project(t.x,t.z,cam);
-        if(p && p.x>viewX-100 && p.x<viewX+viewW+100){
+
+        const p=project(
+            t.x,
+            t.z,
+            cam
+        );
+
+        if(
+            p &&
+            p.x>viewX-100 &&
+            p.x<viewX+viewW+100
+        ){
             drawTree(t,p);
         }
     }
 
     /* ROCKS */
+
     for(const r of world.rocks){
-        const p=project(r.x,r.z,cam);
-        if(p && p.x>viewX-100 && p.x<viewX+viewW+100){
+
+        const p=project(
+            r.x,
+            r.z,
+            cam
+        );
+
+        if(
+            p &&
+            p.x>viewX-100 &&
+            p.x<viewX+viewW+100
+        ){
             drawRock(r,p);
         }
     }
 
     /* RAMPS */
+
     for(const r of world.ramps){
-        const p=project(r.x,r.z,cam);
-        if(p) drawRamp(r,p);
+
+        const p=project(
+            r.x,
+            r.z,
+            cam
+        );
+
+        if(p){
+            drawRamp(r,p);
+        }
     }
 
     /* DECORATIONS */
+
     for(const d of world.decorations){
-        const p=project(d.x,d.z,cam);
+
+        const p=project(
+            d.x,
+            d.z,
+            cam
+        );
+
         if(!p)continue;
 
-        if(d.type==="lamp")drawLamp(p);
-        if(d.type==="platform")drawPlatform(d,p);
+        if(d.type==="lamp"){
+            drawLamp(p);
+        }
+
+        if(d.type==="platform"){
+            drawPlatform(d,p);
+        }
     }
 
     /* COINS */
+
     for(const c of world.coins){
+
         if(c.taken)continue;
 
-        const p=project(c.x,c.z,cam);
+        const p=project(
+            c.x,
+            c.z,
+            cam
+        );
 
-        if(p && p.x>viewX-50 && p.x<viewX+viewW+50){
+        if(
+            p &&
+            p.x>viewX-50 &&
+            p.x<viewX+viewW+50
+        ){
             drawCoin(c,p);
         }
     }
 
     /* CHECKPOINT */
-    const cp=world.checkpoints[car1?car1.checkpoint:0];
+
+    const cp=
+        car1 ?
+        world.checkpoints[car1.checkpoint] :
+        null;
 
     if(cp){
-        const p=project(cp.x,cp.z,cam);
-        if(p)drawCheckpoint(p);
+
+        const p=project(
+            cp.x,
+            cp.z,
+            cam
+        );
+
+        if(p){
+            drawCheckpoint(p);
+        }
     }
 
     ctx.restore();
 }
 
-function drawRoad(r,cam,viewX,viewW){
+/* =========================================================
+   ROAD
+========================================================= */
+
+function drawRoad(r,cam){
+
     const corners=[
-        {x:r.x-r.w/2,z:r.z-r.h/2},
-        {x:r.x+r.w/2,z:r.z-r.h/2},
-        {x:r.x+r.w/2,z:r.z+r.h/2},
-        {x:r.x-r.w/2,z:r.z+r.h/2}
+        {
+            x:r.x-r.w/2,
+            z:r.z-r.h/2
+        },
+        {
+            x:r.x+r.w/2,
+            z:r.z-r.h/2
+        },
+        {
+            x:r.x+r.w/2,
+            z:r.z+r.h/2
+        },
+        {
+            x:r.x-r.w/2,
+            z:r.z+r.h/2
+        }
     ];
 
-    const ps=corners.map(c=>project(c.x,c.z,cam));
+    const ps=corners.map(
+        c=>project(c.x,c.z,cam)
+    );
 
     if(ps.some(p=>!p))return;
 
     ctx.beginPath();
-    ctx.moveTo(ps[0].x,ps[0].y);
-    ps.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));
+
+    ctx.moveTo(
+        ps[0].x,
+        ps[0].y
+    );
+
+    ps.slice(1).forEach(p=>{
+        ctx.lineTo(p.x,p.y);
+    });
+
     ctx.closePath();
 
     ctx.fillStyle="#30353b";
@@ -1140,450 +1607,1591 @@ function drawRoad(r,cam,viewX,viewW){
     ctx.lineWidth=2;
     ctx.stroke();
 
-    /* ROAD LINES */
     const vertical=r.h>r.w;
 
     for(let i=-1800;i<=1800;i+=80){
-        let x=vertical?r.x:i;
-        let z=vertical?i:r.z;
+
+        const x=vertical?r.x:i;
+        const z=vertical?i:r.z;
 
         const p=project(x,z,cam);
+
         if(!p)continue;
 
         ctx.fillStyle="#d8c45e";
 
-        const s=Math.max(2,9*p.scale);
+        const s=Math.max(
+            2,
+            9*p.scale
+        );
 
         if(vertical){
-            ctx.fillRect(p.x-s/2,p.y,s,25*p.scale);
+
+            ctx.fillRect(
+                p.x-s/2,
+                p.y,
+                s,
+                25*p.scale
+            );
+
         }else{
-            ctx.fillRect(p.x,p.y-s/2,25*p.scale,s);
+
+            ctx.fillRect(
+                p.x,
+                p.y-s/2,
+                25*p.scale,
+                s
+            );
         }
     }
 }
 
+/* =========================================================
+   BUILDINGS
+========================================================= */
+
 function drawBuilding(b,cam){
-    const top=project(b.x,b.z,cam);
+
+    const top=project(
+        b.x,
+        b.z,
+        cam
+    );
+
     if(!top)return;
 
     const s=top.scale;
 
-    const width=Math.max(8,b.w*s);
-    const depth=Math.max(8,b.d*s);
-    const height=Math.max(10,b.h*s);
+    const width=Math.max(
+        8,
+        b.w*s
+    );
+
+    const depth=Math.max(
+        8,
+        b.d*s
+    );
+
+    const height=Math.max(
+        10,
+        b.h*s
+    );
 
     const x=top.x;
     const y=top.y;
 
-    /* SHADOW */
+    /* shadow */
+
     ctx.fillStyle="rgba(0,0,0,.20)";
+
     ctx.beginPath();
-    ctx.ellipse(x,y+5,width*.7,Math.max(3,depth*.25),0,0,Math.PI*2);
+
+    ctx.ellipse(
+        x,
+        y+5,
+        width*.7,
+        Math.max(3,depth*.25),
+        0,
+        0,
+        Math.PI*2
+    );
+
     ctx.fill();
 
-    /* BUILDING BODY */
+    /* main body */
+
     ctx.fillStyle=b.color;
-    ctx.fillRect(x-width/2,y-height,width,height);
 
-    /* SIDE */
-    ctx.fillStyle=shadeColor(b.color,-18);
+    ctx.fillRect(
+        x-width/2,
+        y-height,
+        width,
+        height
+    );
+
+    /* side */
+
+    ctx.fillStyle=shadeColor(
+        b.color,
+        -18
+    );
+
     ctx.beginPath();
-    ctx.moveTo(x+width/2,y-height);
-    ctx.lineTo(x+width/2+depth*.22,y-height+depth*.12);
-    ctx.lineTo(x+width/2+depth*.22,y+depth*.12);
-    ctx.lineTo(x+width/2,y);
+
+    ctx.moveTo(
+        x+width/2,
+        y-height
+    );
+
+    ctx.lineTo(
+        x+width/2+depth*.22,
+        y-height+depth*.12
+    );
+
+    ctx.lineTo(
+        x+width/2+depth*.22,
+        y+depth*.12
+    );
+
+    ctx.lineTo(
+        x+width/2,
+        y
+    );
+
     ctx.closePath();
+
     ctx.fill();
 
-    /* ROOF */
-    ctx.fillStyle=shadeColor(b.color,15);
-    ctx.fillRect(x-width/2,y-height,width,Math.max(2,5*s));
+    /* roof */
 
-    /* WINDOWS */
-    const rows=Math.min(15,Math.max(2,Math.floor(b.h/55)));
-    const cols=Math.min(7,Math.max(2,Math.floor(b.w/45)));
+    ctx.fillStyle=shadeColor(
+        b.color,
+        15
+    );
 
-    const ww=Math.max(2,12*s);
-    const wh=Math.max(2,18*s);
+    ctx.fillRect(
+        x-width/2,
+        y-height,
+        width,
+        Math.max(2,5*s)
+    );
+
+    /* windows */
+
+    const rows=Math.min(
+        15,
+        Math.max(2,Math.floor(b.h/55))
+    );
+
+    const cols=Math.min(
+        7,
+        Math.max(2,Math.floor(b.w/45))
+    );
+
+    const ww=Math.max(
+        2,
+        12*s
+    );
+
+    const wh=Math.max(
+        2,
+        18*s
+    );
 
     for(let row=0;row<rows;row++){
+
         for(let col=0;col<cols;col++){
-            const wx=x-width/2+(col+.5)*(width/cols);
-            const wy=y-height+25*s+row*((height-40*s)/rows);
+
+            const wx=
+                x-width/2+
+                (col+.5)*(width/cols);
+
+            const wy=
+                y-height+
+                25*s+
+                row*((height-40*s)/rows);
 
             ctx.fillStyle=
                 (row+col)%4===0
                 ? "#f6d77b"
                 : "rgba(115,185,220,.72)";
 
-            ctx.fillRect(wx-ww/2,wy-wh/2,ww,wh);
+            ctx.fillRect(
+                wx-ww/2,
+                wy-wh/2,
+                ww,
+                wh
+            );
         }
     }
 
-    /* DOOR */
     if(s>.25){
+
         ctx.fillStyle="#24272b";
-        ctx.fillRect(x-8*s,y-25*s,16*s,25*s);
+
+        ctx.fillRect(
+            x-8*s,
+            y-25*s,
+            16*s,
+            25*s
+        );
     }
 }
 
+/* =========================================================
+   TREES
+========================================================= */
+
 function drawTree(t,p){
+
     const s=p.scale*t.s;
+
     const trunk=28*s;
 
     ctx.fillStyle="rgba(0,0,0,.2)";
+
     ctx.beginPath();
-    ctx.ellipse(p.x,p.y+3,24*s,7*s,0,0,Math.PI*2);
+
+    ctx.ellipse(
+        p.x,
+        p.y+3,
+        24*s,
+        7*s,
+        0,
+        0,
+        Math.PI*2
+    );
+
     ctx.fill();
 
     ctx.fillStyle="#67442b";
-    ctx.fillRect(p.x-trunk/2,p.y-85*s,trunk,85*s);
 
-    ctx.fillStyle=worldType==="desert"?"#4e6932":"#235c32";
+    ctx.fillRect(
+        p.x-trunk/2,
+        p.y-85*s,
+        trunk,
+        85*s
+    );
+
+    ctx.fillStyle=
+        worldType==="desert"
+        ? "#4e6932"
+        : "#235c32";
 
     for(let i=0;i<3;i++){
+
         ctx.beginPath();
-        ctx.moveTo(p.x,p.y-(145-i*30)*s);
-        ctx.lineTo(p.x-(55-i*12)*s,p.y-(65-i*20)*s);
-        ctx.lineTo(p.x+(55-i*12)*s,p.y-(65-i*20)*s);
+
+        ctx.moveTo(
+            p.x,
+            p.y-(145-i*30)*s
+        );
+
+        ctx.lineTo(
+            p.x-(55-i*12)*s,
+            p.y-(65-i*20)*s
+        );
+
+        ctx.lineTo(
+            p.x+(55-i*12)*s,
+            p.y-(65-i*20)*s
+        );
+
         ctx.closePath();
+
         ctx.fill();
     }
 }
 
+/* =========================================================
+   ROCK
+========================================================= */
+
 function drawRock(r,p){
+
     const s=p.scale*r.s;
 
     ctx.fillStyle="#625e57";
+
     ctx.beginPath();
-    ctx.moveTo(p.x-35*s,p.y);
-    ctx.lineTo(p.x-20*s,p.y-25*s);
-    ctx.lineTo(p.x+12*s,p.y-35*s);
-    ctx.lineTo(p.x+38*s,p.y-8*s);
-    ctx.lineTo(p.x+25*s,p.y+5*s);
+
+    ctx.moveTo(
+        p.x-35*s,
+        p.y
+    );
+
+    ctx.lineTo(
+        p.x-20*s,
+        p.y-25*s
+    );
+
+    ctx.lineTo(
+        p.x+12*s,
+        p.y-35*s
+    );
+
+    ctx.lineTo(
+        p.x+38*s,
+        p.y-8*s
+    );
+
+    ctx.lineTo(
+        p.x+25*s,
+        p.y+5*s
+    );
+
     ctx.closePath();
+
     ctx.fill();
 }
 
+/* =========================================================
+   RAMP
+========================================================= */
+
 function drawRamp(r,p){
+
     const s=p.scale;
 
     ctx.fillStyle="#c7c7c7";
+
     ctx.beginPath();
-    ctx.moveTo(p.x-55*s,p.y);
-    ctx.lineTo(p.x+55*s,p.y);
-    ctx.lineTo(p.x+25*s,p.y-70*s);
-    ctx.lineTo(p.x-40*s,p.y-15*s);
+
+    ctx.moveTo(
+        p.x-55*s,
+        p.y
+    );
+
+    ctx.lineTo(
+        p.x+55*s,
+        p.y
+    );
+
+    ctx.lineTo(
+        p.x+25*s,
+        p.y-70*s
+    );
+
+    ctx.lineTo(
+        p.x-40*s,
+        p.y-15*s
+    );
+
     ctx.closePath();
+
     ctx.fill();
 
     ctx.fillStyle="#e33d3d";
-    ctx.fillRect(p.x-40*s,p.y-15*s,70*s,8*s);
+
+    ctx.fillRect(
+        p.x-40*s,
+        p.y-15*s,
+        70*s,
+        8*s
+    );
 }
 
+/* =========================================================
+   LAMP
+========================================================= */
+
 function drawLamp(p){
+
     const s=p.scale;
 
     ctx.strokeStyle="#20242a";
     ctx.lineWidth=Math.max(1,5*s);
+
     ctx.beginPath();
-    ctx.moveTo(p.x,p.y);
-    ctx.lineTo(p.x,p.y-100*s);
+
+    ctx.moveTo(
+        p.x,
+        p.y
+    );
+
+    ctx.lineTo(
+        p.x,
+        p.y-100*s
+    );
+
     ctx.stroke();
 
     ctx.fillStyle="#f7df87";
+
     ctx.beginPath();
-    ctx.arc(p.x,p.y-103*s,8*s,0,Math.PI*2);
+
+    ctx.arc(
+        p.x,
+        p.y-103*s,
+        8*s,
+        0,
+        Math.PI*2
+    );
+
     ctx.fill();
 }
 
+/* =========================================================
+   PLATFORM
+========================================================= */
+
 function drawPlatform(d,p){
+
     const s=p.scale;
+
     ctx.fillStyle="#777";
-    ctx.fillRect(p.x-d.w*s/2,p.y-d.d*s/3,d.w*s,d.d*s/3);
+
+    ctx.fillRect(
+        p.x-d.w*s/2,
+        p.y-d.d*s/3,
+        d.w*s,
+        d.d*s/3
+    );
 
     ctx.strokeStyle="#ffba00";
     ctx.lineWidth=3;
-    ctx.strokeRect(p.x-d.w*s/2,p.y-d.d*s/3,d.w*s,d.d*s/3);
+
+    ctx.strokeRect(
+        p.x-d.w*s/2,
+        p.y-d.d*s/3,
+        d.w*s,
+        d.d*s/3
+    );
 }
 
+/* =========================================================
+   COINS
+========================================================= */
+
 function drawCoin(c,p){
-    const s=Math.max(.3,p.scale);
+
+    const s=Math.max(
+        .3,
+        p.scale
+    );
 
     ctx.save();
-    ctx.translate(p.x,p.y-25*s);
-    ctx.rotate(Math.sin(c.spin)*.5);
+
+    ctx.translate(
+        p.x,
+        p.y-25*s
+    );
+
+    ctx.rotate(
+        Math.sin(c.spin)*.5
+    );
 
     ctx.fillStyle="#ffd23f";
+
     ctx.beginPath();
-    ctx.ellipse(0,0,12*s,15*s,0,0,Math.PI*2);
+
+    ctx.ellipse(
+        0,
+        0,
+        12*s,
+        15*s,
+        0,
+        0,
+        Math.PI*2
+    );
+
     ctx.fill();
 
     ctx.strokeStyle="#fff2a0";
-    ctx.lineWidth=Math.max(1,3*s);
+    ctx.lineWidth=Math.max(
+        1,
+        3*s
+    );
+
     ctx.stroke();
 
     ctx.fillStyle="#fff";
-    ctx.font=`${Math.max(6,12*s)}px Arial`;
+
+    ctx.font=
+        `${Math.max(6,12*s)}px Arial`;
+
     ctx.textAlign="center";
     ctx.textBaseline="middle";
+
     ctx.fillText("$",0,1);
+
     ctx.restore();
 
     c.spin+=.05;
 }
 
+/* =========================================================
+   CHECKPOINT
+========================================================= */
+
 function drawCheckpoint(p){
+
     const s=p.scale;
 
     ctx.strokeStyle="#27e7ff";
-    ctx.lineWidth=Math.max(2,8*s);
+    ctx.lineWidth=Math.max(
+        2,
+        8*s
+    );
 
     ctx.beginPath();
-    ctx.moveTo(p.x-55*s,p.y);
-    ctx.lineTo(p.x-55*s,p.y-150*s);
-    ctx.lineTo(p.x+55*s,p.y-150*s);
-    ctx.lineTo(p.x+55*s,p.y);
+
+    ctx.moveTo(
+        p.x-55*s,
+        p.y
+    );
+
+    ctx.lineTo(
+        p.x-55*s,
+        p.y-150*s
+    );
+
+    ctx.lineTo(
+        p.x+55*s,
+        p.y-150*s
+    );
+
+    ctx.lineTo(
+        p.x+55*s,
+        p.y
+    );
+
     ctx.stroke();
 
     ctx.fillStyle="#27e7ff";
-    ctx.font=`bold ${Math.max(8,18*s)}px Arial`;
+
+    ctx.font=
+        `bold ${Math.max(8,18*s)}px Arial`;
+
     ctx.textAlign="center";
-    ctx.fillText("CHECKPOINT",p.x,p.y-170*s);
+
+    ctx.fillText(
+        "CHECKPOINT",
+        p.x,
+        p.y-170*s
+    );
 }
 
-/* -------------------------
-   CAR DRAWING
-------------------------- */
+/* =========================================================
+   NEW REALISTIC-STYLE CAR
+========================================================= */
 
-function drawCar(car,cam,offsetX=0,viewW=W){
-    const p=project(car.x,car.z,cam);
+function drawCar(car,cam,viewX=0,viewW=W){
+
+    const p=project(
+        car.x,
+        car.z,
+        cam
+    );
+
     if(!p)return;
 
-    const s=Math.max(.35,p.scale);
+    const s=Math.max(
+        .38,
+        p.scale
+    );
 
     ctx.save();
 
-    const carW=48*s;
-    const carH=88*s;
+    /*
+       Car gets a proper perspective body.
+       This is still Canvas pseudo-3D,
+       but visually much closer to a real
+       sports car than the old rectangle.
+    */
 
-    const y=p.y-car.jump*110*s;
+    const baseW=72*s;
+    const baseL=125*s;
 
-    ctx.translate(p.x,y);
+    const y=
+        p.y-
+        car.jump*125*s+
+        car.bodyBounce*s;
 
-    /* shadow */
-    ctx.fillStyle="rgba(0,0,0,.3)";
+    ctx.translate(
+        p.x,
+        y
+    );
+
+    /*
+       Since the camera follows the car,
+       the vehicle is drawn facing the viewer.
+    */
+
+    const bodyW=baseW;
+    const bodyL=baseL;
+
+    /* =====================================================
+       CAR SHADOW
+    ===================================================== */
+
+    ctx.save();
+
+    ctx.fillStyle="rgba(0,0,0,.38)";
+
     ctx.beginPath();
-    ctx.ellipse(0,4,carW*.65,carW*.25,0,0,Math.PI*2);
+
+    ctx.ellipse(
+        0,
+        5*s,
+        bodyW*.58,
+        bodyL*.16,
+        0,
+        0,
+        Math.PI*2
+    );
+
     ctx.fill();
 
-    /* body */
+    ctx.restore();
+
+    /* =====================================================
+       MAIN LOWER BODY
+    ===================================================== */
+
     ctx.fillStyle=car.color;
+
     ctx.beginPath();
-    ctx.roundRect(-carW/2,-carH,carW,carH*.72,9*s);
+
+    ctx.moveTo(
+        -bodyW*.46,
+        -bodyL*.10
+    );
+
+    ctx.lineTo(
+        -bodyW*.50,
+        -bodyL*.34
+    );
+
+    ctx.lineTo(
+        -bodyW*.40,
+        -bodyL*.73
+    );
+
+    ctx.lineTo(
+        -bodyW*.25,
+        -bodyL*.94
+    );
+
+    ctx.lineTo(
+        bodyW*.25,
+        -bodyL*.94
+    );
+
+    ctx.lineTo(
+        bodyW*.40,
+        -bodyL*.73
+    );
+
+    ctx.lineTo(
+        bodyW*.50,
+        -bodyL*.34
+    );
+
+    ctx.lineTo(
+        bodyW*.46,
+        -bodyL*.10
+    );
+
+    ctx.closePath();
+
     ctx.fill();
 
-    /* lower bumper */
+    /* =====================================================
+       BODY DARK LOWER SIDE
+    ===================================================== */
+
     ctx.fillStyle=car.accent;
-    ctx.fillRect(-carW*.47,-carH*.31,carW*.94,carH*.13);
 
-    /* cabin */
-    ctx.fillStyle="#18242e";
     ctx.beginPath();
-    ctx.moveTo(-carW*.34,-carH*.72);
-    ctx.lineTo(-carW*.22,-carH*.93);
-    ctx.lineTo(carW*.22,-carH*.93);
-    ctx.lineTo(carW*.34,-carH*.72);
+
+    ctx.moveTo(
+        -bodyW*.49,
+        -bodyL*.25
+    );
+
+    ctx.lineTo(
+        bodyW*.49,
+        -bodyL*.25
+    );
+
+    ctx.lineTo(
+        bodyW*.44,
+        -bodyL*.08
+    );
+
+    ctx.lineTo(
+        -bodyW*.44,
+        -bodyL*.08
+    );
+
     ctx.closePath();
+
     ctx.fill();
 
-    /* windshield */
-    ctx.fillStyle="rgba(125,205,235,.72)";
+    /* =====================================================
+       HOOD HIGHLIGHT
+    ===================================================== */
+
+    const highlight=
+        ctx.createLinearGradient(
+            -bodyW*.4,
+            -bodyL*.6,
+            bodyW*.4,
+            -bodyL*.15
+        );
+
+    highlight.addColorStop(
+        0,
+        "rgba(255,255,255,.30)"
+    );
+
+    highlight.addColorStop(
+        .45,
+        "rgba(255,255,255,.06)"
+    );
+
+    highlight.addColorStop(
+        1,
+        "rgba(0,0,0,.16)"
+    );
+
+    ctx.fillStyle=highlight;
+
     ctx.beginPath();
-    ctx.moveTo(-carW*.27,-carH*.73);
-    ctx.lineTo(-carW*.16,-carH*.88);
-    ctx.lineTo(carW*.16,-carH*.88);
-    ctx.lineTo(carW*.27,-carH*.73);
+
+    ctx.moveTo(
+        -bodyW*.38,
+        -bodyL*.28
+    );
+
+    ctx.lineTo(
+        -bodyW*.25,
+        -bodyL*.70
+    );
+
+    ctx.lineTo(
+        bodyW*.25,
+        -bodyL*.70
+    );
+
+    ctx.lineTo(
+        bodyW*.38,
+        -bodyL*.28
+    );
+
     ctx.closePath();
+
     ctx.fill();
 
-    /* headlights */
+    /* =====================================================
+       ROOF / CABIN
+    ===================================================== */
+
+    let cabinTop=-bodyL*.92;
+    let cabinBottom=-bodyL*.48;
+
+    ctx.fillStyle="#101923";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -bodyW*.28,
+        cabinBottom
+    );
+
+    ctx.lineTo(
+        -bodyW*.20,
+        cabinTop
+    );
+
+    ctx.lineTo(
+        bodyW*.20,
+        cabinTop
+    );
+
+    ctx.lineTo(
+        bodyW*.28,
+        cabinBottom
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    /* =====================================================
+       FRONT WINDSHIELD
+    ===================================================== */
+
+    ctx.fillStyle="rgba(120,190,220,.72)";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -bodyW*.18,
+        cabinBottom+2*s
+    );
+
+    ctx.lineTo(
+        -bodyW*.13,
+        cabinTop+8*s
+    );
+
+    ctx.lineTo(
+        bodyW*.13,
+        cabinTop+8*s
+    );
+
+    ctx.lineTo(
+        bodyW*.18,
+        cabinBottom+2*s
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    /* windshield shine */
+
+    ctx.strokeStyle="rgba(255,255,255,.45)";
+    ctx.lineWidth=Math.max(
+        1,
+        2*s
+    );
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -bodyW*.10,
+        cabinBottom-2*s
+    );
+
+    ctx.lineTo(
+        -bodyW*.06,
+        cabinTop+12*s
+    );
+
+    ctx.stroke();
+
+    /* =====================================================
+       SIDE WINDOWS
+    ===================================================== */
+
+    ctx.fillStyle="rgba(75,125,150,.85)";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -bodyW*.27,
+        cabinBottom-2*s
+    );
+
+    ctx.lineTo(
+        -bodyW*.19,
+        cabinTop+10*s
+    );
+
+    ctx.lineTo(
+        -bodyW*.05,
+        cabinTop+10*s
+    );
+
+    ctx.lineTo(
+        -bodyW*.06,
+        cabinBottom-2*s
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        bodyW*.27,
+        cabinBottom-2*s
+    );
+
+    ctx.lineTo(
+        bodyW*.19,
+        cabinTop+10*s
+    );
+
+    ctx.lineTo(
+        bodyW*.05,
+        cabinTop+10*s
+    );
+
+    ctx.lineTo(
+        bodyW*.06,
+        cabinBottom-2*s
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    /* =====================================================
+       FRONT GRILLE
+    ===================================================== */
+
+    ctx.fillStyle="#11151a";
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        -bodyW*.20,
+        -bodyL*.16,
+        bodyW*.40,
+        bodyL*.07,
+        3*s
+    );
+
+    ctx.fill();
+
+    /* grille lines */
+
+    ctx.strokeStyle="rgba(255,255,255,.20)";
+    ctx.lineWidth=Math.max(
+        .5,
+        1*s
+    );
+
+    for(let i=-2;i<=2;i++){
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            i*bodyW*.06,
+            -bodyL*.15
+        );
+
+        ctx.lineTo(
+            i*bodyW*.06,
+            -bodyL*.10
+        );
+
+        ctx.stroke();
+    }
+
+    /* =====================================================
+       HEADLIGHTS
+    ===================================================== */
+
     ctx.fillStyle="#fff4b0";
-    ctx.fillRect(-carW*.39,-carH*.25,carW*.18,carH*.08);
-    ctx.fillRect(carW*.21,-carH*.25,carW*.18,carH*.08);
 
-    /* wheels */
-    ctx.fillStyle="#101214";
+    ctx.beginPath();
 
-    for(const wx of [-carW*.57,carW*.57]){
-        ctx.fillRect(wx-carW*.11,-carH*.67,carW*.22,carH*.23);
-        ctx.fillRect(wx-carW*.11,-carH*.22,carW*.22,carH*.23);
-    }
+    ctx.roundRect(
+        -bodyW*.39,
+        -bodyL*.27,
+        bodyW*.17,
+        bodyL*.08,
+        4*s
+    );
 
-    /* spoiler */
-    if(car.carIndex%3===0){
+    ctx.fill();
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        bodyW*.22,
+        -bodyL*.27,
+        bodyW*.17,
+        bodyL*.08,
+        4*s
+    );
+
+    ctx.fill();
+
+    /* headlight glow */
+
+    ctx.fillStyle="rgba(255,245,180,.20)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        -bodyW*.30,
+        -bodyL*.23,
+        bodyW*.15,
+        bodyL*.08,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        bodyW*.30,
+        -bodyL*.23,
+        bodyW*.15,
+        bodyL*.08,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+    /* =====================================================
+       SIDE MIRRORS
+    ===================================================== */
+
+    ctx.fillStyle=car.accent;
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        -bodyW*.50,
+        -bodyL*.53,
+        bodyW*.07,
+        bodyL*.035,
+        -.2,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        bodyW*.50,
+        -bodyL*.53,
+        bodyW*.07,
+        bodyL*.035,
+        .2,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+    /* =====================================================
+       WHEELS
+    ===================================================== */
+
+    drawWheel(
+        -bodyW*.52,
+        -bodyL*.58,
+        13*s,
+        car.steeringVisual
+    );
+
+    drawWheel(
+        bodyW*.52,
+        -bodyL*.58,
+        13*s,
+        car.steeringVisual
+    );
+
+    drawWheel(
+        -bodyW*.52,
+        -bodyL*.22,
+        13*s,
+        car.steeringVisual*.7
+    );
+
+    drawWheel(
+        bodyW*.52,
+        -bodyL*.22,
+        13*s,
+        car.steeringVisual*.7
+    );
+
+    /* =====================================================
+       REAR SPOILER
+    ===================================================== */
+
+    if(
+        car.carIndex%3===0 ||
+        cars[car.carIndex].type==="super"
+    ){
+
         ctx.fillStyle=car.accent;
-        ctx.fillRect(-carW*.42,-carH*.98,carW*.84,carH*.07);
-        ctx.fillRect(-carW*.32,-carH*1.03,carW*.07,carH*.12);
-        ctx.fillRect(carW*.25,-carH*1.03,carW*.07,carH*.12);
+
+        ctx.fillRect(
+            -bodyW*.40,
+            -bodyL*.96,
+            bodyW*.80,
+            bodyL*.045
+        );
+
+        ctx.fillRect(
+            -bodyW*.32,
+            -bodyL*.99,
+            bodyW*.055,
+            bodyL*.12
+        );
+
+        ctx.fillRect(
+            bodyW*.265,
+            -bodyL*.99,
+            bodyW*.055,
+            bodyL*.12
+        );
     }
+
+    /* =====================================================
+       SIDE BODY LINE
+    ===================================================== */
+
+    ctx.strokeStyle="rgba(255,255,255,.25)";
+    ctx.lineWidth=Math.max(
+        1,
+        2*s
+    );
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -bodyW*.42,
+        -bodyL*.40
+    );
+
+    ctx.lineTo(
+        -bodyW*.28,
+        -bodyL*.34
+    );
+
+    ctx.stroke();
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        bodyW*.42,
+        -bodyL*.40
+    );
+
+    ctx.lineTo(
+        bodyW*.28,
+        -bodyL*.34
+    );
+
+    ctx.stroke();
+
+    /* =====================================================
+       REAR LIGHTS
+    ===================================================== */
+
+    ctx.fillStyle="#b20d16";
+
+    ctx.fillRect(
+        -bodyW*.39,
+        -bodyL*.12,
+        bodyW*.16,
+        bodyL*.055
+    );
+
+    ctx.fillRect(
+        bodyW*.23,
+        -bodyL*.12,
+        bodyW*.16,
+        bodyL*.055
+    );
 
     ctx.restore();
 }
 
-/* -------------------------
+function drawWheel(x,y,r,steer){
+
+    ctx.save();
+
+    ctx.translate(x,y);
+
+    ctx.rotate(steer*.25);
+
+    /* tire */
+
+    ctx.fillStyle="#0b0d10";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        0,
+        0,
+        r*.62,
+        r,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+    /* rim */
+
+    ctx.fillStyle="#9ca5aa";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        0,
+        0,
+        r*.32,
+        r*.52,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+    /* rim center */
+
+    ctx.fillStyle="#30373d";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        r*.16,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+    /* rim shine */
+
+    ctx.strokeStyle="rgba(255,255,255,.45)";
+    ctx.lineWidth=Math.max(
+        1,
+        r*.08
+    );
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        r*.25,
+        -.8,
+        .8
+    );
+
+    ctx.stroke();
+
+    ctx.restore();
+}
+
+/* =========================================================
    MINIMAP
-------------------------- */
+========================================================= */
 
 function drawMiniMap(car){
+
     const size=150;
+
     const x=W-size-18;
     const y=H-size-85;
 
     ctx.save();
 
     ctx.fillStyle="rgba(7,12,17,.78)";
-    ctx.fillRect(x,y,size,size);
+
+    ctx.fillRect(
+        x,
+        y,
+        size,
+        size
+    );
 
     ctx.strokeStyle="rgba(255,255,255,.2)";
-    ctx.strokeRect(x,y,size,size);
 
-    /* roads */
+    ctx.strokeRect(
+        x,
+        y,
+        size,
+        size
+    );
+
     ctx.strokeStyle="#626970";
     ctx.lineWidth=5;
 
     for(const r of world.roads){
-        const rx=x+(r.x+2100)/4200*size;
-        const rz=y+(r.z+2100)/4200*size;
+
+        const rx=
+            x+
+            (r.x+2100)/4200*size;
+
+        const rz=
+            y+
+            (r.z+2100)/4200*size;
 
         if(r.w>r.h){
+
             ctx.beginPath();
+
             ctx.moveTo(x,rz);
             ctx.lineTo(x+size,rz);
+
             ctx.stroke();
+
         }else{
+
             ctx.beginPath();
+
             ctx.moveTo(rx,y);
             ctx.lineTo(rx,y+size);
+
             ctx.stroke();
         }
     }
 
-    /* buildings */
     ctx.fillStyle="#9ca7b1";
+
     for(const b of world.buildings){
-        const bx=x+(b.x+2100)/4200*size;
-        const bz=y+(b.z+2100)/4200*size;
+
+        const bx=
+            x+
+            (b.x+2100)/4200*size;
+
+        const bz=
+            y+
+            (b.z+2100)/4200*size;
+
         const bw=b.w/4200*size;
         const bd=b.d/4200*size;
 
-        ctx.fillRect(bx-bw/2,bz-bd/2,Math.max(1,bw),Math.max(1,bd));
+        ctx.fillRect(
+            bx-bw/2,
+            bz-bd/2,
+            Math.max(1,bw),
+            Math.max(1,bd)
+        );
     }
 
-    /* coins */
     ctx.fillStyle="#ffd23f";
+
     for(const c of world.coins){
+
         if(c.taken)continue;
 
-        const cx=x+(c.x+2100)/4200*size;
-        const cz=y+(c.z+2100)/4200*size;
+        const cx=
+            x+
+            (c.x+2100)/4200*size;
 
-        ctx.fillRect(cx,cz,2,2);
+        const cz=
+            y+
+            (c.z+2100)/4200*size;
+
+        ctx.fillRect(
+            cx,
+            cz,
+            2,
+            2
+        );
     }
 
-    /* P1 */
     if(car1){
-        const cx=x+(car1.x+2100)/4200*size;
-        const cz=y+(car1.z+2100)/4200*size;
+
+        const cx=
+            x+
+            (car1.x+2100)/4200*size;
+
+        const cz=
+            y+
+            (car1.z+2100)/4200*size;
 
         ctx.fillStyle="#ff3d3d";
+
         ctx.beginPath();
-        ctx.arc(cx,cz,5,0,Math.PI*2);
+
+        ctx.arc(
+            cx,
+            cz,
+            5,
+            0,
+            Math.PI*2
+        );
+
         ctx.fill();
     }
 
-    /* P2 */
     if(car2){
-        const cx=x+(car2.x+2100)/4200*size;
-        const cz=y+(car2.z+2100)/4200*size;
+
+        const cx=
+            x+
+            (car2.x+2100)/4200*size;
+
+        const cz=
+            y+
+            (car2.z+2100)/4200*size;
 
         ctx.fillStyle="#35c8ff";
+
         ctx.beginPath();
-        ctx.arc(cx,cz,5,0,Math.PI*2);
+
+        ctx.arc(
+            cx,
+            cz,
+            5,
+            0,
+            Math.PI*2
+        );
+
         ctx.fill();
     }
 
     ctx.restore();
 }
 
-/* -------------------------
-   SPLIT SCREEN
-------------------------- */
+/* =========================================================
+   GAME DRAW
+========================================================= */
 
 function drawGame(){
-    ctx.clearRect(0,0,W,H);
+
+    ctx.clearRect(
+        0,
+        0,
+        W,
+        H
+    );
 
     if(players===1){
-        const cam=cameraFor(car1);
 
-        drawWorld(cam,0,W);
-        drawCar(car1,cam);
+        const cam=
+            updateCamera(
+                car1,
+                1/60
+            );
 
-        if(car2)drawCar(car2,cam);
+        drawWorld(
+            cam,
+            0,
+            W
+        );
+
+        drawCar(
+            car1,
+            cam
+        );
+
+        if(car2){
+            drawCar(
+                car2,
+                cam
+            );
+        }
 
     }else{
+
         const half=W/2;
 
         /* PLAYER 1 */
+
         ctx.save();
+
         ctx.beginPath();
-        ctx.rect(0,0,half,H);
+
+        ctx.rect(
+            0,
+            0,
+            half,
+            H
+        );
+
         ctx.clip();
 
-        const cam1=cameraFor(car1);
+        const cam1=
+            updateCamera(
+                car1,
+                1/60
+            );
 
-        drawWorld(cam1,0,half);
-        drawCar(car1,cam1,0,half);
+        drawWorld(
+            cam1,
+            0,
+            half
+        );
+
+        drawCar(
+            car1,
+            cam1,
+            0,
+            half
+        );
 
         ctx.restore();
 
         /* PLAYER 2 */
+
         ctx.save();
+
         ctx.beginPath();
-        ctx.rect(half,0,half,H);
+
+        ctx.rect(
+            half,
+            0,
+            half,
+            H
+        );
+
         ctx.clip();
 
-        const cam2=cameraFor(car2);
+        const cam2=
+            updateCamera(
+                car2,
+                1/60
+            );
 
-        drawWorld(cam2,half,half);
-        drawCar(car2,cam2,half,half);
+        drawWorld(
+            cam2,
+            half,
+            half
+        );
+
+        drawCar(
+            car2,
+            cam2,
+            half,
+            half
+        );
 
         ctx.restore();
 
-        /* divider */
+        /* DIVIDER */
+
         ctx.fillStyle="rgba(255,255,255,.8)";
-        ctx.fillRect(half-2,0,4,H);
+
+        ctx.fillRect(
+            half-2,
+            0,
+            4,
+            H
+        );
 
         ctx.fillStyle="rgba(0,0,0,.65)";
-        ctx.fillRect(10,10,100,28);
+
+        ctx.fillRect(
+            10,
+            10,
+            100,
+            28
+        );
+
         ctx.fillStyle="#fff";
         ctx.font="bold 13px Arial";
-        ctx.fillText("PLAYER 1",20,29);
+
+        ctx.fillText(
+            "PLAYER 1",
+            20,
+            29
+        );
 
         ctx.fillStyle="rgba(0,0,0,.65)";
-        ctx.fillRect(half+10,10,100,28);
+
+        ctx.fillRect(
+            half+10,
+            10,
+            100,
+            28
+        );
+
         ctx.fillStyle="#fff";
-        ctx.fillText("PLAYER 2",half+20,29);
+
+        ctx.fillText(
+            "PLAYER 2",
+            half+20,
+            29
+        );
     }
 
     drawMiniMap(car1);
 }
 
-/* -------------------------
-   GAME START
-------------------------- */
+/* =========================================================
+   START GAME
+========================================================= */
 
 function startGame(){
+
     document.getElementById("menu").style.display="none";
     document.getElementById("hud").style.display="block";
 
@@ -1596,97 +3204,175 @@ function startGame(){
 
     createWorld();
 
-    car1=createCar(0,80,selectedCar,1);
-    car2=players===2
-        ? createCar(0,160,(selectedCar+1)%cars.length,2)
-        : null;
+    car1=createCar(
+        0,
+        80,
+        selectedCar,
+        1
+    );
+
+    car2=
+        players===2
+        ?
+        createCar(
+            0,
+            160,
+            (selectedCar+1)%cars.length,
+            2
+        )
+        :
+        null;
 
     document.getElementById("worldText").textContent=
-        worldType==="city"?"MEGA CITY":
-        worldType==="desert"?"DESERT":
-        worldType==="forest"?"FOREST":
+        worldType==="city"
+        ?"MEGA CITY"
+        :
+        worldType==="desert"
+        ?"DESERT"
+        :
+        worldType==="forest"
+        ?"FOREST"
+        :
         "STUNT ZONE";
 
     document.getElementById("modeText").textContent=
-        gameMode==="free"?"FREE WORLD":
-        gameMode==="race"?"RACE MODE":
+        gameMode==="free"
+        ?"FREE WORLD"
+        :
+        gameMode==="race"
+        ?"RACE MODE"
+        :
         "TIME TRIAL";
 
     lastTime=performance.now();
+
     requestAnimationFrame(loop);
 }
 
-/* -------------------------
+/* =========================================================
    HUD
-------------------------- */
+========================================================= */
 
 function updateHUD(){
-    document.getElementById("coinsText").textContent=coins;
+
+    document.getElementById(
+        "coinsText"
+    ).textContent=coins;
 
     if(car1){
-        document.getElementById("checkpointText").textContent=
+
+        document.getElementById(
+            "checkpointText"
+        ).textContent=
             `${car1.checkpoint} / ${world.checkpoints.length}`;
 
-        document.getElementById("speed").textContent=
-            Math.round(Math.abs(car1.speed)*18)+" KM/H";
+        document.getElementById(
+            "speed"
+        ).textContent=
+            Math.round(
+                Math.abs(car1.speed)*18
+            )+
+            " KM/H";
     }
 
-    document.getElementById("centerMsg").textContent=
-        paused ? "PAUSED" :
-        players===2 ? "2 PLAYER SPLIT SCREEN" :
+    document.getElementById(
+        "centerMsg"
+    ).textContent=
+        paused
+        ?
+        "PAUSED"
+        :
+        players===2
+        ?
+        "2 PLAYER SPLIT SCREEN"
+        :
         "PLAYER 1";
 }
 
-/* -------------------------
+/* =========================================================
    NOTICE
-------------------------- */
+========================================================= */
 
 let noticeTimer=0;
 
 function showNotice(text){
-    const n=document.getElementById("notice");
+
+    const n=document.getElementById(
+        "notice"
+    );
+
     n.textContent=text;
+
     n.style.display="block";
 
     clearTimeout(noticeTimer);
+
     noticeTimer=setTimeout(()=>{
         n.style.display="none";
     },2200);
 }
 
-/* -------------------------
+/* =========================================================
    GAME LOOP
-------------------------- */
+========================================================= */
 
 function loop(now){
+
     if(!running)return;
 
     let dt=(now-lastTime)/1000;
+
     lastTime=now;
 
-    dt=Math.min(dt,.035);
+    dt=Math.min(
+        dt,
+        .035
+    );
 
     if(!paused){
-        updateCar(car1,dt,true);
+
+        updateCar(
+            car1,
+            dt,
+            true
+        );
 
         if(car2){
-            updateCar(car2,dt,false);
+
+            updateCar(
+                car2,
+                dt,
+                false
+            );
         }
     }
 
+    /*
+       Camera smoothing is handled inside
+       drawGame so it follows the current
+       car position every frame.
+    */
+
     drawGame();
+
     updateHUD();
 
     requestAnimationFrame(loop);
 }
 
-/* -------------------------
-   INITIAL SCREEN
-------------------------- */
+/* =========================================================
+   INITIAL
+========================================================= */
 
-document.getElementById("hud").style.display="none";
-document.getElementById("mobile").style.display="none";
+document.getElementById(
+    "hud"
+).style.display="none";
+
+document.getElementById(
+    "mobile"
+).style.display="none";
 
 </script>
+
 </body>
 </html>
