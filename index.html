@@ -48,15 +48,16 @@ header{
 }
 
 .logo{
-  font-size:28px;
-  font-weight:900;
-  color:white;
-  letter-spacing:1px;
   min-width:190px;
+  display:flex;
+  align-items:center;
 }
 
-.logo span{
-  color:#00d9ff;
+.logo img{
+  height:45px;
+  width:auto;
+  display:block;
+  object-fit:contain;
 }
 
 .top-search{
@@ -154,25 +155,17 @@ header{
   top:70px;
   left:0;
   bottom:0;
-
-  /* CLOSED */
   width:68px;
-
   background:#050505;
   border-right:1px solid #222;
   padding:25px 10px;
-
   overflow-x:hidden;
   overflow-y:auto;
-
   z-index:900;
-
   transition:
     width .25s ease,
     box-shadow .25s ease;
 }
-
-/* OPEN WHEN MOUSE IS OVER SIDEBAR */
 
 .sidebar:hover{
   width:245px;
@@ -185,11 +178,8 @@ header{
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:1px;
-
   margin:8px 12px 10px;
-
   white-space:nowrap;
-
   opacity:0;
   transition:opacity .2s ease;
 }
@@ -201,23 +191,16 @@ header{
 .side-link{
   width:100%;
   display:block;
-
   padding:13px 14px;
   margin-bottom:5px;
-
   border-radius:8px;
-
   background:transparent;
   color:#ccc;
-
   border:none;
-
   text-align:left;
   cursor:pointer;
-
   font-size:15px;
   font-weight:500;
-
   white-space:nowrap;
 }
 
@@ -441,11 +424,9 @@ header{
   border-radius:50%;
   background:#111;
   border:1px solid #333;
-
   display:flex;
   justify-content:center;
   align-items:center;
-
   font-size:35px;
   overflow:hidden;
   flex-shrink:0;
@@ -503,10 +484,8 @@ header{
   width:100%;
   padding:13px;
   margin-bottom:15px;
-
   background:#000;
   color:white;
-
   border:1px solid #292929;
   border-radius:8px;
   outline:none;
@@ -520,22 +499,17 @@ header{
   display:grid;
   grid-template-columns:
     repeat(auto-fit,minmax(170px,1fr));
-
   gap:8px;
-
   max-height:280px;
   overflow-y:auto;
 }
 
 .language-btn{
   padding:11px;
-
   background:#0d0d0d;
   color:#bbb;
-
   border:1px solid #222;
   border-radius:7px;
-
   text-align:left;
   cursor:pointer;
   font-weight:500;
@@ -579,12 +553,9 @@ header{
   display:none;
   position:fixed;
   inset:0;
-
   background:rgba(0,0,0,.88);
-
   justify-content:center;
   align-items:center;
-
   z-index:3000;
   padding:20px;
 }
@@ -594,13 +565,10 @@ header{
   max-width:450px;
   max-height:90vh;
   overflow-y:auto;
-
   background:#090909;
   border:1px solid #292929;
-
   border-radius:14px;
   padding:30px;
-
   position:relative;
 }
 
@@ -613,7 +581,6 @@ header{
   position:absolute;
   right:20px;
   top:13px;
-
   font-size:27px;
   color:#777;
   cursor:pointer;
@@ -627,10 +594,8 @@ header{
   width:100%;
   padding:13px;
   margin-bottom:12px;
-
   background:#000;
   color:white;
-
   border:1px solid #292929;
   border-radius:7px;
   outline:none;
@@ -678,7 +643,10 @@ footer span{
 
   .logo{
     min-width:auto;
-    font-size:22px;
+  }
+
+  .logo img{
+    height:40px;
   }
 
   .top-search{
@@ -726,6 +694,10 @@ footer span{
     height:auto;
     min-height:65px;
     flex-wrap:wrap;
+  }
+
+  .logo img{
+    height:38px;
   }
 
   .top-search{
@@ -795,7 +767,10 @@ footer span{
 <header>
 
   <div class="logo">
-    🎮 GAME<span>REX</span>
+    <img
+      src="https://i.ibb.co/5gbjpR8Z/gamerex-logo.png"
+      alt="Gamerex Logo"
+    >
   </div>
 
   <div class="top-search">
@@ -920,8 +895,6 @@ footer span{
 
 <main class="main">
 
-  <!-- HOME -->
-
   <div id="homePage">
 
     <section class="hero">
@@ -973,20 +946,10 @@ footer span{
 
       </div>
 
-
-      <!--
-        IMPORTANT:
-        Demo games have been removed.
-
-        Games will be added here when you submit
-        them through Developer / Submit Your Game.
-      -->
-
       <div
         class="game-grid"
         id="gameGrid"
       ></div>
-
 
       <div
         class="no-games"
@@ -1485,6 +1448,7 @@ function getAccount(){
   return account
     ? JSON.parse(account)
     : null;
+
 }
 
 
@@ -1666,11 +1630,6 @@ function renderGames(){
 
       </div>
     `;
-
-    /*
-      No Launch Game button here.
-      The old launch-game system has been completely removed.
-    */
 
     card.style.cursor="pointer";
 
@@ -2276,8 +2235,10 @@ const translations={
     settings:"Settings",
 
     welcomeText:"Welcome to",
+
     heroDescription:
       "Discover and play awesome games online.",
+
     exploreGames:
       "🎮 Explore Games",
 
@@ -2331,8 +2292,10 @@ const translations={
     settings:"سیٹنگز",
 
     welcomeText:"خوش آمدید",
+
     heroDescription:
       "زبردست آن لائن گیمز دریافت کریں اور کھیلیں۔",
+
     exploreGames:
       "🎮 گیمز دیکھیں",
 
@@ -2386,8 +2349,10 @@ const translations={
     settings:"الإعدادات",
 
     welcomeText:"مرحباً بك في",
+
     heroDescription:
       "اكتشف والعب ألعاباً رائعة على الإنترنت.",
+
     exploreGames:
       "🎮 استكشف الألعاب",
 
@@ -2441,8 +2406,10 @@ const translations={
     settings:"设置",
 
     welcomeText:"欢迎来到",
+
     heroDescription:
       "发现并在线畅玩精彩游戏。",
+
     exploreGames:
       "🎮 探索游戏",
 
@@ -2496,8 +2463,10 @@ const translations={
     settings:"Configuración",
 
     welcomeText:"Bienvenido a",
+
     heroDescription:
       "Descubre y juega increíbles juegos en línea.",
+
     exploreGames:
       "🎮 Explorar juegos",
 
@@ -2551,8 +2520,10 @@ const translations={
     settings:"Paramètres",
 
     welcomeText:"Bienvenue sur",
+
     heroDescription:
       "Découvrez et jouez à des jeux incroyables en ligne.",
+
     exploreGames:
       "🎮 Explorer les jeux",
 
@@ -2606,8 +2577,10 @@ const translations={
     settings:"Einstellungen",
 
     welcomeText:"Willkommen bei",
+
     heroDescription:
       "Entdecke und spiele tolle Online-Spiele.",
+
     exploreGames:
       "🎮 Spiele entdecken",
 
@@ -2896,6 +2869,7 @@ window.addEventListener(
       localStorage.getItem(
         "gamerexLanguage"
       ) || "en";
+
 
     changeLanguage(
       savedLanguage
