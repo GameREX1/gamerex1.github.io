@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crazy Cars | Gamerex</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  background:#070707;
+  color:white;
+  font-family:Arial,Helvetica,sans-serif;
+  overflow:hidden;
+}
+
+#game{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  background:#111;
+}
+
+/* TOP BAR */
+.topbar{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:65px;
+  background:#080808;
+  border-bottom:2px solid #00eaff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 22px;
+  z-index:20;
+}
+
+.logo{
+  font-size:25px;
+  font-weight:900;
+  color:white;
+}
+
+.logo span{
+  color:#00eaff;
+}
+
+.controls{
+  font-size:13px;
+  color:#aaa;
+  text-align:center;
+}
+
+.controls b{
+  color:white;
+}
+
+/* SCORE */
+.scoreboard{
+  position:absolute;
+  top:78px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:15;
+  display:flex;
+  gap:20px;
+  background:rgba(0,0,0,.8);
+  border:1px solid #333;
+  border-radius:12px;
+  padding:10px 22px;
+  font-size:18px;
+}
+
+.p1score{
+  color:#00eaff;
+}
+
+.p2score{
+  color:#ff5757;
+}
+
+/* WORLD */
+.world{
+  position:absolute;
+  top:65px;
+  left:0;
+  width:100%;
+  height:calc(100% - 65px);
+  overflow:hidden;
+  background:
+    linear-gradient(90deg,#1d5b27 0 18%,#303030 18% 82%,#1d5b27 82% 100%);
+}
+
+/* ROAD */
+.road{
+  position:absolute;
+  left:18%;
+  width:64%;
+  height:100%;
+  background:#303030;
+  border-left:7px solid #eee;
+  border-right:7px solid #eee;
+  overflow:hidden;
+}
+
+.road:before{
+  content:"";
+  position:absolute;
+  left:25%;
+  width:8px;
+  height:100%;
+  background:repeating-linear-gradient(
+    to bottom,
+    #eee 0px,
+    #eee 65px,
+    transparent 65px,
+    transparent 125px
+  );
+  opacity:.8;
+}
+
+.road:after{
+  content:"";
+  position:absolute;
+  right:25%;
+  width:8px;
+  height:100%;
+  background:repeating-linear-gradient(
+    to bottom,
+    #eee 0px,
+    #eee 65px,
+    transparent 65px,
+    transparent 125px
+  );
+  opacity:.8;
+}
+
+/* GRASS DETAILS */
+.grass{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+.tree{
+  position:absolute;
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  background:#0b9b45;
+  box-shadow:0 0 0 7px #086b30;
+}
+
+.tree:after{
+  content:"";
+  position:absolute;
+  width:8px;
+  height:20px;
+  background:#633b20;
+  left:13px;
+  top:28px;
+}
+
+.t1{left:7%;top:20%}
+.t2{left:10%;top:70%}
+.t3{right:8%;top:35%}
+.t4{right:11%;top:75%}
+
+/* FINISH LINE */
+.finish{
+  position:absolute;
+  top:8%;
+  left:18%;
+  width:64%;
+  height:55px;
+  z-index:5;
+  background:
+    repeating-conic-gradient(#fff 0 25%,#111 0 50%)
+    0/36px 36px;
+  border-top:4px solid white;
+  border-bottom:4px solid white;
+}
+
+/* CARS */
+.car{
+  position:absolute;
+  width:52px;
+  height:88px;
+  border-radius:12px;
+  z-index:10;
+  transition:transform .05s linear;
+  box-shadow:0 8px 12px rgba(0,0,0,.5);
+}
+
+.car:before{
+  content:"";
+  position:absolute;
+  top:13px;
+  left:7px;
+  width:38px;
+  height:25px;
+  background:rgba(170,230,255,.8);
+  border-radius:8px;
+}
+
+.car:after{
+  content:"";
+  position:absolute;
+  bottom:12px;
+  left:7px;
+  width:38px;
+  height:22px;
+  background:rgba(30,30,30,.8);
+  border-radius:6px;
+}
+
+.wheel{
+  position:absolute;
+  width:9px;
+  height:19px;
+  background:#050505;
+  border-radius:5px;
+  top:25px;
+}
+
+.wheel.left{
+  left:-6px;
+}
+
+.wheel.right{
+  right:-6px;
+}
+
+.wheel2{
+  position:absolute;
+  width:9px;
+  height:19px;
+  background:#050505;
+  border-radius:5px;
+  bottom:25px;
+}
+
+.wheel2.left{
+  left:-6px;
+}
+
+.wheel2.right{
+  right:-6px;
+}
+
+#car1{
+  background:linear-gradient(#00eaff,#0084ff);
+  left:35%;
+  top:68%;
+}
+
+#car2{
+  background:linear-gradient(#ff5757,#bd1616);
+  left:55%;
+  top:68%;
+}
+
+/* NAMES */
+.name{
+  position:absolute;
+  top:-25px;
+  left:50%;
+  transform:translateX(-50%);
+  white-space:nowrap;
+  font-size:11px;
+  font-weight:bold;
+  background:#000;
+  padding:3px 6px;
+  border-radius:4px;
+}
+
+/* OBSTACLES */
+.obstacle{
+  position:absolute;
+  width:50px;
+  height:50px;
+  background:#f5a400;
+  border:5px solid #222;
+  transform:rotate(45deg);
+  z-index:7;
+  box-shadow:0 5px 8px rgba(0,0,0,.5);
+}
+
+.o1{left:42%;top:42%}
+.o2{left:62%;top:28%}
+.o3{left:30%;top:22%}
+
+/* HUD */
+.speed{
+  position:absolute;
+  bottom:22px;
+  left:22px;
+  z-index:15;
+  background:rgba(0,0,0,.75);
+  padding:10px 15px;
+  border-radius:8px;
+  border:1px solid #333;
+}
+
+.speed span{
+  color:#00eaff;
+  font-weight:bold;
+}
+
+.reset{
+  position:absolute;
+  bottom:22px;
+  right:22px;
+  z-index:15;
+  border:0;
+  background:#00eaff;
+  color:#001014;
+  font-weight:bold;
+  padding:11px 18px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.reset:hover{
+  background:white;
+}
+
+/* START SCREEN */
+.start-screen{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.9);
+  z-index:50;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.start-box{
+  width:min(500px,90%);
+  padding:35px;
+  border:1px solid #00eaff;
+  border-radius:18px;
+  background:#0c0c0c;
+  box-shadow:0 0 40px rgba(0,234,255,.15);
+}
+
+.start-box h1{
+  font-size:42px;
+  margin-bottom:8px;
+}
+
+.start-box h1 span{
+  color:#00eaff;
+}
+
+.start-box p{
+  color:#aaa;
+  margin:10px 0 25px;
+  line-height:1.6;
+}
+
+.start-btn{
+  border:0;
+  background:#00eaff;
+  color:#001014;
+  font-size:18px;
+  font-weight:bold;
+  padding:13px 30px;
+  border-radius:9px;
+  cursor:pointer;
+}
+
+.start-btn:hover{
+  background:white;
+}
+
+/* WINNER */
+.winner{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.88);
+  z-index:40;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.winner-box{
+  background:#0c0c0c;
+  border:1px solid #00eaff;
+  border-radius:18px;
+  padding:40px;
+  min-width:320px;
+}
+
+#winnerText{
+  font-size:34px;
+  margin-bottom:22px;
+}
+
+@media(max-width:700px){
+  .controls{
+    display:none;
+  }
+
+  .logo{
+    font-size:20px;
+  }
+
+  .road{
+    left:8%;
+    width:84%;
+  }
+
+  .finish{
+    left:8%;
+    width:84%;
+  }
+
+  .scoreboard{
+    top:75px;
+    font-size:14px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+  <div class="topbar">
+    <div class="logo">🏎️ GAME<span>REX</span></div>
+
+    <div class="controls">
+      P1: <b>W A S D</b> &nbsp; | &nbsp;
+      P2: <b>ARROW KEYS</b>
+    </div>
+
+    <div>🔥 <b>CRAZY CARS</b></div>
+  </div>
+
+  <div class="scoreboard">
+    <div class="p1score">PLAYER 1: <span id="score1">0</span></div>
+    <div class="p2score">PLAYER 2: <span id="score2">0</span></div>
+  </div>
+
+  <div class="world">
+
+    <div class="grass">
+      <div class="tree t1"></div>
+      <div class="tree t2"></div>
+      <div class="tree t3"></div>
+      <div class="tree t4"></div>
+    </div>
+
+    <div class="road">
+
+      <div class="finish"></div>
+
+      <div class="obstacle o1"></div>
+      <div class="obstacle o2"></div>
+      <div class="obstacle o3"></div>
+
+      <div id="car1" class="car">
+        <div class="name">PLAYER 1</div>
+        <div class="wheel left"></div>
+        <div class="wheel right"></div>
+        <div class="wheel2 left"></div>
+        <div class="wheel2 right"></div>
+      </div>
+
+      <div id="car2" class="car">
+        <div class="name">PLAYER 2</div>
+        <div class="wheel left"></div>
+        <div class="wheel right"></div>
+        <div class="wheel2 left"></div>
+        <div class="wheel2 right"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="speed">
+    SPEED: <span id="speedText">0</span> KM/H
+  </div>
+
+  <button class="reset" onclick="resetGame()">↻ RESET</button>
+
+  <div class="start-screen" id="startScreen">
+    <div class="start-box">
+      <h1>CRAZY <span>CARS</span></h1>
+      <p>
+        2 Player Racing Battle<br>
+        Player 1: WASD<br>
+        Player 2: Arrow Keys
+      </p>
+      <button class="start-btn" onclick="startGame()">START RACE 🏁</button>
+    </div>
+  </div>
+
+  <div class="winner" id="winner">
+    <div class="winner-box">
+      <div id="winnerText">PLAYER 1 WINS!</div>
+      <button class="start-btn" onclick="resetGame()">PLAY AGAIN</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const car1 = document.getElementById("car1");
+const car2 = document.getElementById("car2");
+
+const score1El = document.getElementById("score1");
+const score2El = document.getElementById("score2");
+const speedText = document.getElementById("speedText");
+
+const startScreen = document.getElementById("startScreen");
+const winnerScreen = document.getElementById("winner");
+const winnerText = document.getElementById("winnerText");
+
+const keys = {};
+
+document.addEventListener("keydown", e => {
+  keys[e.key.toLowerCase()] = true;
+
+  if([
+    "arrowup",
+    "arrowdown",
+    "arrowleft",
+    "arrowright",
+    " "
+  ].includes(e.key.toLowerCase())){
+    e.preventDefault();
+  }
+});
+
+document.addEventListener("keyup", e => {
+  keys[e.key.toLowerCase()] = false;
+});
+
+let running = false;
+
+const players = {
+  p1:{
+    x:35,
+    y:68,
+    speed:0,
+    angle:0,
+    score:0
+  },
+  p2:{
+    x:55,
+    y:68,
+    speed:0,
+    angle:0,
+    score:0
+  }
+};
+
+function startGame(){
+  startScreen.style.display = "none";
+  winnerScreen.style.display = "none";
+  running = true;
+}
+
+function resetGame(){
+  players.p1.x = 35;
+  players.p1.y = 68;
+  players.p1.speed = 0;
+  players.p1.angle = 0;
+  players.p1.score = 0;
+
+  players.p2.x = 55;
+  players.p2.y = 68;
+  players.p2.speed = 0;
+  players.p2.angle = 0;
+  players.p2.score = 0;
+
+  score1El.textContent = "0";
+  score2El.textContent = "0";
+
+  winnerScreen.style.display = "none";
+  startScreen.style.display = "flex";
+
+  draw();
+}
+
+function movePlayer(p, controls, car){
+
+  let accelerating = keys[controls.up];
+  let braking = keys[controls.down];
+
+  if(accelerating){
+    p.speed += 0.12;
+  }else if(braking){
+    p.speed -= 0.16;
+  }else{
+    p.speed *= 0.96;
+  }
+
+  p.speed = Math.max(-0.8, Math.min(2.8,p.speed));
+
+  if(Math.abs(p.speed) > 0.1){
+
+    if(keys[controls.left]){
+      p.x -= 0.45;
+      p.angle = -8;
+    }
+
+    if(keys[controls.right]){
+      p.x += 0.45;
+      p.angle = 8;
+    }
+
+  }else{
+    p.angle = 0;
+  }
+
+  p.y -= p.speed * 0.18;
+
+  /* road boundaries */
+  p.x = Math.max(20,Math.min(78,p.x));
+  p.y = Math.max(8,Math.min(78,p.y));
+
+  car.style.left = p.x + "%";
+  car.style.top = p.y + "%";
+  car.style.transform = "rotate(" + p.angle + "deg)";
+}
+
+function checkObstacle(p){
+
+  const obstacles = [
+    {x:42,y:42},
+    {x:62,y:28},
+    {x:30,y:22}
+  ];
+
+  for(const o of obstacles){
+
+    const dx = p.x - o.x;
+    const dy = p.y - o.y;
+
+    if(Math.sqrt(dx*dx + dy*dy) < 5){
+      p.speed *= -0.5;
+      p.x += dx * 0.5;
+      p.y += dy * 0.5;
+    }
+  }
+}
+
+function checkFinish(){
+
+  if(players.p1.y <= 10){
+    players.p1.score++;
+    score1El.textContent = players.p1.score;
+    win("PLAYER 1");
+  }
+
+  if(players.p2.y <= 10){
+    players.p2.score++;
+    score2El.textContent = players.p2.score;
+    win("PLAYER 2");
+  }
+}
+
+function win(player){
+
+  running = false;
+
+  winnerText.textContent = player + " WINS! 🏆";
+  winnerScreen.style.display = "flex";
+}
+
+function draw(){
+
+  car1.style.left = players.p1.x + "%";
+  car1.style.top = players.p1.y + "%";
+
+  car2.style.left = players.p2.x + "%";
+  car2.style.top = players.p2.y + "%";
+}
+
+function gameLoop(){
+
+  if(running){
+
+    movePlayer(
+      players.p1,
+      {
+        up:"w",
+        down:"s",
+        left:"a",
+        right:"d"
+      },
+      car1
+    );
+
+    movePlayer(
+      players.p2,
+      {
+        up:"arrowup",
+        down:"arrowdown",
+        left:"arrowleft",
+        right:"arrowright"
+      },
+      car2
+    );
+
+    checkObstacle(players.p1);
+    checkObstacle(players.p2);
+
+    checkFinish();
+
+    let fastest = Math.max(
+      Math.abs(players.p1.speed),
+      Math.abs(players.p2.speed)
+    );
+
+    speedText.textContent = Math.round(fastest * 45);
+  }
+
+  requestAnimationFrame(gameLoop);
+}
+
+draw();
+gameLoop();
+</script>
+
+</body>
+</html>
