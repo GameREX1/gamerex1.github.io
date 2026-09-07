@@ -178,16 +178,22 @@ header{
   transform-origin:bottom center;
 }
 
+/* =========================
+   PROPER FACE
+========================= */
+
 .head{
   position:absolute;
-  width:128px;
-  height:145px;
-  border-radius:50% 50% 46% 46%;
+  width:134px;
+  height:150px;
+  border-radius:48% 48% 46% 46%;
   background:#f1bd91;
-  top:45px;
-  left:86px;
+  top:43px;
+  left:83px;
   z-index:5;
-  box-shadow:inset -8px -8px 0 rgba(150,80,50,.07);
+  box-shadow:
+    inset -8px -10px 0 rgba(150,80,50,.06),
+    inset 6px 4px 0 rgba(255,255,255,.08);
 }
 
 .face{
@@ -195,7 +201,294 @@ header{
   inset:0;
 }
 
+/* EARS */
+
+.ear{
+  position:absolute;
+  width:18px;
+  height:35px;
+  background:#efb98d;
+  border-radius:50%;
+  top:98px;
+  z-index:4;
+}
+
+.ear.left{
+  left:77px;
+}
+
+.ear.right{
+  left:207px;
+}
+
+/* NOSE */
+
+.nose{
+  position:absolute;
+  width:18px;
+  height:25px;
+  left:141px;
+  top:105px;
+  z-index:10;
+}
+
+.nose:before{
+  content:"";
+  position:absolute;
+  width:12px;
+  height:20px;
+  left:3px;
+  top:0;
+  border-right:2px solid rgba(150,80,55,.35);
+  border-bottom:2px solid rgba(150,80,55,.22);
+  border-radius:50%;
+}
+
+.nose:after{
+  content:"";
+  position:absolute;
+  width:8px;
+  height:3px;
+  left:5px;
+  bottom:1px;
+  border-bottom:2px solid rgba(130,65,55,.35);
+  border-radius:50%;
+}
+
+/* EYEBROWS */
+
+.eyebrow{
+  position:absolute;
+  width:31px;
+  height:6px;
+  background:#59372d;
+  border-radius:10px;
+  top:75px;
+  z-index:13;
+}
+
+.eyebrow.left{
+  left:106px;
+  transform:rotate(-6deg);
+}
+
+.eyebrow.right{
+  left:164px;
+  transform:rotate(6deg);
+}
+
+/* EYES */
+
+.eyeArea{
+  position:absolute;
+  width:43px;
+  height:27px;
+  top:87px;
+  z-index:11;
+}
+
+.eyeArea.left{
+  left:103px;
+}
+
+.eyeArea.right{
+  left:160px;
+}
+
+.eyeWhite{
+  position:absolute;
+  width:37px;
+  height:20px;
+  left:3px;
+  top:2px;
+  background:#fff;
+  border-radius:50%;
+  border:1px solid rgba(80,50,55,.18);
+}
+
+.pupil{
+  position:absolute;
+  width:12px;
+  height:14px;
+  left:15px;
+  top:5px;
+  border-radius:50%;
+  background:#3b2730;
+  z-index:3;
+}
+
+.pupil:after{
+  content:"";
+  position:absolute;
+  width:4px;
+  height:4px;
+  background:white;
+  border-radius:50%;
+  left:3px;
+  top:2px;
+}
+
+.eyeLine{
+  position:absolute;
+  width:42px;
+  height:7px;
+  border-top:3px solid #29202b;
+  border-radius:50%;
+  top:0;
+  left:0;
+}
+
+.eyeLine.right{
+  transform:rotate(-2deg);
+}
+
+/* EYESHADOW */
+
+.eyesShadow{
+  position:absolute;
+  width:43px;
+  height:18px;
+  border-radius:50%;
+  background:rgba(157,92,180,.35);
+  top:80px;
+  z-index:9;
+  filter:blur(1px);
+}
+
+.eyesShadow.left{
+  left:103px;
+}
+
+.eyesShadow.right{
+  left:160px;
+}
+
+/* EYELASHES */
+
+.lash{
+  position:absolute;
+  width:31px;
+  height:8px;
+  top:82px;
+  z-index:14;
+  border-top:3px solid #29202b;
+  border-radius:50%;
+}
+
+.lash.left{
+  left:105px;
+  transform:rotate(-5deg);
+}
+
+.lash.right{
+  left:160px;
+  transform:rotate(5deg);
+}
+
+/* LOWER EYE LINE */
+
+.lowerEye{
+  position:absolute;
+  width:30px;
+  height:8px;
+  border-bottom:2px solid rgba(80,45,55,.28);
+  border-radius:50%;
+  top:103px;
+  z-index:12;
+}
+
+.lowerEye.left{
+  left:109px;
+}
+
+.lowerEye.right{
+  left:164px;
+}
+
+/* BLUSH */
+
+.blush{
+  position:absolute;
+  width:34px;
+  height:19px;
+  border-radius:50%;
+  background:rgba(238,87,125,.35);
+  top:117px;
+  z-index:10;
+  filter:blur(1px);
+}
+
+.blush.left{
+  left:96px;
+}
+
+.blush.right{
+  left:172px;
+}
+
+/* LIPS */
+
+.lips{
+  position:absolute;
+  width:36px;
+  height:20px;
+  left:132px;
+  top:137px;
+  z-index:12;
+  background:#d64d73;
+  border-radius:48% 48% 58% 58%;
+}
+
+.lips:before{
+  content:"";
+  position:absolute;
+  width:29px;
+  height:9px;
+  left:3px;
+  top:0;
+  background:inherit;
+  border-radius:50%;
+}
+
+.lips:after{
+  content:"";
+  position:absolute;
+  width:25px;
+  height:3px;
+  left:6px;
+  top:10px;
+  background:rgba(90,30,50,.35);
+  border-radius:50%;
+}
+
+.lips.pink{
+  background:#ed72ad;
+}
+
+.lips.red{
+  background:#c83455;
+}
+
+.lips.nude{
+  background:#b9776d;
+}
+
+.lips.purple{
+  background:#8e4b9d;
+}
+
+/* LIP GLOSS */
+
+.lips.glossy:after{
+  background:rgba(255,255,255,.55);
+  width:13px;
+  height:3px;
+  left:7px;
+  top:5px;
+}
+
 /* HAIR */
+
 .hair{
   position:absolute;
   width:150px;
@@ -242,93 +535,6 @@ header{
   border-radius:60% 60% 35% 35%;
   z-index:8;
 }
-
-/* FACE DETAILS */
-.eye{
-  position:absolute;
-  top:92px;
-  width:14px;
-  height:9px;
-  border-radius:50%;
-  background:#3a2630;
-  z-index:10;
-}
-
-.eye.left{left:116px}
-.eye.right{left:170px}
-
-.eye.liner{
-  box-shadow:0 -2px 0 #17121a;
-}
-
-.lash{
-  position:absolute;
-  width:23px;
-  height:4px;
-  background:#29202b;
-  border-radius:50%;
-  top:87px;
-  z-index:11;
-  transform:rotate(-8deg);
-}
-
-.lash.left{left:111px}
-.lash.right{left:166px;transform:rotate(8deg)}
-
-.blush{
-  position:absolute;
-  width:30px;
-  height:17px;
-  border-radius:50%;
-  background:rgba(238,87,125,.35);
-  top:116px;
-  z-index:10;
-}
-
-.blush.left{left:99px}
-.blush.right{left:172px}
-
-.lips{
-  position:absolute;
-  width:31px;
-  height:16px;
-  border-radius:50% 50% 55% 55%;
-  background:#d64d73;
-  left:135px;
-  top:140px;
-  z-index:10;
-}
-
-.lips.pink{background:#ed72ad}
-.lips.red{background:#c83455}
-.lips.nude{background:#b9776d}
-.lips.purple{background:#8e4b9d}
-
-.eyesShadow{
-  position:absolute;
-  width:25px;
-  height:10px;
-  border-radius:50%;
-  background:rgba(157,92,180,.35);
-  top:83px;
-  z-index:9;
-}
-
-.eyesShadow.left{left:110px}
-.eyesShadow.right{left:164px}
-
-.eyebrow{
-  position:absolute;
-  width:30px;
-  height:5px;
-  background:#59372d;
-  border-radius:10px;
-  top:75px;
-  z-index:10;
-}
-
-.eyebrow.left{left:109px;transform:rotate(-5deg)}
-.eyebrow.right{left:164px;transform:rotate(5deg)}
 
 /* NECK */
 .neck{
@@ -778,24 +984,51 @@ header{
     <div class="hair" id="hair"></div>
     <div class="hair front" id="hairFront"></div>
 
+    <!-- EARS -->
+    <div class="ear left"></div>
+    <div class="ear right"></div>
+
     <div class="head">
+
       <div class="face">
 
+        <!-- EYEBROWS -->
         <div class="eyebrow left"></div>
         <div class="eyebrow right"></div>
 
+        <!-- EYESHADOW -->
         <div class="eyesShadow left" id="shadowL"></div>
         <div class="eyesShadow right" id="shadowR"></div>
 
-        <div class="eye left"></div>
-        <div class="eye right"></div>
+        <!-- EYES -->
+        <div class="eyeArea left">
+          <div class="eyeWhite"></div>
+          <div class="pupil"></div>
+          <div class="eyeLine"></div>
+        </div>
 
+        <div class="eyeArea right">
+          <div class="eyeWhite"></div>
+          <div class="pupil"></div>
+          <div class="eyeLine right"></div>
+        </div>
+
+        <!-- EYELASHES -->
         <div class="lash left" id="lashL"></div>
         <div class="lash right" id="lashR"></div>
 
+        <!-- LOWER EYE -->
+        <div class="lowerEye left"></div>
+        <div class="lowerEye right"></div>
+
+        <!-- BLUSH -->
         <div class="blush left" id="blushL"></div>
         <div class="blush right" id="blushR"></div>
 
+        <!-- NOSE -->
+        <div class="nose"></div>
+
+        <!-- LIPS -->
         <div class="lips" id="lips"></div>
 
       </div>
