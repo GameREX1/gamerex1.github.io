@@ -13,10 +13,17 @@
   font-family:Arial,Helvetica,sans-serif;
 }
 
+:root{
+  --pink:#d83c91;
+  --pink2:#b62675;
+  --purple:#8d63c7;
+  --text:#292033;
+}
+
 body{
   min-height:100vh;
   background:linear-gradient(135deg,#f7e8ff,#ffeaf4,#e8f4ff);
-  color:#292033;
+  color:var(--text);
   overflow-x:hidden;
 }
 
@@ -39,7 +46,7 @@ header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background:rgba(255,255,255,.88);
+  background:rgba(255,255,255,.9);
   backdrop-filter:blur(15px);
   border-bottom:1px solid rgba(120,70,160,.15);
   position:sticky;
@@ -54,12 +61,12 @@ header{
 }
 
 .logo span{
-  color:#d83c91;
+  color:var(--pink);
 }
 
 .coinBox{
   background:#fff0fa;
-  color:#b62675;
+  color:var(--pink2);
   padding:10px 16px;
   border-radius:25px;
   font-size:14px;
@@ -79,7 +86,7 @@ header{
 
 /* PANELS */
 .panel{
-  background:rgba(255,255,255,.86);
+  background:rgba(255,255,255,.88);
   border:1px solid rgba(130,70,160,.12);
   border-radius:22px;
   box-shadow:0 12px 35px rgba(80,40,100,.08);
@@ -108,7 +115,7 @@ header{
 
 .cat:hover,
 .cat.active{
-  background:#d83c91;
+  background:var(--pink);
   color:white;
   transform:translateX(3px);
 }
@@ -136,7 +143,7 @@ header{
 
 .levelNow{
   font-size:12px;
-  color:#d83c91;
+  color:var(--pink);
   font-weight:bold;
 }
 
@@ -155,7 +162,7 @@ header{
 }
 
 .levelBtn.active{
-  background:#d83c91;
+  background:var(--pink);
   color:white;
 }
 
@@ -165,7 +172,7 @@ header{
 }
 
 .levelBtn.locked{
-  opacity:.45;
+  opacity:.35;
   cursor:not-allowed;
 }
 
@@ -173,7 +180,7 @@ header{
   margin-top:9px;
   font-size:11px;
   color:#6c6072;
-  line-height:1.4;
+  line-height:1.45;
 }
 
 .levelProgress{
@@ -187,7 +194,7 @@ header{
 .levelProgressBar{
   height:100%;
   width:0%;
-  background:#d83c91;
+  background:var(--pink);
   border-radius:20px;
   transition:.3s;
 }
@@ -206,21 +213,16 @@ header{
   perspective:1000px;
 }
 
-.bg1{
-  background:linear-gradient(#dff6ff 0%,#f8e9ff 58%,#f8cfe3 100%);
-}
-
-.bg2{
-  background:linear-gradient(#fff1c7,#ffd9e9 60%,#e5c9ff);
-}
-
-.bg3{
-  background:linear-gradient(#d9ffe9,#d9e9ff 55%,#f4d7ff);
-}
-
-.bg4{
-  background:linear-gradient(#25233e,#55436c 55%,#171526);
-}
+.bg1{background:linear-gradient(#dff6ff 0%,#f8e9ff 58%,#f8cfe3 100%)}
+.bg2{background:linear-gradient(#fff1c7,#ffd9e9 60%,#e5c9ff)}
+.bg3{background:linear-gradient(#d9ffe9,#d9e9ff 55%,#f4d7ff)}
+.bg4{background:linear-gradient(#25233e,#55436c 55%,#171526)}
+.bg5{background:linear-gradient(#fff4df,#ffe0ed,#e8d7ff)}
+.bg6{background:linear-gradient(#d9f2ff,#fff0f8,#ffd5e5)}
+.bg7{background:linear-gradient(#e6dcff,#f9e6ff,#d8f4ff)}
+.bg8{background:linear-gradient(#e9fff6,#fff3df,#e3e5ff)}
+.bg9{background:linear-gradient(#ffdce9,#ffeecf,#dfd8ff)}
+.bg10{background:linear-gradient(#dceaff,#e5dcff,#ffdbea)}
 
 .room{
   position:absolute;
@@ -248,7 +250,49 @@ header{
   border-top:2px solid rgba(255,255,255,.65);
 }
 
-/* ROTATE BUTTON */
+/* CHALLENGE CARD */
+.challengeCard{
+  position:absolute;
+  top:18px;
+  left:18px;
+  right:18px;
+  z-index:14;
+  max-width:390px;
+  background:rgba(255,255,255,.92);
+  border-radius:17px;
+  padding:12px 14px;
+  box-shadow:0 7px 22px rgba(60,30,80,.12);
+}
+
+.challengeSmall{
+  font-size:10px;
+  color:var(--pink);
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.challengeName{
+  font-size:16px;
+  font-weight:900;
+  margin:3px 0;
+}
+
+.challengeText{
+  font-size:11px;
+  color:#6a5d70;
+  line-height:1.35;
+}
+
+.hintButton{
+  margin-top:8px;
+  padding:8px 12px;
+  border-radius:10px;
+  background:#fff0a8;
+  color:#775900;
+  font-size:11px;
+}
+
+/* ROTATE */
 .rotateButton{
   position:absolute;
   top:18px;
@@ -259,12 +303,6 @@ header{
   background:rgba(255,255,255,.9);
   color:#c02d7e;
   box-shadow:0 6px 18px rgba(70,40,90,.12);
-  transition:.2s;
-}
-
-.rotateButton:hover{
-  transform:translateY(-2px);
-  background:white;
 }
 
 /* CHARACTER */
@@ -279,9 +317,50 @@ header{
   transition:transform .75s ease;
 }
 
-/* ROTATED STATE */
 .character.rotated{
   transform:scale(1) rotateY(180deg);
+}
+
+/* HAIR BACK */
+.hair{
+  position:absolute;
+  width:150px;
+  height:165px;
+  left:75px;
+  top:28px;
+  border-radius:55% 55% 42% 42%;
+  background:#3b211c;
+  z-index:2;
+  pointer-events:none;
+}
+
+.hair.long{
+  height:245px;
+  border-radius:55% 55% 30% 30%;
+}
+
+.hair.bob{
+  height:185px;
+  border-radius:55% 55% 35% 35%;
+}
+
+.hair.ponytail{
+  height:180px;
+  border-radius:55% 55% 40% 40%;
+}
+
+.hair.curly{
+  height:230px;
+  border-radius:50%;
+}
+
+.hair.front{
+  width:125px;
+  height:58px;
+  left:88px;
+  top:32px;
+  border-radius:60% 60% 35% 35%;
+  z-index:9;
 }
 
 /* HEAD */
@@ -299,18 +378,11 @@ header{
     inset 6px 4px 0 rgba(255,255,255,.08);
 }
 
-/*
-  IMPORTANT:
-  .face is inside .head.
-  Therefore all face features below use coordinates
-  relative to the 134x150 head.
-*/
 .face{
   position:absolute;
   inset:0;
 }
 
-/* EARS */
 .ear{
   position:absolute;
   width:18px;
@@ -321,93 +393,32 @@ header{
   z-index:4;
 }
 
-.ear.left{
-  left:77px;
-}
+.ear.left{left:77px}
+.ear.right{left:207px}
 
-.ear.right{
-  left:207px;
-}
-
-/* NOSE */
-.nose{
-  position:absolute;
-  width:18px;
-  height:25px;
-
-  /* FIXED: relative to .face */
-  left:58px;
-  top:62px;
-
-  z-index:10;
-}
-
-.nose:before{
-  content:"";
-  position:absolute;
-  width:12px;
-  height:20px;
-  left:3px;
-  top:0;
-  border-right:2px solid rgba(150,80,55,.35);
-  border-bottom:2px solid rgba(150,80,55,.22);
-  border-radius:50%;
-}
-
-.nose:after{
-  content:"";
-  position:absolute;
-  width:8px;
-  height:3px;
-  left:5px;
-  bottom:1px;
-  border-bottom:2px solid rgba(130,65,55,.35);
-  border-radius:50%;
-}
-
-/* EYEBROWS */
 .eyebrow{
   position:absolute;
   width:31px;
   height:6px;
   background:#59372d;
   border-radius:10px;
-
-  /* FIXED: relative to .face */
   top:32px;
-
   z-index:13;
 }
 
-.eyebrow.left{
-  left:23px;
-  transform:rotate(-6deg);
-}
+.eyebrow.left{left:23px;transform:rotate(-6deg)}
+.eyebrow.right{left:81px;transform:rotate(6deg)}
 
-.eyebrow.right{
-  left:81px;
-  transform:rotate(6deg);
-}
-
-/* EYES */
 .eyeArea{
   position:absolute;
   width:43px;
   height:27px;
-
-  /* FIXED */
   top:44px;
-
   z-index:11;
 }
 
-.eyeArea.left{
-  left:20px;
-}
-
-.eyeArea.right{
-  left:77px;
-}
+.eyeArea.left{left:20px}
+.eyeArea.right{left:77px}
 
 .eyeWhite{
   position:absolute;
@@ -428,7 +439,6 @@ header{
   top:5px;
   border-radius:50%;
   background:#3b2730;
-  z-index:3;
 }
 
 .pupil:after{
@@ -452,125 +462,93 @@ header{
   left:0;
 }
 
-.eyeLine.right{
-  transform:rotate(-2deg);
-}
+.eyeLine.right{transform:rotate(-2deg)}
 
-/* EYESHADOW */
 .eyesShadow{
   position:absolute;
   width:43px;
   height:18px;
   border-radius:50%;
-  background:rgba(157,92,180,.35);
-
-  /* FIXED */
+  background:#b46bd0;
+  opacity:.35;
   top:37px;
-
   z-index:9;
   filter:blur(1px);
 }
 
-.eyesShadow.left{
-  left:20px;
-}
+.eyesShadow.left{left:20px}
+.eyesShadow.right{left:77px}
 
-.eyesShadow.right{
-  left:77px;
-}
-
-/* EYELASHES */
 .lash{
   position:absolute;
   width:31px;
   height:8px;
-
-  /* FIXED */
   top:39px;
-
   z-index:14;
   border-top:3px solid #29202b;
   border-radius:50%;
 }
 
-.lash.left{
-  left:22px;
-  transform:rotate(-5deg);
-}
+.lash.left{left:22px;transform:rotate(-5deg)}
+.lash.right{left:77px;transform:rotate(5deg)}
 
-.lash.right{
-  left:77px;
-  transform:rotate(5deg);
-}
-
-/* LOWER EYE */
 .lowerEye{
   position:absolute;
   width:30px;
   height:8px;
   border-bottom:2px solid rgba(80,45,55,.28);
   border-radius:50%;
-
-  /* FIXED */
   top:60px;
-
   z-index:12;
 }
 
-.lowerEye.left{
-  left:26px;
-}
+.lowerEye.left{left:26px}
+.lowerEye.right{left:81px}
 
-.lowerEye.right{
-  left:81px;
-}
-
-/* BLUSH */
 .blush{
   position:absolute;
   width:34px;
   height:19px;
   border-radius:50%;
-  background:rgba(238,87,125,.35);
-
-  /* FIXED */
+  background:#ee577d;
+  opacity:.35;
   top:74px;
-
   z-index:10;
   filter:blur(1px);
 }
 
-.blush.left{
-  left:13px;
+.blush.left{left:13px}
+.blush.right{left:89px}
+
+.nose{
+  position:absolute;
+  width:18px;
+  height:25px;
+  left:58px;
+  top:62px;
+  z-index:10;
 }
 
-.blush.right{
-  left:89px;
+.nose:before{
+  content:"";
+  position:absolute;
+  width:12px;
+  height:20px;
+  left:3px;
+  top:0;
+  border-right:2px solid rgba(150,80,55,.35);
+  border-bottom:2px solid rgba(150,80,55,.22);
+  border-radius:50%;
 }
 
-/* LIPS */
 .lips{
   position:absolute;
   width:24px;
   height:11px;
-
-  /* FIXED: relative to .face */
   left:55px;
   top:95px;
-
   z-index:15;
   background:#d65b78;
-  border-radius:50% 50% 55% 55%;
-}
-
-.lips:before{
-  content:"";
-  position:absolute;
-  width:19px;
-  height:6px;
-  left:2.5px;
-  top:0;
-  background:inherit;
   border-radius:50%;
 }
 
@@ -585,83 +563,7 @@ header{
   border-radius:50%;
 }
 
-.lips.pink{
-  background:#e875a8;
-}
-
-.lips.red{
-  background:#c94d61;
-}
-
-.lips.nude{
-  background:#b98276;
-}
-
-.lips.purple{
-  background:#965b9e;
-}
-
-.lips.glossy:after{
-  background:rgba(255,255,255,.55);
-  width:8px;
-  height:2px;
-  left:6px;
-  top:3px;
-}
-
-/* HAIR */
-.hair{
-  position:absolute;
-  width:150px;
-  height:165px;
-  left:75px;
-  top:28px;
-  border-radius:55% 55% 42% 42%;
-  background:#3b211c;
-
-  /* stays behind the face */
-  z-index:2;
-
-  pointer-events:none;
-}
-
-.hair.long{
-  height:245px;
-  border-radius:55% 55% 30% 30%;
-}
-
-.hair.bob{
-  height:185px;
-  border-radius:55% 55% 35% 35%;
-}
-
-.hair.blonde{
-  background:#d9a83e;
-}
-
-.hair.pink{
-  background:#d94e9c;
-}
-
-.hair.blue{
-  background:#4667b7;
-}
-
-.hair.black{
-  background:#17151a;
-}
-
-.hair.front{
-  width:125px;
-  height:58px;
-  left:88px;
-  top:32px;
-  border-radius:60% 60% 35% 35%;
-  z-index:9;
-  pointer-events:none;
-}
-
-/* NECK */
+/* BODY */
 .neck{
   position:absolute;
   width:55px;
@@ -672,7 +574,6 @@ header{
   z-index:2;
 }
 
-/* BODY */
 .body{
   position:absolute;
   width:190px;
@@ -684,15 +585,6 @@ header{
   z-index:3;
 }
 
-.body.blue{background:#698de2}
-.body.black{background:#272335}
-.body.green{background:#68aa91}
-.body.purple{background:#9c69bd}
-.body.yellow{background:#e9bf58}
-.body.white{background:#f7f5f3}
-.body.red{background:#d85665}
-
-/* SKIRT */
 .skirt{
   position:absolute;
   width:220px;
@@ -704,13 +596,14 @@ header{
   z-index:4;
 }
 
-.skirt.blue{background:#7b9de9}
-.skirt.black{background:#292638}
-.skirt.pink{background:#e58ab7}
-.skirt.white{background:#f4edf4}
-.skirt.gold{background:#d6ae55}
+.skirt.style2{
+  clip-path:polygon(10% 0,90% 0,100% 100%,0 100%);
+}
 
-/* LEGS */
+.skirt.style3{
+  border-radius:0 0 60% 60%;
+}
+
 .leg{
   position:absolute;
   width:47px;
@@ -721,15 +614,9 @@ header{
   border-radius:20px;
 }
 
-.leg.left{
-  left:96px;
-}
+.leg.left{left:96px}
+.leg.right{left:158px}
 
-.leg.right{
-  left:158px;
-}
-
-/* SHOES */
 .shoe{
   position:absolute;
   width:70px;
@@ -740,20 +627,10 @@ header{
   z-index:6;
 }
 
-.shoe.left{
-  left:73px;
-}
+.shoe.left{left:73px}
+.shoe.right{left:157px}
 
-.shoe.right{
-  left:157px;
-}
-
-.shoe.pink{background:#df5f9e}
-.shoe.white{background:#f6f3f4}
-.shoe.blue{background:#5578d2}
-.shoe.gold{background:#c99b38}
-
-/* CLOTHES DETAILS */
+/* DETAILS */
 .jacket{
   position:absolute;
   width:200px;
@@ -764,7 +641,6 @@ header{
   border-bottom:0;
   border-radius:30px 30px 0 0;
   z-index:8;
-  pointer-events:none;
 }
 
 .belt{
@@ -777,9 +653,38 @@ header{
   z-index:8;
 }
 
-.belt.gold{
-  background:#d5aa45;
+/* BAG */
+.bag{
+  position:absolute;
+  width:58px;
+  height:45px;
+  left:202px;
+  top:305px;
+  background:#e75b9d;
+  border-radius:10px 10px 15px 15px;
+  z-index:10;
+  box-shadow:0 4px 7px rgba(50,30,50,.12);
 }
+
+.bag:before{
+  content:"";
+  position:absolute;
+  width:34px;
+  height:25px;
+  left:12px;
+  top:-18px;
+  border:5px solid currentColor;
+  border-bottom:0;
+  border-radius:20px 20px 0 0;
+}
+
+.bag.gold{color:#c99b38;background:#e6bd55}
+.bag.black{color:#292331;background:#292331}
+.bag.white{color:#aaa;background:#f7f5f5}
+.bag.blue{color:#5578d2;background:#5578d2}
+.bag.purple{color:#8e60bb;background:#9b70c8}
+.bag.green{color:#579778;background:#69ad8e}
+.bag.pink{color:#d94e9c;background:#df6aa8}
 
 /* ACCESSORIES */
 .glasses{
@@ -801,13 +706,8 @@ header{
   border-radius:50%;
 }
 
-.glasses:before{
-  left:0;
-}
-
-.glasses:after{
-  right:0;
-}
+.glasses:before{left:0}
+.glasses:after{right:0}
 
 .glasses .bridge{
   position:absolute;
@@ -828,13 +728,8 @@ header{
   z-index:14;
 }
 
-.earring.left{
-  left:80px;
-}
-
-.earring.right{
-  left:208px;
-}
+.earring.left{left:80px}
+.earring.right{left:208px}
 
 .necklace{
   position:absolute;
@@ -868,12 +763,6 @@ header{
   visibility:hidden;
 }
 
-.character.rotated .head{
-  box-shadow:
-    inset 8px -10px 0 rgba(150,80,50,.06),
-    inset -6px 4px 0 rgba(255,255,255,.08);
-}
-
 .character.rotated .hair{
   z-index:12;
 }
@@ -889,18 +778,7 @@ header{
   background:rgba(255,255,255,.08);
 }
 
-.character.rotated .skirt:after{
-  content:"";
-  position:absolute;
-  width:70px;
-  height:8px;
-  left:75px;
-  top:25px;
-  background:rgba(80,50,90,.12);
-  border-radius:50%;
-}
-
-/* RIGHT SIDE */
+/* RIGHT */
 .itemsPanel{
   display:flex;
   flex-direction:column;
@@ -912,6 +790,7 @@ header{
   grid-template-columns:repeat(3,1fr);
   gap:9px;
   overflow-y:auto;
+  max-height:475px;
   padding-right:3px;
 }
 
@@ -934,7 +813,7 @@ header{
 }
 
 .item.selected{
-  outline:3px solid #d83c91;
+  outline:3px solid var(--pink);
   background:#ffe9f6;
 }
 
@@ -943,8 +822,22 @@ header{
 }
 
 .itemName{
-  font-size:11px;
+  font-size:10px;
   text-align:center;
+}
+
+.scoreBox{
+  margin-top:12px;
+  background:#fff4fa;
+  padding:12px;
+  border-radius:15px;
+  text-align:center;
+}
+
+.score{
+  font-size:26px;
+  font-weight:900;
+  color:var(--pink);
 }
 
 .bottomButtons{
@@ -963,26 +856,13 @@ header{
 }
 
 .action.primary{
-  background:#d83c91;
+  background:var(--pink);
   color:white;
 }
 
-.scoreBox{
-  margin-top:12px;
-  background:#fff4fa;
-  padding:12px;
-  border-radius:15px;
-  text-align:center;
-}
-
-.score{
-  font-size:26px;
-  font-weight:900;
-  color:#d83c91;
-}
-
-/* LEVEL POPUP */
-.levelOverlay{
+/* POPUPS */
+.levelOverlay,
+.overlay{
   position:fixed;
   inset:0;
   background:rgba(35,22,42,.55);
@@ -994,8 +874,9 @@ header{
   padding:20px;
 }
 
-.levelModal{
-  width:min(500px,100%);
+.levelModal,
+.modal{
+  width:min(520px,100%);
   background:white;
   border-radius:25px;
   padding:25px;
@@ -1003,80 +884,55 @@ header{
   box-shadow:0 25px 70px rgba(0,0,0,.3);
 }
 
-.levelModal h2{
-  color:#d83c91;
+.levelModal h2,
+.modal h2{
+  color:var(--pink);
   margin-bottom:8px;
 }
 
-.levelModal p{
+.levelModal p,
+.modal p{
   color:#685d70;
   margin-bottom:18px;
+  line-height:1.5;
 }
 
 .reward{
   font-size:30px;
   font-weight:900;
-  color:#b62675;
+  color:var(--pink2);
   margin:15px;
 }
 
+.hintText{
+  background:#fff8d7;
+  color:#705800;
+  border-radius:15px;
+  padding:13px;
+  margin:12px 0;
+  font-size:13px;
+  line-height:1.5;
+}
+
 .completeLevel{
-  background:#d83c91;
+  background:var(--pink);
   color:white;
   padding:13px 24px;
   border-radius:12px;
-  margin-right:6px;
+  margin:4px;
 }
 
-.closeLevel{
+.closeLevel,
+.close{
   background:#eee8f4;
   color:#4a3b52;
   padding:13px 24px;
   border-radius:12px;
-}
-
-/* FINAL POPUP */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(35,22,42,.55);
-  backdrop-filter:blur(7px);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:100;
-  padding:20px;
-}
-
-.modal{
-  width:min(470px,100%);
-  background:white;
-  border-radius:25px;
-  padding:25px;
-  text-align:center;
-  box-shadow:0 25px 70px rgba(0,0,0,.3);
-}
-
-.modal h2{
-  margin-bottom:8px;
-  color:#d83c91;
-}
-
-.modal p{
-  color:#685d70;
-  margin-bottom:18px;
-}
-
-.close{
-  background:#d83c91;
-  color:white;
-  padding:12px 25px;
-  border-radius:12px;
+  margin:4px;
 }
 
 /* MOBILE */
 @media(max-width:1050px){
-
   .main{
     grid-template-columns:210px 1fr;
   }
@@ -1092,7 +948,6 @@ header{
 }
 
 @media(max-width:700px){
-
   header{
     height:62px;
     padding:0 13px;
@@ -1105,10 +960,6 @@ header{
   .main{
     grid-template-columns:1fr;
     padding:10px;
-  }
-
-  .panel{
-    padding:12px;
   }
 
   .categories{
@@ -1125,6 +976,19 @@ header{
     min-height:590px;
   }
 
+  .challengeCard{
+    max-width:270px;
+    top:12px;
+    left:12px;
+  }
+
+  .rotateButton{
+    top:12px;
+    right:12px;
+    padding:9px 11px;
+    font-size:11px;
+  }
+
   .character{
     transform:scale(.88) rotateY(0deg);
     margin-bottom:-20px;
@@ -1134,24 +998,12 @@ header{
     transform:scale(.88) rotateY(180deg);
   }
 
-  .itemsPanel{
-    grid-column:auto;
-  }
-
   .items{
     grid-template-columns:repeat(4,1fr);
-  }
-
-  .rotateButton{
-    top:12px;
-    right:12px;
-    padding:9px 11px;
-    font-size:12px;
   }
 }
 
 @media(max-width:430px){
-
   .stage{
     min-height:550px;
   }
@@ -1173,13 +1025,12 @@ header{
     grid-template-columns:repeat(2,1fr);
   }
 
-  .levels{
-    grid-template-columns:repeat(5,1fr);
+  .challengeCard{
+    max-width:220px;
   }
 
-  .levelBtn{
-    padding:8px 2px;
-    font-size:11px;
+  .challengeName{
+    font-size:13px;
   }
 }
 </style>
@@ -1203,74 +1054,28 @@ header{
 
   <div class="categories">
 
-    <button class="cat active" onclick="selectCategory('outfit',this)">
-      👗 Outfits
-    </button>
-
-    <button class="cat" onclick="selectCategory('hair',this)">
-      💇 Hair
-    </button>
-
-    <button class="cat" onclick="selectCategory('makeup',this)">
-      💄 Makeup
-    </button>
-
-    <button class="cat" onclick="selectCategory('shoes',this)">
-      👠 Shoes
-    </button>
-
-    <button class="cat" onclick="selectCategory('bags',this)">
-      👜 Bags
-    </button>
-
-    <button class="cat" onclick="selectCategory('jewelry',this)">
-      💎 Jewelry
-    </button>
-
-    <button class="cat" onclick="selectCategory('glasses',this)">
-      🕶️ Glasses
-    </button>
-
-    <button class="cat" onclick="selectCategory('background',this)">
-      🏠 Room
-    </button>
+    <button class="cat active" onclick="selectCategory('outfit',this)">👗 Outfits</button>
+    <button class="cat" onclick="selectCategory('hair',this)">💇 Hair</button>
+    <button class="cat" onclick="selectCategory('makeup',this)">💄 Makeup</button>
+    <button class="cat" onclick="selectCategory('shoes',this)">👠 Shoes</button>
+    <button class="cat" onclick="selectCategory('bags',this)">👜 Bags</button>
+    <button class="cat" onclick="selectCategory('jewelry',this)">💎 Jewelry</button>
+    <button class="cat" onclick="selectCategory('glasses',this)">🕶️ Glasses</button>
+    <button class="cat" onclick="selectCategory('background',this)">🏠 Scene</button>
 
   </div>
 
-  <!-- LEVELS -->
   <div class="levelBox">
 
     <div class="levelHeader">
-      <div class="levelTitle">🏆 Levels</div>
+      <div class="levelTitle">🏆 25 Challenges</div>
       <div class="levelNow" id="levelNow">Level 1</div>
     </div>
 
-    <div class="levels">
-
-      <button class="levelBtn active" id="level1" onclick="openLevel(1)">
-        1
-      </button>
-
-      <button class="levelBtn locked" id="level2" onclick="openLevel(2)">
-        2
-      </button>
-
-      <button class="levelBtn locked" id="level3" onclick="openLevel(3)">
-        3
-      </button>
-
-      <button class="levelBtn locked" id="level4" onclick="openLevel(4)">
-        4
-      </button>
-
-      <button class="levelBtn locked" id="level5" onclick="openLevel(5)">
-        5
-      </button>
-
-    </div>
+    <div class="levels" id="levels"></div>
 
     <div class="levelInfo" id="levelInfo">
-      Casual Day • Score 55+ • Reward 100 coins
+      Cinderella's Ball
     </div>
 
     <div class="levelProgress">
@@ -1287,6 +1092,24 @@ header{
   <div class="room">
     <div class="window"></div>
     <div class="floor"></div>
+  </div>
+
+  <div class="challengeCard">
+
+    <div class="challengeSmall">Current Challenge</div>
+
+    <div class="challengeName" id="challengeName">
+      Cinderella's Ball
+    </div>
+
+    <div class="challengeText" id="challengeText">
+      Create a magical princess look.
+    </div>
+
+    <button class="hintButton" onclick="showHint()">
+      💡 Hint
+    </button>
+
   </div>
 
   <button class="rotateButton" onclick="rotateCharacter()" id="rotateButton">
@@ -1354,6 +1177,8 @@ header{
     <div class="shoe left" id="shoeL"></div>
     <div class="shoe right" id="shoeR"></div>
 
+    <div class="bag" id="bag" style="display:none"></div>
+
     <div class="glasses" id="glasses" style="display:none">
       <div class="bridge"></div>
     </div>
@@ -1365,12 +1190,15 @@ header{
     <div class="necklaceGem" id="necklaceGem" style="display:none"></div>
 
   </div>
+
 </div>
 
 <!-- RIGHT -->
 <div class="panel itemsPanel">
 
-  <div class="panelTitle" id="itemTitle">👗 Choose an Outfit</div>
+  <div class="panelTitle" id="itemTitle">
+    👗 Choose an Outfit
+  </div>
 
   <div class="items" id="items"></div>
 
@@ -1380,10 +1208,19 @@ header{
   </div>
 
   <div class="bottomButtons">
+
     <button class="action" onclick="randomLook()">🎲 Random</button>
+
     <button class="action" onclick="resetLook()">↻ Reset</button>
-    <button class="action primary" onclick="showFinal()">📸 Final Look</button>
-    <button class="action" onclick="changeBackground()">🌈 Scene</button>
+
+    <button class="action primary" onclick="showFinal()">
+      📸 Final Look
+    </button>
+
+    <button class="action" onclick="changeBackground()">
+      🌈 Scene
+    </button>
+
   </div>
 
 </div>
@@ -1400,16 +1237,18 @@ header{
 
     <h2 id="levelModalTitle">Level 1</h2>
 
-    <p id="levelModalText">
-      Create a stylish Casual Day look.
-    </p>
+    <p id="levelModalText"></p>
+
+    <div class="hintText" id="levelHint">
+      💡 Hint
+    </div>
 
     <div class="reward" id="levelReward">
       🪙 +100 Coins
     </div>
 
     <button class="completeLevel" onclick="completeLevel()">
-      Complete Level
+      Complete Challenge
     </button>
 
     <button class="closeLevel" onclick="closeLevel()">
@@ -1429,9 +1268,7 @@ header{
 
     <h2>Your Look Is Ready!</h2>
 
-    <p id="finalText">
-      Amazing style!
-    </p>
+    <p id="finalText">Amazing style!</p>
 
     <div style="font-size:38px;font-weight:900;color:#d83c91;margin:15px"
          id="finalScore">
@@ -1448,108 +1285,462 @@ header{
 
 <script>
 
-const data = {
+/* =========================================================
+   30 ITEMS EACH
+========================================================= */
 
-outfit:[
-  {name:"Pink Dress",icon:"👗",body:"pink",skirt:"pink"},
-  {name:"Blue Dress",icon:"👗",body:"blue",skirt:"blue"},
-  {name:"Purple Dress",icon:"👗",body:"purple",skirt:"pink"},
-  {name:"Elegant Black",icon:"🖤",body:"black",skirt:"black"},
-  {name:"Sunny Look",icon:"🌼",body:"yellow",skirt:"gold"},
-  {name:"Mint Style",icon:"🌿",body:"green",skirt:"white"},
-  {name:"White Party",icon:"🤍",body:"white",skirt:"white"},
-  {name:"Red Glam",icon:"❤️",body:"red",skirt:"black"},
-  {name:"Royal Purple",icon:"👑",body:"purple",skirt:"gold"}
-],
+const colors=[
+  "#f29ab3","#7b9de9","#9b70c8","#292638","#e8c15b",
+  "#69ad8e","#f5f3ef","#d85665","#e66fa9","#6b82d9",
+  "#b85f9e","#58a98b","#d6a84f","#7b65b5","#e9849c",
+  "#4e78bd","#e1a64b","#72a68d","#c85d8c","#7762b7",
+  "#efb25c","#5f8fc8","#d970a5","#72a9a1","#aa76c7",
+  "#df6676","#6583c8","#d7ad51","#6b9c7c","#a765a9"
+];
 
-hair:[
-  {name:"Brunette",icon:"💇",color:"brown",style:"normal"},
-  {name:"Long Blonde",icon:"💛",color:"blonde",style:"long"},
-  {name:"Pink Hair",icon:"🌸",color:"pink",style:"long"},
-  {name:"Blue Hair",icon:"💙",color:"blue",style:"bob"},
-  {name:"Black Hair",icon:"🖤",color:"black",style:"long"},
-  {name:"Short Bob",icon:"💇‍♀️",color:"brown",style:"bob"}
-],
+const hairColors=[
+  "#3b211c","#d9a83e","#d94e9c","#4667b7","#17151a",
+  "#8a5135","#b66a35","#70412d","#c88b46","#493126",
+  "#d16b9e","#4e6ebd","#222027","#e0b45a","#93532f",
+  "#5d3928","#c46f9b","#6577bd","#29252c","#d39b50",
+  "#754b35","#bd5d91","#3d65a5","#211d20","#e5bf6a",
+  "#8b4933","#ce729e","#536fb1","#31272a","#d29c55"
+];
 
-makeup:[
-  {name:"Natural",icon:"🌷",lip:"nude",shadow:false,blush:false,liner:false},
-  {name:"Pink Glam",icon:"💗",lip:"pink",shadow:true,blush:true,liner:false},
-  {name:"Red Lips",icon:"💋",lip:"red",shadow:false,blush:true,liner:true},
-  {name:"Purple Glow",icon:"💜",lip:"purple",shadow:true,blush:true,liner:true},
-  {name:"Party Look",icon:"✨",lip:"pink",shadow:true,blush:true,liner:true}
-],
+/* 30 OUTFITS */
+const outfitNames=[
+ "Pink Princess","Sky Blue Dream","Royal Purple","Elegant Black","Golden Star",
+ "Mint Garden","White Angel","Red Glam","Rose Party","Ocean Queen",
+ "Lavender Dream","Emerald Night","Golden Gala","Royal Violet","Sweet Rose",
+ "Blue Crystal","Champagne Glow","Fresh Garden","Berry Glam","Purple Palace",
+ "Sunshine Dress","Ice Queen","Rose Gold","Sea Princess","Lilac Dream",
+ "Ruby Night","Sapphire Glam","Golden Princess","Forest Fairy","Magic Pink"
+];
 
-shoes:[
-  {name:"Black Heels",icon:"👠",color:"black"},
-  {name:"Pink Heels",icon:"👠",color:"pink"},
-  {name:"White Shoes",icon:"👟",color:"white"},
-  {name:"Blue Shoes",icon:"👟",color:"blue"},
-  {name:"Golden Heels",icon:"👠",color:"gold"}
-],
+/* 30 HAIR */
+const hairNames=[
+ "Classic Brunette","Golden Long","Pink Waves","Blue Bob","Midnight Black",
+ "Chocolate Waves","Caramel Style","Coffee Bob","Honey Long","Dark Brown",
+ "Rose Hair","Ocean Blue","Jet Black","Golden Princess","Chestnut",
+ "Soft Brown","Pink Princess","Blue Dream","Black Bob","Honey Waves",
+ "Warm Brown","Rose Gold","Royal Blue","Black Shine","Golden Glow",
+ "Copper Waves","Pink Curls","Blue Curls","Dark Curls","Fairy Gold"
+];
 
-bags:[
-  {name:"Pink Bag",icon:"👜",color:"pink"},
-  {name:"Black Bag",icon:"👜",color:"black"},
-  {name:"White Bag",icon:"👜",color:"white"},
-  {name:"Golden Bag",icon:"👜",color:"gold"}
-],
+/* 30 MAKEUP */
+const makeupNames=[
+ "Natural Glow","Soft Pink","Red Lips","Purple Glow","Party Sparkle",
+ "Rose Beauty","Golden Glow","Ocean Eyes","Princess Pink","Berry Lips",
+ "Sunset Glam","Ice Queen","Fairy Glow","Wedding Soft","Birthday Glam",
+ "Royal Makeup","Peach Beauty","Cherry Kiss","Lavender Eyes","Silver Sparkle",
+ "Coral Glow","Dreamy Pink","Ruby Glam","Sapphire Eyes","Golden Eyes",
+ "Soft Nude","Rose Gold","Magic Purple","Elegant Red","Starry Night"
+];
 
-jewelry:[
-  {name:"No Jewelry",icon:"🚫",value:0},
-  {name:"Earrings",icon:"💎",value:8},
-  {name:"Necklace",icon:"📿",value:10},
-  {name:"Full Jewelry",icon:"👑",value:15}
-],
+/* 30 SHOES */
+const shoeNames=[
+ "Black Heels","Pink Heels","White Shoes","Blue Shoes","Golden Heels",
+ "Silver Heels","Rose Heels","Purple Heels","Red Heels","Crystal Shoes",
+ "Mint Shoes","Pearl Shoes","Ruby Heels","Sapphire Heels","Princess Shoes",
+ "Party Heels","Elegant Pumps","Pink Pumps","Blue Pumps","Gold Pumps",
+ "White Heels","Black Pumps","Lavender Heels","Green Heels","Champagne Heels",
+ "Red Pumps","Royal Purple","Diamond Shoes","Fairy Shoes","Magic Heels"
+];
 
-glasses:[
-  {name:"No Glasses",icon:"🚫",value:0},
-  {name:"Classic",icon:"🕶️",value:7},
-  {name:"Fashion",icon:"👓",value:10},
-  {name:"Cool Shades",icon:"😎",value:12}
-],
+/* 30 BAGS */
+const bagNames=[
+ "Pink Bag","Black Bag","White Bag","Golden Bag","Blue Bag",
+ "Purple Bag","Mint Bag","Rose Bag","Silver Bag","Red Bag",
+ "Pearl Bag","Royal Bag","Crystal Bag","Birthday Bag","Party Bag",
+ "Princess Bag","Flower Bag","Heart Bag","Star Bag","Moon Bag",
+ "Fairy Bag","Elegant Bag","Classic Bag","Diamond Bag","Ruby Bag",
+ "Sapphire Bag","Gold Mini","Pink Mini","Lavender Bag","Magic Bag"
+];
 
-background:[
-  {name:"Pink Room",icon:"🌸",bg:"bg1"},
-  {name:"Sunset Room",icon:"🌅",bg:"bg2"},
-  {name:"Mint Room",icon:"🌿",bg:"bg3"},
-  {name:"Night Room",icon:"🌙",bg:"bg4"}
-]
+/* 30 JEWELRY */
+const jewelryNames=[
+ "No Jewelry","Pearl Earrings","Gold Necklace","Full Royal Set","Diamond Set",
+ "Silver Earrings","Rose Gold","Princess Crown","Crystal Necklace","Ruby Set",
+ "Sapphire Set","Emerald Set","Birthday Jewelry","Wedding Jewelry","Party Jewelry",
+ "Fairy Jewelry","Heart Necklace","Star Necklace","Moon Jewelry","Golden Crown",
+ "Silver Crown","Pink Gems","Purple Gems","Blue Gems","Red Gems",
+ "Pearl Set","Luxury Gold","Crystal Crown","Royal Diamonds","Magic Gems"
+];
+
+/* 30 GLASSES */
+const glassesNames=[
+ "No Glasses","Classic","Fashion","Cool Shades","Pink Shades",
+ "Blue Shades","Gold Shades","Purple Shades","Black Shades","White Shades",
+ "Heart Glasses","Star Glasses","Round Glasses","Cat Eye","Royal Shades",
+ "Party Shades","Silver Shades","Rose Shades","Crystal Shades","Flower Shades",
+ "Elegant Shades","Cute Shades","Retro Shades","Modern Shades","Pearl Shades",
+ "Diamond Shades","Red Shades","Ocean Shades","Lavender Shades","Magic Shades"
+];
+
+/* 30 SCENES */
+const sceneNames=[
+ "Pink Room","Sunset Room","Mint Room","Night Room","Golden Room",
+ "Birthday Room","Princess Hall","Beach Room","Wedding Hall","Party Room",
+ "Fairy Garden","Royal Palace","Winter Room","Spring Garden","Summer Room",
+ "Autumn Room","Red Carpet","Starry Night","Dream Room","Flower Room",
+ "Ocean Room","Crystal Hall","Magic Garden","Luxury Room","Rose Garden",
+ "Blue Palace","Golden Palace","Moon Room","Fairy Castle","Fantasy Hall"
+];
+
+/* =========================================================
+   BUILD 30 ITEMS
+========================================================= */
+
+const data={
+
+outfit:outfitNames.map((name,i)=>({
+  name,
+  icon:"👗",
+  color:colors[i],
+  style:i%3,
+  tag:
+    i<5?"princess":
+    i<10?"party":
+    i<15?"royal":
+    i<20?"glam":
+    i<25?"dream":"fairy"
+})),
+
+hair:hairNames.map((name,i)=>({
+  name,
+  icon:i%3===0?"💇‍♀️":"💇",
+  color:hairColors[i],
+  style:
+    i%5===0?"normal":
+    i%5===1?"long":
+    i%5===2?"bob":
+    i%5===3?"ponytail":"curly",
+  tag:
+    i%6===0?"princess":
+    i%6===1?"long":
+    i%6===2?"party":
+    i%6===3?"modern":
+    i%6===4?"fairy":"classic"
+})),
+
+makeup:makeupNames.map((name,i)=>({
+  name,
+  icon:i%4===0?"💄":i%4===1?"💋":i%4===2?"✨":"💗",
+  lip:
+    i%5===0?"nude":
+    i%5===1?"pink":
+    i%5===2?"red":
+    i%5===3?"purple":"rose",
+  shadow:i%3!==0,
+  blush:i%4!==0,
+  liner:i%3===0||i>12,
+  tag:
+    i<6?"soft":
+    i<12?"glam":
+    i<18?"party":
+    i<24?"royal":"fairy"
+})),
+
+shoes:shoeNames.map((name,i)=>({
+  name,
+  icon:"👠",
+  color:colors[(i+3)%colors.length],
+  tag:
+    i<6?"classic":
+    i<12?"party":
+    i<18?"royal":
+    i<24?"glam":"fairy"
+})),
+
+bags:bagNames.map((name,i)=>({
+  name,
+  icon:"👜",
+  color:
+    i%6===0?"pink":
+    i%6===1?"black":
+    i%6===2?"white":
+    i%6===3?"gold":
+    i%6===4?"blue":"purple",
+  tag:
+    i<6?"classic":
+    i<12?"party":
+    i<18?"royal":
+    i<24?"glam":"fairy"
+})),
+
+jewelry:jewelryNames.map((name,i)=>({
+  name,
+  icon:
+    i===0?"🚫":
+    i%4===0?"👑":
+    i%3===0?"📿":"💎",
+  value:i===0?0:6+(i%5)*3,
+  tag:
+    i<6?"simple":
+    i<12?"royal":
+    i<18?"party":
+    i<24?"glam":"fairy"
+})),
+
+glasses:glassesNames.map((name,i)=>({
+  name,
+  icon:i===0?"🚫":i%4===0?"🕶️":"👓",
+  value:i===0?0:6+(i%4)*2,
+  tag:
+    i<6?"classic":
+    i<12?"cute":
+    i<18?"party":
+    i<24?"glam":"fantasy"
+})),
+
+background:sceneNames.map((name,i)=>({
+  name,
+  icon:
+    i%5===0?"🌸":
+    i%5===1?"🌅":
+    i%5===2?"🏰":
+    i%5===3?"✨":"🌙",
+  bg:"bg"+((i%10)+1)
+}))
 
 };
 
-/* LEVEL DATA */
-const levels = [
-  {
-    name:"Casual Day",
-    target:55,
-    reward:100,
-    text:"Create a cute Casual Day look and reach 55+ Style Score."
-  },
-  {
-    name:"Party Night",
-    target:65,
-    reward:150,
-    text:"Create a glamorous Party Night look and reach 65+ Style Score."
-  },
-  {
-    name:"Beach Day",
-    target:72,
-    reward:200,
-    text:"Create a fresh Beach Day look and reach 72+ Style Score."
-  },
-  {
-    name:"Princess",
-    target:82,
-    reward:300,
-    text:"Create a royal Princess look and reach 82+ Style Score."
-  },
-  {
-    name:"Red Carpet",
-    target:90,
-    reward:500,
-    text:"Create a superstar Red Carpet look and reach 90+ Style Score."
-  }
+/* =========================================================
+   25 CHALLENGES
+========================================================= */
+
+const levels=[
+
+{
+ name:"Cinderella's Ball",
+ target:62,
+ reward:100,
+ text:"A magical ball is starting tonight. Dress her like a beautiful Cinderella-style princess.",
+ hint:"💡 Try a blue/purple princess dress, long or princess hair, crystal/royal jewelry and elegant heels.",
+ req:{outfit:["princess"],hair:["princess","long"],jewelryMin:2,shoes:["classic","royal","fairy"]}
+},
+
+{
+ name:"Birthday Girl",
+ target:60,
+ reward:120,
+ text:"It's her birthday! Make her look cute, happy and ready for the celebration.",
+ hint:"💡 Choose a pink/party dress, cheerful makeup, party shoes and a cute birthday bag.",
+ req:{outfit:["party"],makeup:["party","glam"],bags:["party","classic"],shoes:["party","glam"]}
+},
+
+{
+ name:"Beach Day",
+ target:58,
+ reward:140,
+ text:"She's spending the day at the beach. Create a fresh summer look.",
+ hint:"💡 Go for a bright/fresh outfit, modern hair, light makeup and a cute bag.",
+ req:{outfit:["dream","fairy"],hair:["modern","long"],makeup:["soft"],bags:["classic","fairy"]}
+},
+
+{
+ name:"Princess Wedding",
+ target:68,
+ reward:160,
+ text:"She is attending a beautiful royal wedding. Make her elegant and classy.",
+ hint:"💡 Pick a royal outfit, elegant hair, soft makeup and lots of jewelry.",
+ req:{outfit:["royal"],hair:["princess","long"],makeup:["soft","royal"],jewelryMin:2}
+},
+
+{
+ name:"Red Carpet Star",
+ target:72,
+ reward:180,
+ text:"The cameras are waiting! Turn her into a glamorous red-carpet superstar.",
+ hint:"💡 Choose a glam dress, glam makeup, stylish hair, heels and jewelry.",
+ req:{outfit:["glam"],makeup:["glam","party"],hair:["party","modern"],jewelryMin:1}
+},
+
+{
+ name:"School Fashion Day",
+ target:60,
+ reward:200,
+ text:"Today is the school's fashion day. Make her stylish but cute.",
+ hint:"💡 Try a classic outfit, simple hair, soft makeup and classic accessories.",
+ req:{outfit:["dream","classic"],hair:["classic","modern"],makeup:["soft"],shoes:["classic"]}
+},
+
+{
+ name:"Fairy Princess",
+ target:70,
+ reward:220,
+ text:"A fairy kingdom needs its new princess. Create a magical fairy look.",
+ hint:"💡 Use a fairy/fantasy style, colorful hair, magical makeup and crystal jewelry.",
+ req:{outfit:["fairy"],hair:["fairy"],makeup:["fairy","royal"],jewelryMin:2}
+},
+
+{
+ name:"Royal Ball",
+ target:74,
+ reward:240,
+ text:"The royal family invited her to the grand palace ball.",
+ hint:"💡 Choose royal clothing, princess hair, royal jewelry and elegant shoes.",
+ req:{outfit:["royal"],hair:["princess"],jewelryMin:2,shoes:["royal","classic"]}
+},
+
+{
+ name:"Winter Princess",
+ target:66,
+ reward:260,
+ text:"It's a magical winter evening. Make her look elegant and warm.",
+ hint:"💡 Pick a cool-colored dress, long hair, soft makeup and a crystal accessory.",
+ req:{outfit:["dream","royal"],hair:["long"],makeup:["soft","fairy"],jewelryMin:1}
+},
+
+{
+ name:"Summer Party",
+ target:64,
+ reward:280,
+ text:"The summer party is about to begin. Give her a bright party look.",
+ hint:"💡 Choose party clothes, party makeup, fun hair and a colorful bag.",
+ req:{outfit:["party"],makeup:["party"],bags:["party"],hair:["party","modern"]}
+},
+
+{
+ name:"Prom Night",
+ target:76,
+ reward:300,
+ text:"It's prom night! Create a glamorous and unforgettable look.",
+ hint:"💡 Glam dress + glam makeup + elegant hair + heels + jewelry.",
+ req:{outfit:["glam"],makeup:["glam"],hair:["party","long"],jewelryMin:2}
+},
+
+{
+ name:"Garden Princess",
+ target:68,
+ reward:320,
+ text:"She is visiting a beautiful flower garden.",
+ hint:"💡 Pick a soft/fairy dress, fairy hair, pink makeup and flower-like accessories.",
+ req:{outfit:["fairy","dream"],hair:["fairy"],makeup:["soft","fairy"],jewelryMin:1}
+},
+
+{
+ name:"Golden Gala",
+ target:80,
+ reward:350,
+ text:"A luxury golden gala is being held tonight.",
+ hint:"💡 Go for a royal/glam look with golden accessories and elegant shoes.",
+ req:{outfit:["royal","glam"],makeup:["royal","glam"],jewelryMin:2,shoes:["royal","glam"]}
+},
+
+{
+ name:"Movie Premiere",
+ target:78,
+ reward:380,
+ text:"She has been invited to a movie premiere. Make her camera-ready.",
+ hint:"💡 Use glam clothes, stylish modern hair, bold makeup and fashionable glasses.",
+ req:{outfit:["glam"],hair:["modern","party"],makeup:["glam","party"],glassesMin:1}
+},
+
+{
+ name:"Fairytale Picnic",
+ target:65,
+ reward:400,
+ text:"A magical picnic is waiting in the fairy garden.",
+ hint:"💡 Try a dreamy/fairy outfit, soft makeup and cute accessories.",
+ req:{outfit:["dream","fairy"],makeup:["soft","fairy"],bags:["fairy","classic"]}
+},
+
+{
+ name:"Luxury Shopping",
+ target:70,
+ reward:420,
+ text:"She's going on a luxury shopping trip with her friends.",
+ hint:"💡 Choose glam clothes, modern hair, stylish glasses and a fashionable bag.",
+ req:{outfit:["glam"],hair:["modern"],bags:["glam"],glassesMin:1}
+},
+
+{
+ name:"Princess Birthday",
+ target:73,
+ reward:450,
+ text:"It's a princess birthday party. Make the birthday girl look royal.",
+ hint:"💡 Princess/royal dress + princess hair + party makeup + jewelry.",
+ req:{outfit:["princess","royal"],hair:["princess"],makeup:["party","royal"],jewelryMin:2}
+},
+
+{
+ name:"Rose Garden Date",
+ target:67,
+ reward:470,
+ text:"She is visiting a romantic rose garden for a special event.",
+ hint:"💡 Choose pink/rose clothing, soft makeup, pretty hair and delicate jewelry.",
+ req:{outfit:["dream","fairy"],makeup:["soft"],jewelryMin:1,hair:["long","fairy"]}
+},
+
+{
+ name:"Diamond Night",
+ target:82,
+ reward:500,
+ text:"Tonight is Diamond Night. Everything should look luxurious.",
+ hint:"💡 Choose glam or royal clothing, sparkling makeup, lots of jewelry and elegant shoes.",
+ req:{outfit:["glam","royal"],makeup:["glam","royal"],jewelryMin:3}
+},
+
+{
+ name:"Ocean Princess",
+ target:72,
+ reward:530,
+ text:"The Ocean Kingdom has invited her to a royal celebration.",
+ hint:"💡 Use blue/cool outfits, long hair, blue-style accessories and royal jewelry.",
+ req:{outfit:["princess","dream"],hair:["long","princess"],jewelryMin:2}
+},
+
+{
+ name:"Magic Castle",
+ target:78,
+ reward:560,
+ text:"She has entered a magical castle. Create a fantasy princess look.",
+ hint:"💡 Fairy or princess outfit + magical hair + fairy makeup + jewelry.",
+ req:{outfit:["fairy","princess"],hair:["fairy","princess"],makeup:["fairy"],jewelryMin:2}
+},
+
+{
+ name:"Fashion Week",
+ target:84,
+ reward:600,
+ text:"She is walking into Fashion Week. Make her look like a fashion icon.",
+ hint:"💡 Choose glam clothes, modern hair, bold makeup, glasses and a stylish bag.",
+ req:{outfit:["glam"],hair:["modern"],makeup:["glam","party"],glassesMin:1,bags:["glam","party"]}
+},
+
+{
+ name:"Royal Wedding Guest",
+ target:80,
+ reward:650,
+ text:"She is a special guest at a royal wedding.",
+ hint:"💡 Elegant royal outfit, soft/royal makeup, princess hair and jewelry.",
+ req:{outfit:["royal"],hair:["princess","long"],makeup:["soft","royal"],jewelryMin:2}
+},
+
+{
+ name:"Fairy Queen",
+ target:88,
+ reward:700,
+ text:"The fairy kingdom needs its new queen. Create the most magical look possible.",
+ hint:"💡 Fairy outfit + fairy hair + fairy makeup + lots of jewelry.",
+ req:{outfit:["fairy"],hair:["fairy"],makeup:["fairy"],jewelryMin:3}
+},
+
+{
+ name:"Ultimate Fashion Queen",
+ target:92,
+ reward:1000,
+ text:"This is the final challenge! Create a look worthy of the ultimate Fashion Queen.",
+ hint:"💡 Combine a glamorous/royal outfit, beautiful hair, strong makeup, jewelry, bag and stylish glasses.",
+ req:{outfit:["glam","royal","princess"],makeup:["glam","royal","party"],jewelryMin:3,bags:["glam","party","royal"],glassesMin:1}
+}
+
 ];
+
+/* =========================================================
+   STATE
+========================================================= */
 
 let currentCategory="outfit";
 
@@ -1567,10 +1758,13 @@ let state={
 let coins=250;
 let currentLevel=1;
 let completedLevels=[];
-let isRotated=false;
 let selectedLevel=1;
+let isRotated=false;
 
-/* CATEGORY */
+/* =========================================================
+   CATEGORY
+========================================================= */
+
 function selectCategory(category,button){
 
   currentCategory=category;
@@ -1584,7 +1778,10 @@ function selectCategory(category,button){
   renderItems();
 }
 
-/* ITEMS */
+/* =========================================================
+   ITEMS
+========================================================= */
+
 function renderItems(){
 
   const container=document.getElementById("items");
@@ -1599,7 +1796,7 @@ function renderItems(){
     bags:"👜 Choose a Bag",
     jewelry:"💎 Choose Jewelry",
     glasses:"🕶️ Choose Glasses",
-    background:"🏠 Choose a Room"
+    background:"🏠 Choose a Scene"
   };
 
   document.getElementById("itemTitle").textContent=
@@ -1621,8 +1818,11 @@ function renderItems(){
     `;
 
     btn.onclick=()=>{
+
       state[currentCategory]=index;
+
       applySelection();
+
       renderItems();
     };
 
@@ -1631,7 +1831,10 @@ function renderItems(){
   });
 }
 
-/* APPLY LOOK */
+/* =========================================================
+   APPLY LOOK
+========================================================= */
+
 function applySelection(){
 
   const outfit=data.outfit[state.outfit];
@@ -1639,19 +1842,30 @@ function applySelection(){
   const body=document.getElementById("body");
   const skirt=document.getElementById("skirt");
 
-  body.className="body "+outfit.body;
-  skirt.className="skirt "+outfit.skirt;
+  body.style.background=outfit.color;
+
+  skirt.style.background=outfit.color;
+
+  skirt.className="skirt";
+
+  if(outfit.style===1){
+    skirt.classList.add("style2");
+  }
+
+  if(outfit.style===2){
+    skirt.classList.add("style3");
+  }
 
   const hair=data.hair[state.hair];
 
   const hairEl=document.getElementById("hair");
   const hairFront=document.getElementById("hairFront");
 
-  hairEl.className=
-    "hair "+hair.style+" "+hair.color;
+  hairEl.className="hair "+hair.style;
+  hairEl.style.background=hair.color;
 
-  hairFront.className=
-    "hair front "+hair.color;
+  hairFront.className="hair front";
+  hairFront.style.background=hair.color;
 
   const makeup=data.makeup[state.makeup];
 
@@ -1659,104 +1873,194 @@ function applySelection(){
     "lips "+makeup.lip;
 
   document.getElementById("shadowL").style.display=
-    makeup.shadow ? "block":"none";
+    makeup.shadow?"block":"none";
 
   document.getElementById("shadowR").style.display=
-    makeup.shadow ? "block":"none";
+    makeup.shadow?"block":"none";
 
   document.getElementById("blushL").style.display=
-    makeup.blush ? "block":"none";
+    makeup.blush?"block":"none";
 
   document.getElementById("blushR").style.display=
-    makeup.blush ? "block":"none";
+    makeup.blush?"block":"none";
 
   document.getElementById("lashL").style.display=
-    makeup.liner ? "block":"none";
+    makeup.liner?"block":"none";
 
   document.getElementById("lashR").style.display=
-    makeup.liner ? "block":"none";
+    makeup.liner?"block":"none";
 
   const shoe=data.shoes[state.shoes];
 
-  document.getElementById("shoeL").className=
-    "shoe left "+shoe.color;
+  document.getElementById("shoeL").style.background=
+    shoe.color;
 
-  document.getElementById("shoeR").className=
-    "shoe right "+shoe.color;
+  document.getElementById("shoeR").style.background=
+    shoe.color;
+
+  const bag=data.bags[state.bags];
+
+  const bagEl=document.getElementById("bag");
+
+  if(state.bags===0){
+    bagEl.style.display="none";
+  }else{
+    bagEl.style.display="block";
+    bagEl.className="bag "+bag.color;
+  }
 
   const jewelry=data.jewelry[state.jewelry];
 
   document.getElementById("earringL").style.display=
-    jewelry.value>=8 ? "block":"none";
+    jewelry.value>=6?"block":"none";
 
   document.getElementById("earringR").style.display=
-    jewelry.value>=8 ? "block":"none";
+    jewelry.value>=6?"block":"none";
 
   document.getElementById("necklace").style.display=
-    jewelry.value>=10 ? "block":"none";
+    jewelry.value>=12?"block":"none";
 
   document.getElementById("necklaceGem").style.display=
-    jewelry.value>=15 ? "block":"none";
+    jewelry.value>=18?"block":"none";
 
   const glasses=data.glasses[state.glasses];
 
   document.getElementById("glasses").style.display=
-    glasses.value>0 ? "block":"none";
+    glasses.value>0?"block":"none";
 
   const bg=data.background[state.background];
 
-  const stage=document.getElementById("stage");
-
-  stage.className="stage "+bg.bg;
+  document.getElementById("stage").className=
+    "stage "+bg.bg;
 
   updateScore();
   updateLevelProgress();
+  updateChallengeCard();
 }
 
-/* SCORE */
+/* =========================================================
+   SCORE
+========================================================= */
+
 function updateScore(){
 
   let score=50;
 
-  if(state.outfit!==0) score+=8;
+  if(state.outfit!==0) score+=7;
   if(state.hair!==0) score+=7;
   if(state.makeup!==0) score+=8;
   if(state.shoes!==0) score+=5;
   if(state.bags!==0) score+=5;
-  if(state.jewelry!==0) score+=6;
+  if(state.jewelry!==0) score+=7;
   if(state.glasses!==0) score+=4;
 
+  const makeup=data.makeup[state.makeup];
+
+  if(makeup.shadow) score+=2;
+  if(makeup.blush) score+=2;
+  if(makeup.liner) score+=2;
+
   if(
-    state.makeup===4 &&
-    state.jewelry>=2 &&
-    state.outfit>=2
+    state.outfit!==0 &&
+    state.hair!==0 &&
+    state.makeup!==0 &&
+    state.shoes!==0 &&
+    state.jewelry!==0
   ){
-    score+=7;
+    score+=5;
   }
 
-  score=Math.min(score,100);
-
-  document.getElementById("score").textContent=score;
-
-  return score;
+  return Math.min(score,100);
 }
 
-/* ROTATE CHARACTER */
-function rotateCharacter(){
+/* =========================================================
+   CHALLENGE MATCH
+========================================================= */
 
-  const character=document.getElementById("character");
+function matchesChallenge(level){
 
-  isRotated=!isRotated;
+  const req=level.req;
 
-  character.classList.toggle("rotated",isRotated);
+  const outfit=data.outfit[state.outfit];
+  const hair=data.hair[state.hair];
+  const makeup=data.makeup[state.makeup];
+  const shoes=data.shoes[state.shoes];
+  const bag=data.bags[state.bags];
+  const jewelry=data.jewelry[state.jewelry];
+  const glasses=data.glasses[state.glasses];
 
-  document.getElementById("rotateButton").textContent=
-    isRotated
-      ? "🔄 Show Front"
-      : "🔄 Rotate Character";
+  if(req.outfit && !req.outfit.includes(outfit.tag)){
+    return false;
+  }
+
+  if(req.hair && !req.hair.includes(hair.tag)){
+    return false;
+  }
+
+  if(req.makeup && !req.makeup.includes(makeup.tag)){
+    return false;
+  }
+
+  if(req.shoes && !req.shoes.includes(shoes.tag)){
+    return false;
+  }
+
+  if(req.bags && !req.bags.includes(bag.tag)){
+    return false;
+  }
+
+  if(req.jewelryMin && jewelry.value<req.jewelryMin){
+    return false;
+  }
+
+  if(req.glassesMin && glasses.value<req.glassesMin){
+    return false;
+  }
+
+  return true;
 }
 
-/* LEVEL UI */
+/* =========================================================
+   LEVEL UI
+========================================================= */
+
+function renderLevels(){
+
+  const container=document.getElementById("levels");
+
+  container.innerHTML="";
+
+  levels.forEach((level,index)=>{
+
+    const number=index+1;
+
+    const btn=document.createElement("button");
+
+    btn.className="levelBtn";
+
+    btn.textContent=number;
+
+    if(completedLevels.includes(number)){
+      btn.classList.add("completed");
+    }
+
+    if(number===currentLevel){
+      btn.classList.add("active");
+    }
+
+    if(number>currentLevel){
+      btn.classList.add("locked");
+    }
+
+    btn.onclick=()=>{
+      openLevel(number);
+    };
+
+    container.appendChild(btn);
+
+  });
+}
+
 function updateLevelUI(){
 
   document.getElementById("levelNow").textContent=
@@ -1772,29 +2076,32 @@ function updateLevelUI(){
     level.reward+
     " coins";
 
-  for(let i=1;i<=5;i++){
+  updateChallengeCard();
 
-    const btn=document.getElementById("level"+i);
-
-    btn.classList.remove("active","completed","locked");
-
-    if(completedLevels.includes(i)){
-      btn.classList.add("completed");
-    }
-
-    if(i===currentLevel){
-      btn.classList.add("active");
-    }
-
-    if(i>currentLevel){
-      btn.classList.add("locked");
-    }
-  }
+  renderLevels();
 
   updateLevelProgress();
 }
 
-/* LEVEL PROGRESS */
+/* =========================================================
+   CHALLENGE CARD
+========================================================= */
+
+function updateChallengeCard(){
+
+  const level=levels[currentLevel-1];
+
+  document.getElementById("challengeName").textContent=
+    level.name;
+
+  document.getElementById("challengeText").textContent=
+    level.text;
+}
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
 function updateLevelProgress(){
 
   const level=levels[currentLevel-1];
@@ -1804,16 +2111,24 @@ function updateLevelProgress(){
   let progress=
     Math.round((score/level.target)*100);
 
+  if(matchesChallenge(level)){
+    progress+=10;
+  }
+
   progress=Math.max(0,Math.min(progress,100));
 
   document.getElementById("levelProgressBar").style.width=
     progress+"%";
 }
 
-/* OPEN LEVEL */
+/* =========================================================
+   OPEN LEVEL
+========================================================= */
+
 function openLevel(levelNumber){
 
   if(levelNumber>currentLevel){
+    alert("🔒 Complete the previous challenge first!");
     return;
   }
 
@@ -1827,41 +2142,59 @@ function openLevel(levelNumber){
   document.getElementById("levelModalText").textContent=
     level.text;
 
+  document.getElementById("levelHint").textContent=
+    level.hint;
+
   document.getElementById("levelReward").textContent=
     "🪙 +"+level.reward+" Style Coins";
 
-  const completeButton=
-    document.querySelector(".completeLevel");
+  const button=document.querySelector(".completeLevel");
 
   if(completedLevels.includes(levelNumber)){
 
-    completeButton.textContent="✅ Completed";
-    completeButton.disabled=true;
-    completeButton.style.opacity=".6";
+    button.textContent="✅ Completed";
+    button.disabled=true;
+    button.style.opacity=".6";
 
   }else{
 
-    completeButton.textContent="Complete Level";
-    completeButton.disabled=false;
-    completeButton.style.opacity="1";
+    button.textContent="Complete Challenge";
+    button.disabled=false;
+    button.style.opacity="1";
   }
 
   document.getElementById("levelOverlay").style.display="flex";
 }
 
-/* COMPLETE LEVEL */
+/* =========================================================
+   COMPLETE LEVEL
+========================================================= */
+
 function completeLevel(){
 
   const level=levels[selectedLevel-1];
 
   const score=updateScore();
 
+  const challengeOK=matchesChallenge(level);
+
   if(score<level.target){
 
     alert(
-      "You need "+level.target+
-      " Style Score to complete this level.\n\n"+
-      "Your current score: "+score
+      "❌ Your Style Score is too low.\n\n"+
+      "Required: "+level.target+
+      "\nYour score: "+score+
+      "\n\nUse the Hint for help!"
+    );
+
+    return;
+  }
+
+  if(!challengeOK){
+
+    alert(
+      "💡 The look doesn't match the challenge yet!\n\n"+
+      "Read the Hint and change the outfit, hair, makeup or accessories."
     );
 
     return;
@@ -1884,42 +2217,104 @@ function completeLevel(){
     currentLevel++;
   }
 
-  updateLevelUI();
-
   closeLevel();
+
+  updateLevelUI();
 
   setTimeout(()=>{
 
     alert(
-      "🎉 Level Complete!\n\n"+
-      "You earned "+level.reward+
+      "🎉 Challenge Complete!\n\n"+
+      "🏆 "+level.name+
+      "\n🪙 You earned "+level.reward+
       " Style Coins!"
     );
 
   },100);
 }
 
-/* CLOSE LEVEL */
+/* =========================================================
+   HINT
+========================================================= */
+
+function showHint(){
+
+  const level=levels[currentLevel-1];
+
+  document.getElementById("levelModalTitle").textContent=
+    "💡 Level "+currentLevel+" Hint";
+
+  document.getElementById("levelModalText").textContent=
+    level.name;
+
+  document.getElementById("levelHint").textContent=
+    level.hint;
+
+  document.getElementById("levelReward").textContent=
+    "🎯 Target Score: "+level.target;
+
+  document.querySelector(".completeLevel").style.display="none";
+
+  document.getElementById("levelOverlay").style.display="flex";
+
+  setTimeout(()=>{
+
+    document.querySelector(".completeLevel").style.display=
+      "inline-block";
+
+  },100);
+}
+
+/* =========================================================
+   CLOSE LEVEL
+========================================================= */
+
 function closeLevel(){
 
   document.getElementById("levelOverlay").style.display=
     "none";
 }
 
-/* RANDOM */
+/* =========================================================
+   ROTATE
+========================================================= */
+
+function rotateCharacter(){
+
+  const character=document.getElementById("character");
+
+  isRotated=!isRotated;
+
+  character.classList.toggle("rotated",isRotated);
+
+  document.getElementById("rotateButton").textContent=
+    isRotated
+      ?"🔄 Show Front"
+      :"🔄 Rotate Character";
+}
+
+/* =========================================================
+   RANDOM
+========================================================= */
+
 function randomLook(){
 
   Object.keys(state).forEach(key=>{
+
     state[key]=Math.floor(
       Math.random()*data[key].length
     );
+
   });
 
   applySelection();
   renderItems();
 }
 
-/* RESET */
+/* =========================================================
+   RESET
+========================================================= */
+
 function resetLook(){
 
   state={
@@ -1937,11 +2332,15 @@ function resetLook(){
   renderItems();
 }
 
-/* BACKGROUND */
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
 function changeBackground(){
 
   state.background=
-    (state.background+1)%data.background.length;
+    (state.background+1)%
+    data.background.length;
 
   applySelection();
 
@@ -1950,12 +2349,22 @@ function changeBackground(){
   }
 }
 
-/* FINAL */
+/* =========================================================
+   FINAL
+========================================================= */
+
 function showFinal(){
 
   const score=updateScore();
 
+  const level=levels[currentLevel-1];
+
   let message="Nice look! 💖";
+
+  if(matchesChallenge(level)){
+    message=
+      "Perfect! Your look matches the current challenge! 🎯✨";
+  }
 
   if(score>=90){
     message=
@@ -1980,14 +2389,20 @@ function showFinal(){
     "flex";
 }
 
-/* CLOSE FINAL */
+/* =========================================================
+   CLOSE FINAL
+========================================================= */
+
 function closeFinal(){
 
   document.getElementById("overlay").style.display=
     "none";
 }
 
-/* START */
+/* =========================================================
+   START
+========================================================= */
+
 applySelection();
 renderItems();
 updateLevelUI();
