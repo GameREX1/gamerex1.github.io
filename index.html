@@ -340,6 +340,14 @@ header{
   justify-content:center;
   background:#111;
   font-size:65px;
+  overflow:hidden;
+}
+
+.game-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
 }
 
 .game-info{
@@ -554,6 +562,71 @@ header{
   color:#888;
   line-height:1.6;
   margin-bottom:22px;
+}
+
+/* ================= GAME ICON UPLOAD ================= */
+
+.game-icon-upload{
+  margin-bottom:15px;
+}
+
+.game-icon-label{
+  display:block;
+  color:#aaa;
+  font-size:14px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.game-icon-input{
+  width:100%;
+  padding:10px;
+  background:#000;
+  color:#aaa;
+  border:1px solid #292929;
+  border-radius:7px;
+  cursor:pointer;
+}
+
+.game-icon-input:hover{
+  border-color:#00d9ff;
+}
+
+.game-icon-input::file-selector-button{
+  background:#00d9ff;
+  color:#000;
+  border:0;
+  border-radius:6px;
+  padding:9px 13px;
+  margin-right:10px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.icon-preview-box{
+  display:none;
+  margin-top:12px;
+  width:100%;
+  padding:12px;
+  background:#050505;
+  border:1px solid #222;
+  border-radius:9px;
+  text-align:center;
+}
+
+.icon-preview-box img{
+  width:130px;
+  height:130px;
+  object-fit:cover;
+  border-radius:12px;
+  border:1px solid #333;
+}
+
+.icon-preview-name{
+  color:#777;
+  font-size:12px;
+  margin-top:8px;
+  word-break:break-word;
 }
 
 /* ================= MODAL ================= */
@@ -789,6 +862,7 @@ footer span{
     right:7px;
     bottom:5px;
   }
+
 }
 
 </style>
@@ -910,6 +984,13 @@ footer span{
     🚀 <span>Adventure</span>
   </button>
 
+  <button
+    class="side-link side-category"
+    onclick="filterCategory('Dress Up')"
+  >
+    👗 <span>Dress Up</span>
+  </button>
+
   <hr class="sidebar-divider">
 
   <button
@@ -925,8 +1006,6 @@ footer span{
 <!-- ================= MAIN ================= -->
 
 <main class="main">
-
-  <!-- HOME -->
 
   <div id="homePage">
 
@@ -956,8 +1035,6 @@ footer span{
 
     </section>
 
-
-    <!-- GAMES -->
 
     <section
       class="games"
@@ -1351,45 +1428,14 @@ footer span{
       "
     >
 
-      <button
-        class="small-btn"
-        onclick="selectLogo('👤')"
-      >👤</button>
-
-      <button
-        class="small-btn"
-        onclick="selectLogo('🎮')"
-      >🎮</button>
-
-      <button
-        class="small-btn"
-        onclick="selectLogo('😎')"
-      >😎</button>
-
-      <button
-        class="small-btn"
-        onclick="selectLogo('🔥')"
-      >🔥</button>
-
-      <button
-        class="small-btn"
-        onclick="selectLogo('⚡')"
-      >⚡</button>
-
-      <button
-        class="small-btn"
-        onclick="selectLogo('🐯')"
-      >🐯</button>
-
-      <button
-        class="small-btn"
-        onclick="selectLogo('🐺')"
-      >🐺</button>
-
-      <button
-        class="small-btn"
-        onclick="selectLogo('👾')"
-      >👾</button>
+      <button class="small-btn" onclick="selectLogo('👤')">👤</button>
+      <button class="small-btn" onclick="selectLogo('🎮')">🎮</button>
+      <button class="small-btn" onclick="selectLogo('😎')">😎</button>
+      <button class="small-btn" onclick="selectLogo('🔥')">🔥</button>
+      <button class="small-btn" onclick="selectLogo('⚡')">⚡</button>
+      <button class="small-btn" onclick="selectLogo('🐯')">🐯</button>
+      <button class="small-btn" onclick="selectLogo('🐺')">🐺</button>
+      <button class="small-btn" onclick="selectLogo('👾')">👾</button>
 
     </div>
 
@@ -1448,12 +1494,43 @@ footer span{
       placeholder="Category (Racing, Sports, Puzzle...)"
     >
 
-    <input
-      type="text"
-      id="developerGameIcon"
-      placeholder="Game icon (example: 🎮)"
-      maxlength="4"
-    >
+    <!-- GAME ICON -->
+
+    <div class="game-icon-upload">
+
+      <label
+        class="game-icon-label"
+        for="developerGameIconFile"
+      >
+        🖼️ Game Icon
+      </label>
+
+      <input
+        class="game-icon-input"
+        type="file"
+        id="developerGameIconFile"
+        accept="image/png,image/jpeg,image/jpg"
+        onchange="previewGameIcon(event)"
+      >
+
+      <div
+        class="icon-preview-box"
+        id="iconPreviewBox"
+      >
+
+        <img
+          id="iconPreview"
+          alt="Game Icon Preview"
+        >
+
+        <div
+          class="icon-preview-name"
+          id="iconPreviewName"
+        ></div>
+
+      </div>
+
+    </div>
 
     <button
       class="main-btn"
@@ -1476,6 +1553,7 @@ footer span{
 
 let currentCategory = "All";
 let authMode = "login";
+let selectedGameIcon = "";
 
 
 /* =====================================================
@@ -1647,10 +1725,15 @@ function renderGames(){
       game.category
     );
 
+    const iconHtml =
+      game.iconImage
+        ? `<img src="${game.iconImage}" alt="${escapeHtml(game.name)} icon">`
+        : escapeHtml(game.icon || "🎮");
+
     card.innerHTML=`
 
       <div class="game-image">
-        ${game.icon || "🎮"}
+        ${iconHtml}
       </div>
 
       <div class="game-info">
@@ -1716,7 +1799,8 @@ function escapeHtml(text){
   const div =
     document.createElement("div");
 
-  div.textContent=text;
+  div.textContent =
+    String(text || "");
 
   return div.innerHTML;
 
@@ -2747,6 +2831,8 @@ function searchLanguages(){
 
 function openDeveloper(){
 
+  selectedGameIcon="";
+
   document.getElementById(
     "developerModal"
   ).style.display="flex";
@@ -2754,7 +2840,113 @@ function openDeveloper(){
 }
 
 
+function previewGameIcon(event){
+
+  const file =
+    event.target.files &&
+    event.target.files[0];
+
+  const previewBox =
+    document.getElementById(
+      "iconPreviewBox"
+    );
+
+  const preview =
+    document.getElementById(
+      "iconPreview"
+    );
+
+  const previewName =
+    document.getElementById(
+      "iconPreviewName"
+    );
+
+
+  if(!file){
+
+    selectedGameIcon="";
+
+    previewBox.style.display="none";
+
+    preview.removeAttribute("src");
+
+    previewName.textContent="";
+
+    return;
+
+  }
+
+
+  if(!file.type.startsWith("image/")){
+
+    alert(
+      "Please select a PNG or JPG image."
+    );
+
+    event.target.value="";
+
+    selectedGameIcon="";
+
+    previewBox.style.display="none";
+
+    return;
+
+  }
+
+
+  if(file.size > 3 * 1024 * 1024){
+
+    alert(
+      "Please choose an image smaller than 3 MB."
+    );
+
+    event.target.value="";
+
+    selectedGameIcon="";
+
+    previewBox.style.display="none";
+
+    return;
+
+  }
+
+
+  const reader =
+    new FileReader();
+
+
+  reader.onload=function(){
+
+    selectedGameIcon =
+      reader.result;
+
+    preview.src =
+      selectedGameIcon;
+
+    previewName.textContent =
+      file.name;
+
+    previewBox.style.display="block";
+
+  };
+
+
+  reader.readAsDataURL(file);
+
+}
+
+
 function submitGame(){
+
+  const developerName =
+    document.getElementById(
+      "developerName"
+    ).value.trim();
+
+  const developerEmail =
+    document.getElementById(
+      "developerEmail"
+    ).value.trim();
 
   const name =
     document.getElementById(
@@ -2772,17 +2964,70 @@ function submitGame(){
     ).value.trim() ||
     "Games";
 
-  const icon =
-    document.getElementById(
-      "developerGameIcon"
-    ).value.trim() ||
-    "🎮";
 
-
-  if(!name || !url){
+  if(!developerName){
 
     alert(
-      "Please enter the Game Name and Game URL."
+      "Please enter your name."
+    );
+
+    return;
+
+  }
+
+
+  if(!developerEmail){
+
+    alert(
+      "Please enter your developer email."
+    );
+
+    return;
+
+  }
+
+
+  if(!name){
+
+    alert(
+      "Please enter the Game Name."
+    );
+
+    return;
+
+  }
+
+
+  if(!url){
+
+    alert(
+      "Please enter the Game URL."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    new URL(url);
+
+  }catch(error){
+
+    alert(
+      "Please enter a valid Game URL."
+    );
+
+    return;
+
+  }
+
+
+  if(!selectedGameIcon){
+
+    alert(
+      "Please choose a Game Icon."
     );
 
     return;
@@ -2798,13 +3043,22 @@ function submitGame(){
 
     id:Date.now(),
 
+    developerName:
+      developerName,
+
+    developerEmail:
+      developerEmail,
+
     name:name,
 
     url:url,
 
     category:category,
 
-    icon:icon,
+    iconImage:
+      selectedGameIcon,
+
+    icon:"🎮",
 
     description:
       "Play "+name+" on Gamerex."
@@ -2812,7 +3066,20 @@ function submitGame(){
   });
 
 
-  saveGames(games);
+  try{
+
+    saveGames(games);
+
+  }catch(error){
+
+    alert(
+      "The image is too large to save. Please use a smaller image."
+    );
+
+    return;
+
+  }
+
 
   renderGames();
 
@@ -2820,6 +3087,14 @@ function submitGame(){
     "developerModal"
   );
 
+
+  document.getElementById(
+    "developerName"
+  ).value="";
+
+  document.getElementById(
+    "developerEmail"
+  ).value="";
 
   document.getElementById(
     "developerGameName"
@@ -2834,9 +3109,22 @@ function submitGame(){
   ).value="";
 
   document.getElementById(
-    "developerGameIcon"
+    "developerGameIconFile"
   ).value="";
 
+  document.getElementById(
+    "iconPreviewBox"
+  ).style.display="none";
+
+  document.getElementById(
+    "iconPreview"
+  ).removeAttribute("src");
+
+  document.getElementById(
+    "iconPreviewName"
+  ).textContent="";
+
+  selectedGameIcon="";
 
   showGames();
 
