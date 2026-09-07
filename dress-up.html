@@ -299,6 +299,12 @@ header{
     inset 6px 4px 0 rgba(255,255,255,.08);
 }
 
+/*
+  IMPORTANT:
+  .face is inside .head.
+  Therefore all face features below use coordinates
+  relative to the 134x150 head.
+*/
 .face{
   position:absolute;
   inset:0;
@@ -328,8 +334,11 @@ header{
   position:absolute;
   width:18px;
   height:25px;
-  left:141px;
-  top:105px;
+
+  /* FIXED: relative to .face */
+  left:58px;
+  top:62px;
+
   z-index:10;
 }
 
@@ -363,17 +372,20 @@ header{
   height:6px;
   background:#59372d;
   border-radius:10px;
-  top:75px;
+
+  /* FIXED: relative to .face */
+  top:32px;
+
   z-index:13;
 }
 
 .eyebrow.left{
-  left:106px;
+  left:23px;
   transform:rotate(-6deg);
 }
 
 .eyebrow.right{
-  left:164px;
+  left:81px;
   transform:rotate(6deg);
 }
 
@@ -382,16 +394,19 @@ header{
   position:absolute;
   width:43px;
   height:27px;
-  top:87px;
+
+  /* FIXED */
+  top:44px;
+
   z-index:11;
 }
 
 .eyeArea.left{
-  left:103px;
+  left:20px;
 }
 
 .eyeArea.right{
-  left:160px;
+  left:77px;
 }
 
 .eyeWhite{
@@ -448,17 +463,20 @@ header{
   height:18px;
   border-radius:50%;
   background:rgba(157,92,180,.35);
-  top:80px;
+
+  /* FIXED */
+  top:37px;
+
   z-index:9;
   filter:blur(1px);
 }
 
 .eyesShadow.left{
-  left:103px;
+  left:20px;
 }
 
 .eyesShadow.right{
-  left:160px;
+  left:77px;
 }
 
 /* EYELASHES */
@@ -466,19 +484,22 @@ header{
   position:absolute;
   width:31px;
   height:8px;
-  top:82px;
+
+  /* FIXED */
+  top:39px;
+
   z-index:14;
   border-top:3px solid #29202b;
   border-radius:50%;
 }
 
 .lash.left{
-  left:105px;
+  left:22px;
   transform:rotate(-5deg);
 }
 
 .lash.right{
-  left:160px;
+  left:77px;
   transform:rotate(5deg);
 }
 
@@ -489,16 +510,19 @@ header{
   height:8px;
   border-bottom:2px solid rgba(80,45,55,.28);
   border-radius:50%;
-  top:103px;
+
+  /* FIXED */
+  top:60px;
+
   z-index:12;
 }
 
 .lowerEye.left{
-  left:109px;
+  left:26px;
 }
 
 .lowerEye.right{
-  left:164px;
+  left:81px;
 }
 
 /* BLUSH */
@@ -508,17 +532,20 @@ header{
   height:19px;
   border-radius:50%;
   background:rgba(238,87,125,.35);
-  top:117px;
+
+  /* FIXED */
+  top:74px;
+
   z-index:10;
   filter:blur(1px);
 }
 
 .blush.left{
-  left:96px;
+  left:13px;
 }
 
 .blush.right{
-  left:172px;
+  left:89px;
 }
 
 /* LIPS */
@@ -526,8 +553,11 @@ header{
   position:absolute;
   width:24px;
   height:11px;
-  left:138px;
-  top:138px;
+
+  /* FIXED: relative to .face */
+  left:55px;
+  top:95px;
+
   z-index:15;
   background:#d65b78;
   border-radius:50% 50% 55% 55%;
@@ -588,7 +618,10 @@ header{
   top:28px;
   border-radius:55% 55% 42% 42%;
   background:#3b211c;
+
+  /* stays behind the face */
   z-index:2;
+
   pointer-events:none;
 }
 
@@ -1043,6 +1076,7 @@ header{
 
 /* MOBILE */
 @media(max-width:1050px){
+
   .main{
     grid-template-columns:210px 1fr;
   }
@@ -1058,6 +1092,7 @@ header{
 }
 
 @media(max-width:700px){
+
   header{
     height:62px;
     padding:0 13px;
@@ -1116,6 +1151,7 @@ header{
 }
 
 @media(max-width:430px){
+
   .stage{
     min-height:550px;
   }
@@ -1529,13 +1565,9 @@ let state={
 };
 
 let coins=250;
-
 let currentLevel=1;
-
 let completedLevels=[];
-
 let isRotated=false;
-
 let selectedLevel=1;
 
 /* CATEGORY */
