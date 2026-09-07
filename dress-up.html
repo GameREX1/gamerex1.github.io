@@ -113,6 +113,85 @@ header{
   transform:translateX(3px);
 }
 
+/* LEVELS */
+.levelBox{
+  margin-top:18px;
+  padding:13px;
+  border-radius:17px;
+  background:linear-gradient(135deg,#fff3fb,#f4efff);
+  border:1px solid rgba(216,60,145,.12);
+}
+
+.levelHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:9px;
+}
+
+.levelTitle{
+  font-size:15px;
+  font-weight:900;
+}
+
+.levelNow{
+  font-size:12px;
+  color:#d83c91;
+  font-weight:bold;
+}
+
+.levels{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px;
+}
+
+.levelBtn{
+  padding:9px 4px;
+  border-radius:10px;
+  background:#eee8f4;
+  color:#62566b;
+  font-size:12px;
+}
+
+.levelBtn.active{
+  background:#d83c91;
+  color:white;
+}
+
+.levelBtn.completed{
+  background:#9d70d2;
+  color:white;
+}
+
+.levelBtn.locked{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.levelInfo{
+  margin-top:9px;
+  font-size:11px;
+  color:#6c6072;
+  line-height:1.4;
+}
+
+.levelProgress{
+  height:7px;
+  background:#eadff0;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:8px;
+}
+
+.levelProgressBar{
+  height:100%;
+  width:0%;
+  background:#d83c91;
+  border-radius:20px;
+  transition:.3s;
+}
+
 /* CHARACTER AREA */
 .stage{
   min-height:650px;
@@ -124,6 +203,7 @@ header{
   justify-content:center;
   background:linear-gradient(#dff5ff,#fff0fa);
   box-shadow:0 12px 35px rgba(80,40,100,.1);
+  perspective:1000px;
 }
 
 .bg1{
@@ -168,14 +248,40 @@ header{
   border-top:2px solid rgba(255,255,255,.65);
 }
 
+/* ROTATE BUTTON */
+.rotateButton{
+  position:absolute;
+  top:18px;
+  right:18px;
+  z-index:15;
+  padding:11px 15px;
+  border-radius:14px;
+  background:rgba(255,255,255,.9);
+  color:#c02d7e;
+  box-shadow:0 6px 18px rgba(70,40,90,.12);
+  transition:.2s;
+}
+
+.rotateButton:hover{
+  transform:translateY(-2px);
+  background:white;
+}
+
 /* CHARACTER */
 .character{
   position:relative;
   width:300px;
   height:580px;
   z-index:5;
-  transform:scale(1);
+  transform:scale(1) rotateY(0deg);
   transform-origin:bottom center;
+  transform-style:preserve-3d;
+  transition:transform .75s ease;
+}
+
+/* ROTATED STATE */
+.character.rotated{
+  transform:scale(1) rotateY(180deg);
 }
 
 /* HEAD */
@@ -193,12 +299,6 @@ header{
     inset 6px 4px 0 rgba(255,255,255,.08);
 }
 
-/*
-  IMPORTANT:
-  .face is 134x150.
-  All face features below are now positioned
-  relative to this face, NOT the whole character.
-*/
 .face{
   position:absolute;
   inset:0;
@@ -228,9 +328,9 @@ header{
   position:absolute;
   width:18px;
   height:25px;
-  left:58px;
-  top:62px;
-  z-index:20;
+  left:141px;
+  top:105px;
+  z-index:10;
 }
 
 .nose:before{
@@ -263,17 +363,17 @@ header{
   height:6px;
   background:#59372d;
   border-radius:10px;
-  top:32px;
-  z-index:20;
+  top:75px;
+  z-index:13;
 }
 
 .eyebrow.left{
-  left:23px;
+  left:106px;
   transform:rotate(-6deg);
 }
 
 .eyebrow.right{
-  left:81px;
+  left:164px;
   transform:rotate(6deg);
 }
 
@@ -282,16 +382,16 @@ header{
   position:absolute;
   width:43px;
   height:27px;
-  top:44px;
-  z-index:18;
+  top:87px;
+  z-index:11;
 }
 
 .eyeArea.left{
-  left:20px;
+  left:103px;
 }
 
 .eyeArea.right{
-  left:77px;
+  left:160px;
 }
 
 .eyeWhite{
@@ -348,17 +448,17 @@ header{
   height:18px;
   border-radius:50%;
   background:rgba(157,92,180,.35);
-  top:37px;
-  z-index:16;
+  top:80px;
+  z-index:9;
   filter:blur(1px);
 }
 
 .eyesShadow.left{
-  left:20px;
+  left:103px;
 }
 
 .eyesShadow.right{
-  left:77px;
+  left:160px;
 }
 
 /* EYELASHES */
@@ -366,19 +466,19 @@ header{
   position:absolute;
   width:31px;
   height:8px;
-  top:39px;
-  z-index:22;
+  top:82px;
+  z-index:14;
   border-top:3px solid #29202b;
   border-radius:50%;
 }
 
 .lash.left{
-  left:22px;
+  left:105px;
   transform:rotate(-5deg);
 }
 
 .lash.right{
-  left:77px;
+  left:160px;
   transform:rotate(5deg);
 }
 
@@ -389,16 +489,16 @@ header{
   height:8px;
   border-bottom:2px solid rgba(80,45,55,.28);
   border-radius:50%;
-  top:60px;
-  z-index:19;
+  top:103px;
+  z-index:12;
 }
 
 .lowerEye.left{
-  left:26px;
+  left:109px;
 }
 
 .lowerEye.right{
-  left:81px;
+  left:164px;
 }
 
 /* BLUSH */
@@ -408,17 +508,17 @@ header{
   height:19px;
   border-radius:50%;
   background:rgba(238,87,125,.35);
-  top:74px;
-  z-index:15;
+  top:117px;
+  z-index:10;
   filter:blur(1px);
 }
 
 .blush.left{
-  left:13px;
+  left:96px;
 }
 
 .blush.right{
-  left:89px;
+  left:172px;
 }
 
 /* LIPS */
@@ -426,9 +526,9 @@ header{
   position:absolute;
   width:24px;
   height:11px;
-  left:55px;
-  top:95px;
-  z-index:25;
+  left:138px;
+  top:138px;
+  z-index:15;
   background:#d65b78;
   border-radius:50% 50% 55% 55%;
 }
@@ -518,7 +618,6 @@ header{
   background:#17151a;
 }
 
-/* FRONT HAIR */
 .hair.front{
   width:125px;
   height:58px;
@@ -656,7 +755,7 @@ header{
   height:30px;
   left:102px;
   top:103px;
-  z-index:30;
+  z-index:16;
 }
 
 .glasses:before,
@@ -724,6 +823,48 @@ header{
   left:143px;
   top:202px;
   z-index:11;
+}
+
+/* BACK VIEW */
+.character.rotated .face,
+.character.rotated .glasses,
+.character.rotated .earring,
+.character.rotated .necklace,
+.character.rotated .necklaceGem,
+.character.rotated .hair.front{
+  visibility:hidden;
+}
+
+.character.rotated .head{
+  box-shadow:
+    inset 8px -10px 0 rgba(150,80,50,.06),
+    inset -6px 4px 0 rgba(255,255,255,.08);
+}
+
+.character.rotated .hair{
+  z-index:12;
+}
+
+.character.rotated .body:after{
+  content:"";
+  position:absolute;
+  width:80px;
+  height:100px;
+  left:55px;
+  top:45px;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+}
+
+.character.rotated .skirt:after{
+  content:"";
+  position:absolute;
+  width:70px;
+  height:8px;
+  left:75px;
+  top:25px;
+  background:rgba(80,50,90,.12);
+  border-radius:50%;
 }
 
 /* RIGHT SIDE */
@@ -807,7 +948,61 @@ header{
   color:#d83c91;
 }
 
-/* POPUP */
+/* LEVEL POPUP */
+.levelOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(35,22,42,.55);
+  backdrop-filter:blur(7px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:110;
+  padding:20px;
+}
+
+.levelModal{
+  width:min(500px,100%);
+  background:white;
+  border-radius:25px;
+  padding:25px;
+  text-align:center;
+  box-shadow:0 25px 70px rgba(0,0,0,.3);
+}
+
+.levelModal h2{
+  color:#d83c91;
+  margin-bottom:8px;
+}
+
+.levelModal p{
+  color:#685d70;
+  margin-bottom:18px;
+}
+
+.reward{
+  font-size:30px;
+  font-weight:900;
+  color:#b62675;
+  margin:15px;
+}
+
+.completeLevel{
+  background:#d83c91;
+  color:white;
+  padding:13px 24px;
+  border-radius:12px;
+  margin-right:6px;
+}
+
+.closeLevel{
+  background:#eee8f4;
+  color:#4a3b52;
+  padding:13px 24px;
+  border-radius:12px;
+}
+
+/* FINAL POPUP */
 .overlay{
   position:fixed;
   inset:0;
@@ -848,7 +1043,6 @@ header{
 
 /* MOBILE */
 @media(max-width:1050px){
-
   .main{
     grid-template-columns:210px 1fr;
   }
@@ -864,7 +1058,6 @@ header{
 }
 
 @media(max-width:700px){
-
   header{
     height:62px;
     padding:0 13px;
@@ -898,8 +1091,12 @@ header{
   }
 
   .character{
-    transform:scale(.88);
+    transform:scale(.88) rotateY(0deg);
     margin-bottom:-20px;
+  }
+
+  .character.rotated{
+    transform:scale(.88) rotateY(180deg);
   }
 
   .itemsPanel{
@@ -909,17 +1106,27 @@ header{
   .items{
     grid-template-columns:repeat(4,1fr);
   }
+
+  .rotateButton{
+    top:12px;
+    right:12px;
+    padding:9px 11px;
+    font-size:12px;
+  }
 }
 
 @media(max-width:430px){
-
   .stage{
     min-height:550px;
   }
 
   .character{
-    transform:scale(.78);
+    transform:scale(.78) rotateY(0deg);
     margin-bottom:-35px;
+  }
+
+  .character.rotated{
+    transform:scale(.78) rotateY(180deg);
   }
 
   .items{
@@ -928,6 +1135,15 @@ header{
 
   .categories{
     grid-template-columns:repeat(2,1fr);
+  }
+
+  .levels{
+    grid-template-columns:repeat(5,1fr);
+  }
+
+  .levelBtn{
+    padding:8px 2px;
+    font-size:11px;
   }
 }
 </style>
@@ -985,6 +1201,48 @@ header{
 
   </div>
 
+  <!-- LEVELS -->
+  <div class="levelBox">
+
+    <div class="levelHeader">
+      <div class="levelTitle">🏆 Levels</div>
+      <div class="levelNow" id="levelNow">Level 1</div>
+    </div>
+
+    <div class="levels">
+
+      <button class="levelBtn active" id="level1" onclick="openLevel(1)">
+        1
+      </button>
+
+      <button class="levelBtn locked" id="level2" onclick="openLevel(2)">
+        2
+      </button>
+
+      <button class="levelBtn locked" id="level3" onclick="openLevel(3)">
+        3
+      </button>
+
+      <button class="levelBtn locked" id="level4" onclick="openLevel(4)">
+        4
+      </button>
+
+      <button class="levelBtn locked" id="level5" onclick="openLevel(5)">
+        5
+      </button>
+
+    </div>
+
+    <div class="levelInfo" id="levelInfo">
+      Casual Day • Score 55+ • Reward 100 coins
+    </div>
+
+    <div class="levelProgress">
+      <div class="levelProgressBar" id="levelProgressBar"></div>
+    </div>
+
+  </div>
+
 </div>
 
 <!-- CENTER -->
@@ -994,6 +1252,10 @@ header{
     <div class="window"></div>
     <div class="floor"></div>
   </div>
+
+  <button class="rotateButton" onclick="rotateCharacter()" id="rotateButton">
+    🔄 Rotate Character
+  </button>
 
   <div class="character" id="character">
 
@@ -1072,9 +1334,7 @@ header{
 <!-- RIGHT -->
 <div class="panel itemsPanel">
 
-  <div class="panelTitle" id="itemTitle">
-    👗 Choose an Outfit
-  </div>
+  <div class="panelTitle" id="itemTitle">👗 Choose an Outfit</div>
 
   <div class="items" id="items"></div>
 
@@ -1084,23 +1344,10 @@ header{
   </div>
 
   <div class="bottomButtons">
-
-    <button class="action" onclick="randomLook()">
-      🎲 Random
-    </button>
-
-    <button class="action" onclick="resetLook()">
-      ↻ Reset
-    </button>
-
-    <button class="action primary" onclick="showFinal()">
-      📸 Final Look
-    </button>
-
-    <button class="action" onclick="changeBackground()">
-      🌈 Scene
-    </button>
-
+    <button class="action" onclick="randomLook()">🎲 Random</button>
+    <button class="action" onclick="resetLook()">↻ Reset</button>
+    <button class="action primary" onclick="showFinal()">📸 Final Look</button>
+    <button class="action" onclick="changeBackground()">🌈 Scene</button>
   </div>
 
 </div>
@@ -1108,14 +1355,41 @@ header{
 </div>
 </div>
 
+<!-- LEVEL POPUP -->
+<div class="levelOverlay" id="levelOverlay">
+
+  <div class="levelModal">
+
+    <div style="font-size:50px">🏆✨</div>
+
+    <h2 id="levelModalTitle">Level 1</h2>
+
+    <p id="levelModalText">
+      Create a stylish Casual Day look.
+    </p>
+
+    <div class="reward" id="levelReward">
+      🪙 +100 Coins
+    </div>
+
+    <button class="completeLevel" onclick="completeLevel()">
+      Complete Level
+    </button>
+
+    <button class="closeLevel" onclick="closeLevel()">
+      Close
+    </button>
+
+  </div>
+
+</div>
+
 <!-- FINAL POPUP -->
 <div class="overlay" id="overlay">
 
   <div class="modal">
 
-    <div style="font-size:55px">
-      ✨💖✨
-    </div>
+    <div style="font-size:55px">✨💖✨</div>
 
     <h2>Your Look Is Ready!</h2>
 
@@ -1123,9 +1397,8 @@ header{
       Amazing style!
     </p>
 
-    <div
-      style="font-size:38px;font-weight:900;color:#d83c91;margin:15px"
-      id="finalScore">
+    <div style="font-size:38px;font-weight:900;color:#d83c91;margin:15px"
+         id="finalScore">
       50/100
     </div>
 
@@ -1208,6 +1481,40 @@ background:[
 
 };
 
+/* LEVEL DATA */
+const levels = [
+  {
+    name:"Casual Day",
+    target:55,
+    reward:100,
+    text:"Create a cute Casual Day look and reach 55+ Style Score."
+  },
+  {
+    name:"Party Night",
+    target:65,
+    reward:150,
+    text:"Create a glamorous Party Night look and reach 65+ Style Score."
+  },
+  {
+    name:"Beach Day",
+    target:72,
+    reward:200,
+    text:"Create a fresh Beach Day look and reach 72+ Style Score."
+  },
+  {
+    name:"Princess",
+    target:82,
+    reward:300,
+    text:"Create a royal Princess look and reach 82+ Style Score."
+  },
+  {
+    name:"Red Carpet",
+    target:90,
+    reward:500,
+    text:"Create a superstar Red Carpet look and reach 90+ Style Score."
+  }
+];
+
 let currentCategory="outfit";
 
 let state={
@@ -1223,6 +1530,15 @@ let state={
 
 let coins=250;
 
+let currentLevel=1;
+
+let completedLevels=[];
+
+let isRotated=false;
+
+let selectedLevel=1;
+
+/* CATEGORY */
 function selectCategory(category,button){
 
   currentCategory=category;
@@ -1236,6 +1552,7 @@ function selectCategory(category,button){
   renderItems();
 }
 
+/* ITEMS */
 function renderItems(){
 
   const container=document.getElementById("items");
@@ -1272,13 +1589,9 @@ function renderItems(){
     `;
 
     btn.onclick=()=>{
-
       state[currentCategory]=index;
-
       applySelection();
-
       renderItems();
-
     };
 
     container.appendChild(btn);
@@ -1286,6 +1599,7 @@ function renderItems(){
   });
 }
 
+/* APPLY LOOK */
 function applySelection(){
 
   const outfit=data.outfit[state.outfit];
@@ -1364,8 +1678,10 @@ function applySelection(){
   stage.className="stage "+bg.bg;
 
   updateScore();
+  updateLevelProgress();
 }
 
+/* SCORE */
 function updateScore(){
 
   let score=50;
@@ -1393,21 +1709,185 @@ function updateScore(){
   return score;
 }
 
+/* ROTATE CHARACTER */
+function rotateCharacter(){
+
+  const character=document.getElementById("character");
+
+  isRotated=!isRotated;
+
+  character.classList.toggle("rotated",isRotated);
+
+  document.getElementById("rotateButton").textContent=
+    isRotated
+      ? "🔄 Show Front"
+      : "🔄 Rotate Character";
+}
+
+/* LEVEL UI */
+function updateLevelUI(){
+
+  document.getElementById("levelNow").textContent=
+    "Level "+currentLevel;
+
+  const level=levels[currentLevel-1];
+
+  document.getElementById("levelInfo").textContent=
+    level.name+
+    " • Score "+
+    level.target+
+    "+ • Reward "+
+    level.reward+
+    " coins";
+
+  for(let i=1;i<=5;i++){
+
+    const btn=document.getElementById("level"+i);
+
+    btn.classList.remove("active","completed","locked");
+
+    if(completedLevels.includes(i)){
+      btn.classList.add("completed");
+    }
+
+    if(i===currentLevel){
+      btn.classList.add("active");
+    }
+
+    if(i>currentLevel){
+      btn.classList.add("locked");
+    }
+  }
+
+  updateLevelProgress();
+}
+
+/* LEVEL PROGRESS */
+function updateLevelProgress(){
+
+  const level=levels[currentLevel-1];
+
+  const score=updateScore();
+
+  let progress=
+    Math.round((score/level.target)*100);
+
+  progress=Math.max(0,Math.min(progress,100));
+
+  document.getElementById("levelProgressBar").style.width=
+    progress+"%";
+}
+
+/* OPEN LEVEL */
+function openLevel(levelNumber){
+
+  if(levelNumber>currentLevel){
+    return;
+  }
+
+  selectedLevel=levelNumber;
+
+  const level=levels[levelNumber-1];
+
+  document.getElementById("levelModalTitle").textContent=
+    "Level "+levelNumber+" — "+level.name;
+
+  document.getElementById("levelModalText").textContent=
+    level.text;
+
+  document.getElementById("levelReward").textContent=
+    "🪙 +"+level.reward+" Style Coins";
+
+  const completeButton=
+    document.querySelector(".completeLevel");
+
+  if(completedLevels.includes(levelNumber)){
+
+    completeButton.textContent="✅ Completed";
+    completeButton.disabled=true;
+    completeButton.style.opacity=".6";
+
+  }else{
+
+    completeButton.textContent="Complete Level";
+    completeButton.disabled=false;
+    completeButton.style.opacity="1";
+  }
+
+  document.getElementById("levelOverlay").style.display="flex";
+}
+
+/* COMPLETE LEVEL */
+function completeLevel(){
+
+  const level=levels[selectedLevel-1];
+
+  const score=updateScore();
+
+  if(score<level.target){
+
+    alert(
+      "You need "+level.target+
+      " Style Score to complete this level.\n\n"+
+      "Your current score: "+score
+    );
+
+    return;
+  }
+
+  if(completedLevels.includes(selectedLevel)){
+    return;
+  }
+
+  completedLevels.push(selectedLevel);
+
+  coins+=level.reward;
+
+  document.getElementById("coins").textContent=coins;
+
+  if(
+    selectedLevel===currentLevel &&
+    currentLevel<levels.length
+  ){
+    currentLevel++;
+  }
+
+  updateLevelUI();
+
+  closeLevel();
+
+  setTimeout(()=>{
+
+    alert(
+      "🎉 Level Complete!\n\n"+
+      "You earned "+level.reward+
+      " Style Coins!"
+    );
+
+  },100);
+}
+
+/* CLOSE LEVEL */
+function closeLevel(){
+
+  document.getElementById("levelOverlay").style.display=
+    "none";
+}
+
+/* RANDOM */
 function randomLook(){
 
   Object.keys(state).forEach(key=>{
-
     state[key]=Math.floor(
       Math.random()*data[key].length
     );
-
   });
 
   applySelection();
-
   renderItems();
 }
 
+/* RESET */
 function resetLook(){
 
   state={
@@ -1422,10 +1902,10 @@ function resetLook(){
   };
 
   applySelection();
-
   renderItems();
 }
 
+/* BACKGROUND */
 function changeBackground(){
 
   state.background=
@@ -1438,6 +1918,7 @@ function changeBackground(){
   }
 }
 
+/* FINAL */
 function showFinal(){
 
   const score=updateScore();
@@ -1445,20 +1926,16 @@ function showFinal(){
   let message="Nice look! 💖";
 
   if(score>=90){
-
     message=
       "WOW! You're a true fashion superstar! ✨👑";
-
-  }else if(score>=75){
-
+  }
+  else if(score>=75){
     message=
       "Amazing style! This look is gorgeous! 💕";
-
-  }else if(score>=60){
-
+  }
+  else if(score>=60){
     message=
       "Great look! Keep experimenting! 🌸";
-
   }
 
   document.getElementById("finalText").textContent=
@@ -1471,14 +1948,17 @@ function showFinal(){
     "flex";
 }
 
+/* CLOSE FINAL */
 function closeFinal(){
 
   document.getElementById("overlay").style.display=
     "none";
 }
 
+/* START */
 applySelection();
 renderItems();
+updateLevelUI();
 
 </script>
 
