@@ -1040,12 +1040,25 @@ function createCar(x,z,index,player){
         lap:0,
         offroad:0,
 
-        /* SMOOTH CAMERA */
+        /*
+           ADVANCED CHASE CAMERA STATE
+        */
         camX:x,
-        camZ:z-360,
+        camZ:z-320,
         camAngle:0,
+        camHeight:125,
+        camLookX:x,
+        camLookZ:z+90,
 
-        /* VISUAL BODY */
+        /*
+           CAMERA MOTION
+        */
+        cameraShake:0,
+        cameraSpeed:0,
+
+        /*
+           VISUAL BODY
+        */
         steeringVisual:0,
         wheelSpin:0,
         bodyBounce:0
@@ -1063,8 +1076,12 @@ function resetCars(){
         car1.jump=0;
 
         car1.camX=0;
-        car1.camZ=-280;
+        car1.camZ=-300;
         car1.camAngle=0;
+        car1.camHeight=125;
+        car1.camLookX=0;
+        car1.camLookZ=160;
+        car1.cameraShake=0;
     }
 
     if(car2){
@@ -1076,8 +1093,12 @@ function resetCars(){
         car2.jump=0;
 
         car2.camX=0;
-        car2.camZ=-120;
+        car2.camZ=-140;
         car2.camAngle=0;
+        car2.camHeight=125;
+        car2.camLookX=0;
+        car2.camLookZ=240;
+        car2.cameraShake=0;
     }
 }
 
@@ -1124,8 +1145,15 @@ function updateCar(car,dt,p1){
 
     car.angle+=steering*steerPower;
 
-    /* visual wheel steering */
-    car.steeringVisual+=(steering-car.steeringVisual)*Math.min(1,dt*12);
+    /*
+       Slightly stronger steering response at speed.
+    */
+    if(Math.abs(car.speed)>6){
+        car.angle+=steering*.0015*dt*60;
+    }
+
+    car.steeringVisual+=(steering-car.steeringVisual)*
+        Math.min(1,dt*12);
 
     const oldX=car.x;
     const oldZ=car.z;
@@ -1144,6 +1172,8 @@ function updateCar(car,dt,p1){
         car.z=oldZ;
 
         car.speed*=-.28;
+
+        car.cameraShake=.35;
     }
 
     if(!onRoad(car.x,car.z)){
@@ -1187,6 +1217,8 @@ function updateCar(car,dt,p1){
     car.bodyBounce=
         Math.sin(performance.now()*.012)*
         Math.min(.8,Math.abs(car.speed)/10);
+
+    car.cameraShake*=Math.pow(.08,dt);
 
     for(const c of world.coins){
 
@@ -1255,63 +1287,215 @@ function onRoad(x,z){
 }
 
 /* =========================================================
-   NEW SMOOTH CHASE CAMERA
+   ADVANCED THIRD-PERSON CHASE CAMERA
 ========================================================= */
+
+function lerp(a,b,t){
+    return a+(b-a)*t;
+}
+
+function angleDifference(a,b){
+
+    let d=a-b;
+
+    while(d>Math.PI){
+        d-=Math.PI*2;
+    }
+
+    while(d<-Math.PI){
+        d+=Math.PI*2;
+    }
+
+    return d;
+}
+
+function smoothAngle(current,target,amount){
+
+    const diff=angleDifference(target,current);
+
+    return current+diff*amount;
+}
 
 function updateCamera(car,dt){
 
     /*
-       Camera is positioned behind the car.
-       It smoothly follows position and rotation.
+       ======================================================
+       GAMEREX CHASE CAMERA
+       ======================================================
+
+       Camera position:
+       - Behind the car
+       - Above the car
+       - Moves farther away at high speed
+
+       Camera rotation:
+       - Follows car direction
+       - Smoothly rotates while steering
+       - Does not instantly snap
+
+       Look target:
+       - Slightly ahead of the car
+       - Gives a natural driving-game view
+
+       This creates the classic third-person
+       open-world driving camera feeling.
     */
 
-    const speedRatio=
-        Math.min(
-            1,
-            Math.abs(car.speed)/10
-        );
+    const speedAbs=Math.abs(car.speed);
+
+    const maxSpeed=Math.max(
+        1,
+        cars[car.carIndex].speed
+    );
+
+    const speedRatio=Math.min(
+        1,
+        speedAbs/maxSpeed
+    );
+
+    /*
+       Camera gets farther away with speed.
+    */
+    const baseDistance=300;
+    const extraDistance=105;
 
     const distance=
-        300+
-        speedRatio*70;
+        baseDistance+
+        extraDistance*speedRatio;
 
-    const height=
-        100+
-        speedRatio*30;
+    /*
+       Camera becomes slightly higher at speed.
+    */
+    const baseHeight=112;
+    const extraHeight=38;
 
-    const targetX=
+    const targetHeight=
+        baseHeight+
+        extraHeight*speedRatio+
+        car.jump*30;
+
+    /*
+       Camera follows behind the car.
+    */
+    const behindX=
         car.x-
         Math.sin(car.angle)*distance;
 
-    const targetZ=
+    const behindZ=
         car.z-
         Math.cos(car.angle)*distance;
 
-    const smooth=
-        1-Math.pow(.0008,dt);
+    /*
+       Small look-ahead makes the road feel more natural.
+    */
+    const lookAhead=
+        65+
+        speedRatio*90;
 
-    car.camX+=(targetX-car.camX)*smooth;
-    car.camZ+=(targetZ-car.camZ)*smooth;
+    const targetLookX=
+        car.x+
+        Math.sin(car.angle)*lookAhead;
 
-    let angleDiff=
-        car.angle-car.camAngle;
+    const targetLookZ=
+        car.z+
+        Math.cos(car.angle)*lookAhead;
 
-    while(angleDiff>Math.PI){
-        angleDiff-=Math.PI*2;
-    }
+    /*
+       Smooth camera position.
 
-    while(angleDiff<-Math.PI){
-        angleDiff+=Math.PI*2;
-    }
+       This is deliberately slower than the car so the
+       camera has a soft "weight" instead of being attached
+       directly to the vehicle.
+    */
+    const positionSmooth=
+        1-Math.pow(.0007,dt);
 
-    car.camAngle+=angleDiff*
-        Math.min(1,dt*6);
+    car.camX=lerp(
+        car.camX,
+        behindX,
+        positionSmooth
+    );
+
+    car.camZ=lerp(
+        car.camZ,
+        behindZ,
+        positionSmooth
+    );
+
+    /*
+       Smooth camera height.
+    */
+    const heightSmooth=
+        1-Math.pow(.001,dt);
+
+    car.camHeight=lerp(
+        car.camHeight,
+        targetHeight,
+        heightSmooth
+    );
+
+    /*
+       Smooth look target.
+    */
+    const lookSmooth=
+        1-Math.pow(.0004,dt);
+
+    car.camLookX=lerp(
+        car.camLookX,
+        targetLookX,
+        lookSmooth
+    );
+
+    car.camLookZ=lerp(
+        car.camLookZ,
+        targetLookZ,
+        lookSmooth
+    );
+
+    /*
+       Camera rotation follows the car.
+
+       At high speed we let the camera lag slightly,
+       creating a much more natural chase-camera effect.
+    */
+    const cameraLag=
+        speedRatio*.025;
+
+    const desiredAngle=
+        car.angle-cameraLag;
+
+    const rotationSmooth=
+        Math.min(
+            1,
+            dt*(5.5+speedRatio*2.5)
+        );
+
+    car.camAngle=smoothAngle(
+        car.camAngle,
+        desiredAngle,
+        rotationSmooth
+    );
+
+    /*
+       Tiny impact shake.
+    */
+    const shake=car.cameraShake;
+
+    const shakeX=
+        Math.sin(performance.now()*.035)*
+        shake*5;
+
+    const shakeZ=
+        Math.cos(performance.now()*.041)*
+        shake*4;
 
     return {
-        x:car.camX,
-        z:car.camZ,
+        x:car.camX+shakeX,
+        z:car.camZ+shakeZ,
         angle:car.camAngle,
-        height
+        height:car.camHeight,
+        lookX:car.camLookX,
+        lookZ:car.camLookZ
     };
 }
 
@@ -1319,22 +1503,44 @@ function updateCamera(car,dt){
    PROJECTION
 ========================================================= */
 
-function project(wx,wz,cam){
+function project(wx,wz,cam,objectHeight=0){
 
     const dx=wx-cam.x;
     const dz=wz-cam.z;
 
+    /*
+       Rotate world around the camera.
+    */
     const sin=Math.sin(-cam.angle);
     const cos=Math.cos(-cam.angle);
 
-    const x=dx*cos-dz*sin;
-    const y=dx*sin+dz*cos;
+    const screenX=dx*cos-dz*sin;
+    const forward=dx*sin+dz*cos;
 
-    const horizon=H*.40;
+    /*
+       Horizon position.
+       Lower horizon = more road visible.
+    */
+    const horizon=H*.37;
 
-    const focal=720;
+    /*
+       Camera focal length.
+       Larger = stronger / closer third-person perspective.
+    */
+    const focal=
+        Math.min(
+            820,
+            Math.max(
+                620,
+                H*.72
+            )
+        );
 
-    const depth=y+950;
+    /*
+       Keep enough distance so objects behind the camera
+       are not drawn.
+    */
+    const depth=forward+1050;
 
     if(depth<=20){
         return null;
@@ -1342,11 +1548,30 @@ function project(wx,wz,cam){
 
     const scale=focal/depth;
 
+    /*
+       Vertical perspective.
+
+       The camera height shifts the ground downward
+       and gives the camera a proper elevated chase view.
+    */
+    const verticalGround=
+        (cam.height-objectHeight)*scale;
+
+    const forwardPerspective=
+        -forward*.42*scale;
+
+    const screenY=
+        horizon+
+        verticalGround+
+        forwardPerspective;
+
     return {
-        x:W/2+x*scale,
-        y:horizon+(-y*.52)*scale,
+        x:W/2+screenX*scale,
+        y:screenY,
         scale,
-        depth
+        depth,
+        screenX,
+        forward
     };
 }
 
@@ -1386,8 +1611,9 @@ function drawWorld(cam,viewX=0,viewW=W){
     ctx.fillStyle=sky;
     ctx.fillRect(viewX,0,viewW,H);
 
-    /* SUN */
-
+    /*
+       SUN
+    */
     ctx.fillStyle="rgba(255,235,170,.75)";
 
     ctx.beginPath();
@@ -1402,8 +1628,9 @@ function drawWorld(cam,viewX=0,viewW=W){
 
     ctx.fill();
 
-    /* GROUND */
-
+    /*
+       GROUND
+    */
     ctx.fillStyle=
         worldType==="desert" ? "#c6a665" :
         worldType==="forest" ? "#4c7d42" :
@@ -1412,24 +1639,26 @@ function drawWorld(cam,viewX=0,viewW=W){
 
     ctx.fillRect(
         viewX,
-        H*.40,
+        H*.37,
         viewW,
-        H*.60
+        H*.63
     );
 
-    /* ROAD */
-
+    /*
+       ROAD
+    */
     for(const r of world.roads){
         drawRoad(r,cam);
     }
 
-    /* BUILDINGS */
-
+    /*
+       BUILDINGS
+    */
     const visibleBuildings=
         world.buildings
         .map(b=>({
             b,
-            p:project(b.x,b.z,cam)
+            p:project(b.x,b.z,cam,b.h)
         }))
         .filter(o=>o.p)
         .sort((a,b)=>b.p.depth-a.p.depth);
@@ -1438,14 +1667,16 @@ function drawWorld(cam,viewX=0,viewW=W){
         drawBuilding(o.b,cam);
     }
 
-    /* TREES */
-
+    /*
+       TREES
+    */
     for(const t of world.trees){
 
         const p=project(
             t.x,
             t.z,
-            cam
+            cam,
+            0
         );
 
         if(
@@ -1457,14 +1688,16 @@ function drawWorld(cam,viewX=0,viewW=W){
         }
     }
 
-    /* ROCKS */
-
+    /*
+       ROCKS
+    */
     for(const r of world.rocks){
 
         const p=project(
             r.x,
             r.z,
-            cam
+            cam,
+            0
         );
 
         if(
@@ -1476,8 +1709,9 @@ function drawWorld(cam,viewX=0,viewW=W){
         }
     }
 
-    /* RAMPS */
-
+    /*
+       RAMPS
+    */
     for(const r of world.ramps){
 
         const p=project(
@@ -1491,8 +1725,9 @@ function drawWorld(cam,viewX=0,viewW=W){
         }
     }
 
-    /* DECORATIONS */
-
+    /*
+       DECORATIONS
+    */
     for(const d of world.decorations){
 
         const p=project(
@@ -1512,8 +1747,9 @@ function drawWorld(cam,viewX=0,viewW=W){
         }
     }
 
-    /* COINS */
-
+    /*
+       COINS
+    */
     for(const c of world.coins){
 
         if(c.taken)continue;
@@ -1533,11 +1769,18 @@ function drawWorld(cam,viewX=0,viewW=W){
         }
     }
 
-    /* CHECKPOINT */
+    /*
+       CHECKPOINT
+    */
+    const activeCar=
+        car1&&
+        car1.player===1
+        ?car1
+        :car1;
 
     const cp=
-        car1 ?
-        world.checkpoints[car1.checkpoint] :
+        activeCar?
+        world.checkpoints[activeCar.checkpoint]:
         null;
 
     if(cp){
@@ -1655,12 +1898,22 @@ function drawBuilding(b,cam){
     const top=project(
         b.x,
         b.z,
-        cam
+        cam,
+        b.h
     );
 
     if(!top)return;
 
-    const s=top.scale;
+    const ground=project(
+        b.x,
+        b.z,
+        cam,
+        0
+    );
+
+    if(!ground)return;
+
+    const s=ground.scale;
 
     const width=Math.max(
         8,
@@ -1674,14 +1927,15 @@ function drawBuilding(b,cam){
 
     const height=Math.max(
         10,
-        b.h*s
+        ground.y-top.y
     );
 
-    const x=top.x;
-    const y=top.y;
+    const x=ground.x;
+    const y=ground.y;
 
-    /* shadow */
-
+    /*
+       shadow
+    */
     ctx.fillStyle="rgba(0,0,0,.20)";
 
     ctx.beginPath();
@@ -1698,8 +1952,9 @@ function drawBuilding(b,cam){
 
     ctx.fill();
 
-    /* main body */
-
+    /*
+       main body
+    */
     ctx.fillStyle=b.color;
 
     ctx.fillRect(
@@ -1709,8 +1964,9 @@ function drawBuilding(b,cam){
         height
     );
 
-    /* side */
-
+    /*
+       side
+    */
     ctx.fillStyle=shadeColor(
         b.color,
         -18
@@ -1742,8 +1998,9 @@ function drawBuilding(b,cam){
 
     ctx.fill();
 
-    /* roof */
-
+    /*
+       roof
+    */
     ctx.fillStyle=shadeColor(
         b.color,
         15
@@ -1756,8 +2013,9 @@ function drawBuilding(b,cam){
         Math.max(2,5*s)
     );
 
-    /* windows */
-
+    /*
+       windows
+    */
     const rows=Math.min(
         15,
         Math.max(2,Math.floor(b.h/55))
@@ -2153,7 +2411,7 @@ function drawCheckpoint(p){
 }
 
 /* =========================================================
-   NEW REALISTIC-STYLE CAR
+   REALISTIC-STYLE CAR
 ========================================================= */
 
 function drawCar(car,cam,viewX=0,viewW=W){
@@ -2161,7 +2419,8 @@ function drawCar(car,cam,viewX=0,viewW=W){
     const p=project(
         car.x,
         car.z,
-        cam
+        cam,
+        0
     );
 
     if(!p)return;
@@ -2173,16 +2432,13 @@ function drawCar(car,cam,viewX=0,viewW=W){
 
     ctx.save();
 
-    /*
-       Car gets a proper perspective body.
-       This is still Canvas pseudo-3D,
-       but visually much closer to a real
-       sports car than the old rectangle.
-    */
-
     const baseW=72*s;
     const baseL=125*s;
 
+    /*
+       The car is placed lower in the screen,
+       just like a normal third-person driving game.
+    */
     const y=
         p.y-
         car.jump*125*s+
@@ -2193,18 +2449,12 @@ function drawCar(car,cam,viewX=0,viewW=W){
         y
     );
 
-    /*
-       Since the camera follows the car,
-       the vehicle is drawn facing the viewer.
-    */
-
     const bodyW=baseW;
     const bodyL=baseL;
 
-    /* =====================================================
+    /*
        CAR SHADOW
-    ===================================================== */
-
+    */
     ctx.save();
 
     ctx.fillStyle="rgba(0,0,0,.38)";
@@ -2225,10 +2475,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
 
     ctx.restore();
 
-    /* =====================================================
+    /*
        MAIN LOWER BODY
-    ===================================================== */
-
+    */
     ctx.fillStyle=car.color;
 
     ctx.beginPath();
@@ -2277,10 +2526,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
 
     ctx.fill();
 
-    /* =====================================================
+    /*
        BODY DARK LOWER SIDE
-    ===================================================== */
-
+    */
     ctx.fillStyle=car.accent;
 
     ctx.beginPath();
@@ -2309,10 +2557,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
 
     ctx.fill();
 
-    /* =====================================================
+    /*
        HOOD HIGHLIGHT
-    ===================================================== */
-
+    */
     const highlight=
         ctx.createLinearGradient(
             -bodyW*.4,
@@ -2364,10 +2611,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
 
     ctx.fill();
 
-    /* =====================================================
+    /*
        ROOF / CABIN
-    ===================================================== */
-
+    */
     let cabinTop=-bodyL*.92;
     let cabinBottom=-bodyL*.48;
 
@@ -2399,10 +2645,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
 
     ctx.fill();
 
-    /* =====================================================
+    /*
        FRONT WINDSHIELD
-    ===================================================== */
-
+    */
     ctx.fillStyle="rgba(120,190,220,.72)";
 
     ctx.beginPath();
@@ -2431,8 +2676,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
 
     ctx.fill();
 
-    /* windshield shine */
-
+    /*
+       WINDSHIELD SHINE
+    */
     ctx.strokeStyle="rgba(255,255,255,.45)";
     ctx.lineWidth=Math.max(
         1,
@@ -2453,10 +2699,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
 
     ctx.stroke();
 
-    /* =====================================================
+    /*
        SIDE WINDOWS
-    ===================================================== */
-
+    */
     ctx.fillStyle="rgba(75,125,150,.85)";
 
     ctx.beginPath();
@@ -2511,10 +2756,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
 
     ctx.fill();
 
-    /* =====================================================
+    /*
        FRONT GRILLE
-    ===================================================== */
-
+    */
     ctx.fillStyle="#11151a";
 
     ctx.beginPath();
@@ -2529,8 +2773,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
 
     ctx.fill();
 
-    /* grille lines */
-
+    /*
+       GRILLE LINES
+    */
     ctx.strokeStyle="rgba(255,255,255,.20)";
     ctx.lineWidth=Math.max(
         .5,
@@ -2554,10 +2799,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
         ctx.stroke();
     }
 
-    /* =====================================================
+    /*
        HEADLIGHTS
-    ===================================================== */
-
+    */
     ctx.fillStyle="#fff4b0";
 
     ctx.beginPath();
@@ -2584,8 +2828,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
 
     ctx.fill();
 
-    /* headlight glow */
-
+    /*
+       HEADLIGHT GLOW
+    */
     ctx.fillStyle="rgba(255,245,180,.20)";
 
     ctx.beginPath();
@@ -2616,10 +2861,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
 
     ctx.fill();
 
-    /* =====================================================
+    /*
        SIDE MIRRORS
-    ===================================================== */
-
+    */
     ctx.fillStyle=car.accent;
 
     ctx.beginPath();
@@ -2650,10 +2894,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
 
     ctx.fill();
 
-    /* =====================================================
+    /*
        WHEELS
-    ===================================================== */
-
+    */
     drawWheel(
         -bodyW*.52,
         -bodyL*.58,
@@ -2682,10 +2925,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
         car.steeringVisual*.7
     );
 
-    /* =====================================================
+    /*
        REAR SPOILER
-    ===================================================== */
-
+    */
     if(
         car.carIndex%3===0 ||
         cars[car.carIndex].type==="super"
@@ -2715,10 +2957,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
         );
     }
 
-    /* =====================================================
+    /*
        SIDE BODY LINE
-    ===================================================== */
-
+    */
     ctx.strokeStyle="rgba(255,255,255,.25)";
     ctx.lineWidth=Math.max(
         1,
@@ -2753,10 +2994,9 @@ function drawCar(car,cam,viewX=0,viewW=W){
 
     ctx.stroke();
 
-    /* =====================================================
+    /*
        REAR LIGHTS
-    ===================================================== */
-
+    */
     ctx.fillStyle="#b20d16";
 
     ctx.fillRect(
@@ -2784,8 +3024,9 @@ function drawWheel(x,y,r,steer){
 
     ctx.rotate(steer*.25);
 
-    /* tire */
-
+    /*
+       tire
+    */
     ctx.fillStyle="#0b0d10";
 
     ctx.beginPath();
@@ -2802,8 +3043,9 @@ function drawWheel(x,y,r,steer){
 
     ctx.fill();
 
-    /* rim */
-
+    /*
+       rim
+    */
     ctx.fillStyle="#9ca5aa";
 
     ctx.beginPath();
@@ -2820,8 +3062,9 @@ function drawWheel(x,y,r,steer){
 
     ctx.fill();
 
-    /* rim center */
-
+    /*
+       rim center
+    */
     ctx.fillStyle="#30373d";
 
     ctx.beginPath();
@@ -2836,8 +3079,9 @@ function drawWheel(x,y,r,steer){
 
     ctx.fill();
 
-    /* rim shine */
-
+    /*
+       rim shine
+    */
     ctx.strokeStyle="rgba(255,255,255,.45)";
     ctx.lineWidth=Math.max(
         1,
@@ -3064,8 +3308,9 @@ function drawGame(){
 
         const half=W/2;
 
-        /* PLAYER 1 */
-
+        /*
+           PLAYER 1
+        */
         ctx.save();
 
         ctx.beginPath();
@@ -3100,8 +3345,9 @@ function drawGame(){
 
         ctx.restore();
 
-        /* PLAYER 2 */
-
+        /*
+           PLAYER 2
+        */
         ctx.save();
 
         ctx.beginPath();
@@ -3136,8 +3382,9 @@ function drawGame(){
 
         ctx.restore();
 
-        /* DIVIDER */
-
+        /*
+           DIVIDER
+        */
         ctx.fillStyle="rgba(255,255,255,.8)";
 
         ctx.fillRect(
@@ -3211,6 +3458,16 @@ function startGame(){
         1
     );
 
+    /*
+       Start camera behind P1.
+    */
+    car1.camX=0;
+    car1.camZ=-250;
+    car1.camAngle=0;
+    car1.camHeight=120;
+    car1.camLookX=0;
+    car1.camLookZ=150;
+
     car2=
         players===2
         ?
@@ -3222,6 +3479,16 @@ function startGame(){
         )
         :
         null;
+
+    if(car2){
+
+        car2.camX=0;
+        car2.camZ=-80;
+        car2.camAngle=0;
+        car2.camHeight=120;
+        car2.camLookX=0;
+        car2.camLookZ=230;
+    }
 
     document.getElementById("worldText").textContent=
         worldType==="city"
@@ -3348,11 +3615,9 @@ function loop(now){
     }
 
     /*
-       Camera smoothing is handled inside
-       drawGame so it follows the current
-       car position every frame.
+       Camera is updated inside drawGame.
+       It follows the current car position every frame.
     */
-
     drawGame();
 
     updateHUD();
