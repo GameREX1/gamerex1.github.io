@@ -193,6 +193,12 @@ header{
     inset 6px 4px 0 rgba(255,255,255,.08);
 }
 
+/*
+  IMPORTANT:
+  .face is 134x150.
+  All face features below are now positioned
+  relative to this face, NOT the whole character.
+*/
 .face{
   position:absolute;
   inset:0;
@@ -222,9 +228,9 @@ header{
   position:absolute;
   width:18px;
   height:25px;
-  left:141px;
-  top:105px;
-  z-index:10;
+  left:58px;
+  top:62px;
+  z-index:20;
 }
 
 .nose:before{
@@ -257,17 +263,17 @@ header{
   height:6px;
   background:#59372d;
   border-radius:10px;
-  top:75px;
-  z-index:13;
+  top:32px;
+  z-index:20;
 }
 
 .eyebrow.left{
-  left:106px;
+  left:23px;
   transform:rotate(-6deg);
 }
 
 .eyebrow.right{
-  left:164px;
+  left:81px;
   transform:rotate(6deg);
 }
 
@@ -276,16 +282,16 @@ header{
   position:absolute;
   width:43px;
   height:27px;
-  top:87px;
-  z-index:11;
+  top:44px;
+  z-index:18;
 }
 
 .eyeArea.left{
-  left:103px;
+  left:20px;
 }
 
 .eyeArea.right{
-  left:160px;
+  left:77px;
 }
 
 .eyeWhite{
@@ -342,17 +348,17 @@ header{
   height:18px;
   border-radius:50%;
   background:rgba(157,92,180,.35);
-  top:80px;
-  z-index:9;
+  top:37px;
+  z-index:16;
   filter:blur(1px);
 }
 
 .eyesShadow.left{
-  left:103px;
+  left:20px;
 }
 
 .eyesShadow.right{
-  left:160px;
+  left:77px;
 }
 
 /* EYELASHES */
@@ -360,19 +366,19 @@ header{
   position:absolute;
   width:31px;
   height:8px;
-  top:82px;
-  z-index:14;
+  top:39px;
+  z-index:22;
   border-top:3px solid #29202b;
   border-radius:50%;
 }
 
 .lash.left{
-  left:105px;
+  left:22px;
   transform:rotate(-5deg);
 }
 
 .lash.right{
-  left:160px;
+  left:77px;
   transform:rotate(5deg);
 }
 
@@ -383,16 +389,16 @@ header{
   height:8px;
   border-bottom:2px solid rgba(80,45,55,.28);
   border-radius:50%;
-  top:103px;
-  z-index:12;
+  top:60px;
+  z-index:19;
 }
 
 .lowerEye.left{
-  left:109px;
+  left:26px;
 }
 
 .lowerEye.right{
-  left:164px;
+  left:81px;
 }
 
 /* BLUSH */
@@ -402,29 +408,27 @@ header{
   height:19px;
   border-radius:50%;
   background:rgba(238,87,125,.35);
-  top:117px;
-  z-index:10;
+  top:74px;
+  z-index:15;
   filter:blur(1px);
 }
 
 .blush.left{
-  left:96px;
+  left:13px;
 }
 
 .blush.right{
-  left:172px;
+  left:89px;
 }
 
-/* =========================
-   FIXED NATURAL LIPS
-========================= */
+/* LIPS */
 .lips{
   position:absolute;
   width:24px;
   height:11px;
-  left:138px;
-  top:138px;
-  z-index:15;
+  left:55px;
+  top:95px;
+  z-index:25;
   background:#d65b78;
   border-radius:50% 50% 55% 55%;
 }
@@ -475,11 +479,7 @@ header{
   top:3px;
 }
 
-/* =========================
-   HAIR
-   FIX: MAIN HAIR IS BEHIND FACE
-========================= */
-
+/* HAIR */
 .hair{
   position:absolute;
   width:150px;
@@ -518,7 +518,7 @@ header{
   background:#17151a;
 }
 
-/* FRONT HAIR ONLY ON FOREHEAD */
+/* FRONT HAIR */
 .hair.front{
   width:125px;
   height:58px;
@@ -656,7 +656,7 @@ header{
   height:30px;
   left:102px;
   top:103px;
-  z-index:16;
+  z-index:30;
 }
 
 .glasses:before,
@@ -848,6 +848,7 @@ header{
 
 /* MOBILE */
 @media(max-width:1050px){
+
   .main{
     grid-template-columns:210px 1fr;
   }
@@ -863,6 +864,7 @@ header{
 }
 
 @media(max-width:700px){
+
   header{
     height:62px;
     padding:0 13px;
@@ -910,6 +912,7 @@ header{
 }
 
 @media(max-width:430px){
+
   .stage{
     min-height:550px;
   }
@@ -994,15 +997,12 @@ header{
 
   <div class="character" id="character">
 
-    <!-- HAIR IS BEHIND THE FACE -->
     <div class="hair" id="hair"></div>
     <div class="hair front" id="hairFront"></div>
 
-    <!-- EARS -->
     <div class="ear left"></div>
     <div class="ear right"></div>
 
-    <!-- HEAD -->
     <div class="head">
 
       <div class="face">
@@ -1036,7 +1036,6 @@ header{
 
         <div class="nose"></div>
 
-        <!-- SMALL NATURAL LIPS -->
         <div class="lips" id="lips"></div>
 
       </div>
@@ -1073,7 +1072,9 @@ header{
 <!-- RIGHT -->
 <div class="panel itemsPanel">
 
-  <div class="panelTitle" id="itemTitle">👗 Choose an Outfit</div>
+  <div class="panelTitle" id="itemTitle">
+    👗 Choose an Outfit
+  </div>
 
   <div class="items" id="items"></div>
 
@@ -1083,10 +1084,23 @@ header{
   </div>
 
   <div class="bottomButtons">
-    <button class="action" onclick="randomLook()">🎲 Random</button>
-    <button class="action" onclick="resetLook()">↻ Reset</button>
-    <button class="action primary" onclick="showFinal()">📸 Final Look</button>
-    <button class="action" onclick="changeBackground()">🌈 Scene</button>
+
+    <button class="action" onclick="randomLook()">
+      🎲 Random
+    </button>
+
+    <button class="action" onclick="resetLook()">
+      ↻ Reset
+    </button>
+
+    <button class="action primary" onclick="showFinal()">
+      📸 Final Look
+    </button>
+
+    <button class="action" onclick="changeBackground()">
+      🌈 Scene
+    </button>
+
   </div>
 
 </div>
@@ -1099,7 +1113,9 @@ header{
 
   <div class="modal">
 
-    <div style="font-size:55px">✨💖✨</div>
+    <div style="font-size:55px">
+      ✨💖✨
+    </div>
 
     <h2>Your Look Is Ready!</h2>
 
@@ -1107,8 +1123,9 @@ header{
       Amazing style!
     </p>
 
-    <div style="font-size:38px;font-weight:900;color:#d83c91;margin:15px"
-         id="finalScore">
+    <div
+      style="font-size:38px;font-weight:900;color:#d83c91;margin:15px"
+      id="finalScore">
       50/100
     </div>
 
@@ -1236,7 +1253,8 @@ function renderItems(){
     background:"🏠 Choose a Room"
   };
 
-  document.getElementById("itemTitle").textContent=title[currentCategory];
+  document.getElementById("itemTitle").textContent=
+    title[currentCategory];
 
   data[currentCategory].forEach((item,index)=>{
 
@@ -1254,9 +1272,13 @@ function renderItems(){
     `;
 
     btn.onclick=()=>{
+
       state[currentCategory]=index;
+
       applySelection();
+
       renderItems();
+
     };
 
     container.appendChild(btn);
@@ -1279,12 +1301,16 @@ function applySelection(){
   const hairEl=document.getElementById("hair");
   const hairFront=document.getElementById("hairFront");
 
-  hairEl.className="hair "+hair.style+" "+hair.color;
-  hairFront.className="hair front "+hair.color;
+  hairEl.className=
+    "hair "+hair.style+" "+hair.color;
+
+  hairFront.className=
+    "hair front "+hair.color;
 
   const makeup=data.makeup[state.makeup];
 
-  document.getElementById("lips").className="lips "+makeup.lip;
+  document.getElementById("lips").className=
+    "lips "+makeup.lip;
 
   document.getElementById("shadowL").style.display=
     makeup.shadow ? "block":"none";
@@ -1370,10 +1396,15 @@ function updateScore(){
 function randomLook(){
 
   Object.keys(state).forEach(key=>{
-    state[key]=Math.floor(Math.random()*data[key].length);
+
+    state[key]=Math.floor(
+      Math.random()*data[key].length
+    );
+
   });
 
   applySelection();
+
   renderItems();
 }
 
@@ -1391,6 +1422,7 @@ function resetLook(){
   };
 
   applySelection();
+
   renderItems();
 }
 
@@ -1413,25 +1445,36 @@ function showFinal(){
   let message="Nice look! 💖";
 
   if(score>=90){
-    message="WOW! You're a true fashion superstar! ✨👑";
-  }
-  else if(score>=75){
-    message="Amazing style! This look is gorgeous! 💕";
-  }
-  else if(score>=60){
-    message="Great look! Keep experimenting! 🌸";
+
+    message=
+      "WOW! You're a true fashion superstar! ✨👑";
+
+  }else if(score>=75){
+
+    message=
+      "Amazing style! This look is gorgeous! 💕";
+
+  }else if(score>=60){
+
+    message=
+      "Great look! Keep experimenting! 🌸";
+
   }
 
-  document.getElementById("finalText").textContent=message;
+  document.getElementById("finalText").textContent=
+    message;
 
   document.getElementById("finalScore").textContent=
     score+"/100";
 
-  document.getElementById("overlay").style.display="flex";
+  document.getElementById("overlay").style.display=
+    "flex";
 }
 
 function closeFinal(){
-  document.getElementById("overlay").style.display="none";
+
+  document.getElementById("overlay").style.display=
+    "none";
 }
 
 applySelection();
