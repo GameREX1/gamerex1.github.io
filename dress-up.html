@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GamerEx - Glam Studio</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#f7e8ff,#ffeaf4,#e8f4ff);
+  color:#292033;
+  overflow-x:hidden;
+}
+
+button{
+  border:0;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.game{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* HEADER */
+header{
+  height:72px;
+  padding:0 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid rgba(120,70,160,.15);
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.logo{
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.logo span{
+  color:#d83c91;
+}
+
+.coinBox{
+  background:#fff0fa;
+  color:#b62675;
+  padding:10px 16px;
+  border-radius:25px;
+  font-size:14px;
+}
+
+/* MAIN */
+.main{
+  flex:1;
+  display:grid;
+  grid-template-columns:260px 1fr 320px;
+  gap:18px;
+  padding:18px;
+  max-width:1500px;
+  width:100%;
+  margin:auto;
+}
+
+/* PANELS */
+.panel{
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(130,70,160,.12);
+  border-radius:22px;
+  box-shadow:0 12px 35px rgba(80,40,100,.08);
+  padding:16px;
+}
+
+.panelTitle{
+  font-size:18px;
+  margin-bottom:13px;
+}
+
+.categories{
+  display:grid;
+  gap:9px;
+}
+
+.cat{
+  width:100%;
+  padding:13px;
+  border-radius:14px;
+  background:#f8f3fb;
+  color:#51415e;
+  text-align:left;
+  transition:.2s;
+}
+
+.cat:hover,
+.cat.active{
+  background:#d83c91;
+  color:white;
+  transform:translateX(3px);
+}
+
+/* CHARACTER AREA */
+.stage{
+  min-height:650px;
+  border-radius:25px;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  background:linear-gradient(#dff5ff,#fff0fa);
+  box-shadow:0 12px 35px rgba(80,40,100,.1);
+}
+
+.bg1{
+  background:linear-gradient(#dff6ff 0%,#f8e9ff 58%,#f8cfe3 100%);
+}
+
+.bg2{
+  background:linear-gradient(#fff1c7,#ffd9e9 60%,#e5c9ff);
+}
+
+.bg3{
+  background:linear-gradient(#d9ffe9,#d9e9ff 55%,#f4d7ff);
+}
+
+.bg4{
+  background:linear-gradient(#25233e,#55436c 55%,#171526);
+}
+
+.room{
+  position:absolute;
+  inset:0;
+}
+
+.window{
+  position:absolute;
+  width:170px;
+  height:220px;
+  top:50px;
+  left:50%;
+  transform:translateX(-50%);
+  border:12px solid rgba(255,255,255,.8);
+  background:linear-gradient(120deg,#c5ecff,#fbd6ed);
+  box-shadow:0 12px 30px rgba(70,50,90,.12);
+}
+
+.floor{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:27%;
+  background:rgba(255,255,255,.3);
+  border-top:2px solid rgba(255,255,255,.65);
+}
+
+/* CHARACTER */
+.character{
+  position:relative;
+  width:300px;
+  height:580px;
+  z-index:5;
+  transform:scale(1);
+  transform-origin:bottom center;
+}
+
+.head{
+  position:absolute;
+  width:128px;
+  height:145px;
+  border-radius:50% 50% 46% 46%;
+  background:#f1bd91;
+  top:45px;
+  left:86px;
+  z-index:5;
+  box-shadow:inset -8px -8px 0 rgba(150,80,50,.07);
+}
+
+.face{
+  position:absolute;
+  inset:0;
+}
+
+/* HAIR */
+.hair{
+  position:absolute;
+  width:150px;
+  height:165px;
+  left:75px;
+  top:28px;
+  border-radius:55% 55% 42% 42%;
+  background:#3b211c;
+  z-index:7;
+  pointer-events:none;
+}
+
+.hair.long{
+  height:245px;
+  border-radius:55% 55% 30% 30%;
+}
+
+.hair.bob{
+  height:185px;
+  border-radius:55% 55% 35% 35%;
+}
+
+.hair.blonde{
+  background:#d9a83e;
+}
+
+.hair.pink{
+  background:#d94e9c;
+}
+
+.hair.blue{
+  background:#4667b7;
+}
+
+.hair.black{
+  background:#17151a;
+}
+
+.hair.front{
+  width:125px;
+  height:75px;
+  left:88px;
+  top:32px;
+  border-radius:60% 60% 35% 35%;
+  z-index:8;
+}
+
+/* FACE DETAILS */
+.eye{
+  position:absolute;
+  top:92px;
+  width:14px;
+  height:9px;
+  border-radius:50%;
+  background:#3a2630;
+  z-index:10;
+}
+
+.eye.left{left:116px}
+.eye.right{left:170px}
+
+.eye.liner{
+  box-shadow:0 -2px 0 #17121a;
+}
+
+.lash{
+  position:absolute;
+  width:23px;
+  height:4px;
+  background:#29202b;
+  border-radius:50%;
+  top:87px;
+  z-index:11;
+  transform:rotate(-8deg);
+}
+
+.lash.left{left:111px}
+.lash.right{left:166px;transform:rotate(8deg)}
+
+.blush{
+  position:absolute;
+  width:30px;
+  height:17px;
+  border-radius:50%;
+  background:rgba(238,87,125,.35);
+  top:116px;
+  z-index:10;
+}
+
+.blush.left{left:99px}
+.blush.right{left:172px}
+
+.lips{
+  position:absolute;
+  width:31px;
+  height:16px;
+  border-radius:50% 50% 55% 55%;
+  background:#d64d73;
+  left:135px;
+  top:140px;
+  z-index:10;
+}
+
+.lips.pink{background:#ed72ad}
+.lips.red{background:#c83455}
+.lips.nude{background:#b9776d}
+.lips.purple{background:#8e4b9d}
+
+.eyesShadow{
+  position:absolute;
+  width:25px;
+  height:10px;
+  border-radius:50%;
+  background:rgba(157,92,180,.35);
+  top:83px;
+  z-index:9;
+}
+
+.eyesShadow.left{left:110px}
+.eyesShadow.right{left:164px}
+
+.eyebrow{
+  position:absolute;
+  width:30px;
+  height:5px;
+  background:#59372d;
+  border-radius:10px;
+  top:75px;
+  z-index:10;
+}
+
+.eyebrow.left{left:109px;transform:rotate(-5deg)}
+.eyebrow.right{left:164px;transform:rotate(5deg)}
+
+/* NECK */
+.neck{
+  position:absolute;
+  width:55px;
+  height:70px;
+  background:#efb98d;
+  left:122px;
+  top:165px;
+  z-index:2;
+}
+
+/* BODY */
+.body{
+  position:absolute;
+  width:190px;
+  height:240px;
+  left:55px;
+  top:205px;
+  background:#f09aaf;
+  border-radius:35px 35px 25px 25px;
+  z-index:3;
+}
+
+.body.blue{background:#698de2}
+.body.black{background:#272335}
+.body.green{background:#68aa91}
+.body.purple{background:#9c69bd}
+.body.yellow{background:#e9bf58}
+.body.white{background:#f7f5f3}
+.body.red{background:#d85665}
+
+/* SKIRT */
+.skirt{
+  position:absolute;
+  width:220px;
+  height:125px;
+  left:40px;
+  top:405px;
+  background:#e9b7d7;
+  clip-path:polygon(15% 0,85% 0,100% 100%,0 100%);
+  z-index:4;
+}
+
+.skirt.blue{background:#7b9de9}
+.skirt.black{background:#292638}
+.skirt.pink{background:#e58ab7}
+.skirt.white{background:#f4edf4}
+.skirt.gold{background:#d6ae55}
+
+/* LEGS */
+.leg{
+  position:absolute;
+  width:47px;
+  height:120px;
+  background:#efb98d;
+  top:475px;
+  z-index:2;
+  border-radius:20px;
+}
+
+.leg.left{left:96px}
+.leg.right{left:158px}
+
+/* SHOES */
+.shoe{
+  position:absolute;
+  width:70px;
+  height:30px;
+  background:#292331;
+  border-radius:30px 30px 12px 12px;
+  top:555px;
+  z-index:6;
+}
+
+.shoe.left{left:73px}
+.shoe.right{left:157px}
+
+.shoe.pink{background:#df5f9e}
+.shoe.white{background:#f6f3f4}
+.shoe.blue{background:#5578d2}
+.shoe.gold{background:#c99b38}
+
+/* CLOTHES DETAILS */
+.jacket{
+  position:absolute;
+  width:200px;
+  height:100px;
+  left:50px;
+  top:210px;
+  border:12px solid #6d4a9b;
+  border-bottom:0;
+  border-radius:30px 30px 0 0;
+  z-index:8;
+  pointer-events:none;
+}
+
+.belt{
+  position:absolute;
+  width:190px;
+  height:13px;
+  left:55px;
+  top:390px;
+  background:#4b344f;
+  z-index:8;
+}
+
+.belt.gold{
+  background:#d5aa45;
+}
+
+/* ACCESSORIES */
+.glasses{
+  position:absolute;
+  width:95px;
+  height:30px;
+  left:102px;
+  top:103px;
+  z-index:15;
+}
+
+.glasses:before,
+.glasses:after{
+  content:"";
+  position:absolute;
+  width:35px;
+  height:24px;
+  border:4px solid #29232d;
+  border-radius:50%;
+}
+
+.glasses:before{left:0}
+.glasses:after{right:0}
+
+.glasses .bridge{
+  position:absolute;
+  width:25px;
+  height:4px;
+  background:#29232d;
+  left:35px;
+  top:10px;
+}
+
+.earring{
+  position:absolute;
+  width:12px;
+  height:18px;
+  border:3px solid #e2b44f;
+  border-radius:50%;
+  top:130px;
+  z-index:14;
+}
+
+.earring.left{left:80px}
+.earring.right{left:208px}
+
+.necklace{
+  position:absolute;
+  width:65px;
+  height:45px;
+  border-bottom:4px solid #d7ad4d;
+  border-radius:50%;
+  left:117px;
+  top:175px;
+  z-index:10;
+}
+
+.necklaceGem{
+  position:absolute;
+  width:12px;
+  height:12px;
+  background:#e95c9e;
+  transform:rotate(45deg);
+  left:143px;
+  top:202px;
+  z-index:11;
+}
+
+/* RIGHT SIDE */
+.itemsPanel{
+  display:flex;
+  flex-direction:column;
+  min-height:650px;
+}
+
+.items{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  overflow-y:auto;
+  padding-right:3px;
+}
+
+.item{
+  min-height:82px;
+  border-radius:14px;
+  background:#f7f2fa;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  transition:.2s;
+  color:#4b3c55;
+}
+
+.item:hover{
+  transform:translateY(-3px);
+  background:#f4ddec;
+}
+
+.item.selected{
+  outline:3px solid #d83c91;
+  background:#ffe9f6;
+}
+
+.itemIcon{
+  font-size:28px;
+}
+
+.itemName{
+  font-size:11px;
+  text-align:center;
+}
+
+.bottomButtons{
+  margin-top:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  padding-top:14px;
+}
+
+.action{
+  padding:13px;
+  border-radius:13px;
+  background:#efe8f4;
+  color:#4a3b52;
+}
+
+.action.primary{
+  background:#d83c91;
+  color:white;
+}
+
+.scoreBox{
+  margin-top:12px;
+  background:#fff4fa;
+  padding:12px;
+  border-radius:15px;
+  text-align:center;
+}
+
+.score{
+  font-size:26px;
+  font-weight:900;
+  color:#d83c91;
+}
+
+/* POPUP */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(35,22,42,.55);
+  backdrop-filter:blur(7px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+  padding:20px;
+}
+
+.modal{
+  width:min(470px,100%);
+  background:white;
+  border-radius:25px;
+  padding:25px;
+  text-align:center;
+  box-shadow:0 25px 70px rgba(0,0,0,.3);
+}
+
+.modal h2{
+  margin-bottom:8px;
+  color:#d83c91;
+}
+
+.modal p{
+  color:#685d70;
+  margin-bottom:18px;
+}
+
+.close{
+  background:#d83c91;
+  color:white;
+  padding:12px 25px;
+  border-radius:12px;
+}
+
+/* MOBILE */
+@media(max-width:1050px){
+  .main{
+    grid-template-columns:210px 1fr;
+  }
+
+  .itemsPanel{
+    grid-column:1/-1;
+    min-height:auto;
+  }
+
+  .items{
+    grid-template-columns:repeat(6,1fr);
+  }
+}
+
+@media(max-width:700px){
+  header{
+    height:62px;
+    padding:0 13px;
+  }
+
+  .logo{
+    font-size:20px;
+  }
+
+  .main{
+    grid-template-columns:1fr;
+    padding:10px;
+  }
+
+  .panel{
+    padding:12px;
+  }
+
+  .categories{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .cat{
+    text-align:center;
+    padding:10px 5px;
+    font-size:11px;
+  }
+
+  .stage{
+    min-height:590px;
+  }
+
+  .character{
+    transform:scale(.88);
+    margin-bottom:-20px;
+  }
+
+  .itemsPanel{
+    grid-column:auto;
+  }
+
+  .items{
+    grid-template-columns:repeat(4,1fr);
+  }
+}
+
+@media(max-width:430px){
+  .stage{
+    min-height:550px;
+  }
+
+  .character{
+    transform:scale(.78);
+    margin-bottom:-35px;
+  }
+
+  .items{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .categories{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+<header>
+  <div class="logo">GAMER<span>EX</span> ✨</div>
+  <div class="coinBox">💎 Style Coins: <b id="coins">250</b></div>
+</header>
+
+<div class="main">
+
+<!-- LEFT -->
+<div class="panel">
+
+  <div class="panelTitle">✨ Style Studio</div>
+
+  <div class="categories">
+
+    <button class="cat active" onclick="selectCategory('outfit',this)">
+      👗 Outfits
+    </button>
+
+    <button class="cat" onclick="selectCategory('hair',this)">
+      💇 Hair
+    </button>
+
+    <button class="cat" onclick="selectCategory('makeup',this)">
+      💄 Makeup
+    </button>
+
+    <button class="cat" onclick="selectCategory('shoes',this)">
+      👠 Shoes
+    </button>
+
+    <button class="cat" onclick="selectCategory('bags',this)">
+      👜 Bags
+    </button>
+
+    <button class="cat" onclick="selectCategory('jewelry',this)">
+      💎 Jewelry
+    </button>
+
+    <button class="cat" onclick="selectCategory('glasses',this)">
+      🕶️ Glasses
+    </button>
+
+    <button class="cat" onclick="selectCategory('background',this)">
+      🏠 Room
+    </button>
+
+  </div>
+
+</div>
+
+<!-- CENTER -->
+<div class="stage bg1" id="stage">
+
+  <div class="room">
+    <div class="window"></div>
+    <div class="floor"></div>
+  </div>
+
+  <div class="character" id="character">
+
+    <div class="hair" id="hair"></div>
+    <div class="hair front" id="hairFront"></div>
+
+    <div class="head">
+      <div class="face">
+
+        <div class="eyebrow left"></div>
+        <div class="eyebrow right"></div>
+
+        <div class="eyesShadow left" id="shadowL"></div>
+        <div class="eyesShadow right" id="shadowR"></div>
+
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+
+        <div class="lash left" id="lashL"></div>
+        <div class="lash right" id="lashR"></div>
+
+        <div class="blush left" id="blushL"></div>
+        <div class="blush right" id="blushR"></div>
+
+        <div class="lips" id="lips"></div>
+
+      </div>
+    </div>
+
+    <div class="neck"></div>
+
+    <div class="body" id="body"></div>
+
+    <div class="jacket" id="jacket" style="display:none"></div>
+    <div class="belt" id="belt" style="display:none"></div>
+
+    <div class="skirt" id="skirt"></div>
+
+    <div class="leg left"></div>
+    <div class="leg right"></div>
+
+    <div class="shoe left" id="shoeL"></div>
+    <div class="shoe right" id="shoeR"></div>
+
+    <div class="glasses" id="glasses" style="display:none">
+      <div class="bridge"></div>
+    </div>
+
+    <div class="earring left" id="earringL" style="display:none"></div>
+    <div class="earring right" id="earringR" style="display:none"></div>
+
+    <div class="necklace" id="necklace" style="display:none"></div>
+    <div class="necklaceGem" id="necklaceGem" style="display:none"></div>
+
+  </div>
+</div>
+
+<!-- RIGHT -->
+<div class="panel itemsPanel">
+
+  <div class="panelTitle" id="itemTitle">👗 Choose an Outfit</div>
+
+  <div class="items" id="items"></div>
+
+  <div class="scoreBox">
+    <div>✨ Style Score</div>
+    <div class="score" id="score">50</div>
+  </div>
+
+  <div class="bottomButtons">
+    <button class="action" onclick="randomLook()">🎲 Random</button>
+    <button class="action" onclick="resetLook()">↻ Reset</button>
+    <button class="action primary" onclick="showFinal()">📸 Final Look</button>
+    <button class="action" onclick="changeBackground()">🌈 Scene</button>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+<!-- FINAL POPUP -->
+<div class="overlay" id="overlay">
+
+  <div class="modal">
+
+    <div style="font-size:55px">✨💖✨</div>
+
+    <h2>Your Look Is Ready!</h2>
+
+    <p id="finalText">
+      Amazing style!
+    </p>
+
+    <div style="font-size:38px;font-weight:900;color:#d83c91;margin:15px"
+         id="finalScore">
+      50/100
+    </div>
+
+    <button class="close" onclick="closeFinal()">
+      Continue Styling
+    </button>
+
+  </div>
+
+</div>
+
+<script>
+
+/* =========================
+   GAME DATA
+========================= */
+
+const data = {
+
+outfit:[
+  {name:"Pink Dress",icon:"👗",body:"pink",skirt:"pink"},
+  {name:"Blue Dress",icon:"👗",body:"blue",skirt:"blue"},
+  {name:"Purple Dress",icon:"👗",body:"purple",skirt:"pink"},
+  {name:"Elegant Black",icon:"🖤",body:"black",skirt:"black"},
+  {name:"Sunny Look",icon:"🌼",body:"yellow",skirt:"gold"},
+  {name:"Mint Style",icon:"🌿",body:"green",skirt:"white"},
+  {name:"White Party",icon:"🤍",body:"white",skirt:"white"},
+  {name:"Red Glam",icon:"❤️",body:"red",skirt:"black"},
+  {name:"Royal Purple",icon:"👑",body:"purple",skirt:"gold"}
+],
+
+hair:[
+  {name:"Brunette",icon:"💇",color:"brown",style:"normal"},
+  {name:"Long Blonde",icon:"💛",color:"blonde",style:"long"},
+  {name:"Pink Hair",icon:"🌸",color:"pink",style:"long"},
+  {name:"Blue Hair",icon:"💙",color:"blue",style:"bob"},
+  {name:"Black Hair",icon:"🖤",color:"black",style:"long"},
+  {name:"Short Bob",icon:"💇‍♀️",color:"brown",style:"bob"}
+],
+
+makeup:[
+  {name:"Natural",icon:"🌷",lip:"nude",shadow:false,blush:false,liner:false},
+  {name:"Pink Glam",icon:"💗",lip:"pink",shadow:true,blush:true,liner:false},
+  {name:"Red Lips",icon:"💋",lip:"red",shadow:false,blush:true,liner:true},
+  {name:"Purple Glow",icon:"💜",lip:"purple",shadow:true,blush:true,liner:true},
+  {name:"Party Look",icon:"✨",lip:"pink",shadow:true,blush:true,liner:true}
+],
+
+shoes:[
+  {name:"Black Heels",icon:"👠",color:"black"},
+  {name:"Pink Heels",icon:"👠",color:"pink"},
+  {name:"White Shoes",icon:"👟",color:"white"},
+  {name:"Blue Shoes",icon:"👟",color:"blue"},
+  {name:"Golden Heels",icon:"👠",color:"gold"}
+],
+
+bags:[
+  {name:"Pink Bag",icon:"👜",color:"pink"},
+  {name:"Black Bag",icon:"👜",color:"black"},
+  {name:"White Bag",icon:"👜",color:"white"},
+  {name:"Golden Bag",icon:"👜",color:"gold"}
+],
+
+jewelry:[
+  {name:"No Jewelry",icon:"🚫",value:0},
+  {name:"Earrings",icon:"💎",value:8},
+  {name:"Necklace",icon:"📿",value:10},
+  {name:"Full Jewelry",icon:"👑",value:15}
+],
+
+glasses:[
+  {name:"No Glasses",icon:"🚫",value:0},
+  {name:"Classic",icon:"🕶️",value:7},
+  {name:"Fashion",icon:"👓",value:10},
+  {name:"Cool Shades",icon:"😎",value:12}
+],
+
+background:[
+  {name:"Pink Room",icon:"🌸",bg:"bg1"},
+  {name:"Sunset Room",icon:"🌅",bg:"bg2"},
+  {name:"Mint Room",icon:"🌿",bg:"bg3"},
+  {name:"Night Room",icon:"🌙",bg:"bg4"}
+]
+
+};
+
+let currentCategory="outfit";
+
+let state={
+  outfit:0,
+  hair:0,
+  makeup:0,
+  shoes:0,
+  bags:0,
+  jewelry:0,
+  glasses:0,
+  background:0
+};
+
+let coins=250;
+
+/* =========================
+   CATEGORY
+========================= */
+
+function selectCategory(category,button){
+
+  currentCategory=category;
+
+  document.querySelectorAll(".cat").forEach(x=>{
+    x.classList.remove("active");
+  });
+
+  button.classList.add("active");
+
+  renderItems();
+}
+
+/* =========================
+   ITEMS
+========================= */
+
+function renderItems(){
+
+  const container=document.getElementById("items");
+
+  container.innerHTML="";
+
+  const title={
+    outfit:"👗 Choose an Outfit",
+    hair:"💇 Choose a Hairstyle",
+    makeup:"💄 Choose Makeup",
+    shoes:"👠 Choose Shoes",
+    bags:"👜 Choose a Bag",
+    jewelry:"💎 Choose Jewelry",
+    glasses:"🕶️ Choose Glasses",
+    background:"🏠 Choose a Room"
+  };
+
+  document.getElementById("itemTitle").textContent=title[currentCategory];
+
+  data[currentCategory].forEach((item,index)=>{
+
+    const btn=document.createElement("button");
+
+    btn.className="item";
+
+    if(state[currentCategory]===index){
+      btn.classList.add("selected");
+    }
+
+    btn.innerHTML=`
+      <div class="itemIcon">${item.icon}</div>
+      <div class="itemName">${item.name}</div>
+    `;
+
+    btn.onclick=()=>{
+      state[currentCategory]=index;
+      applySelection();
+      renderItems();
+    };
+
+    container.appendChild(btn);
+
+  });
+}
+
+/* =========================
+   APPLY
+========================= */
+
+function applySelection(){
+
+  const outfit=data.outfit[state.outfit];
+
+  const body=document.getElementById("body");
+  const skirt=document.getElementById("skirt");
+
+  body.className="body "+outfit.body;
+  skirt.className="skirt "+outfit.skirt;
+
+  /* HAIR */
+
+  const hair=data.hair[state.hair];
+
+  const hairEl=document.getElementById("hair");
+  const hairFront=document.getElementById("hairFront");
+
+  hairEl.className="hair "+hair.style+" "+hair.color;
+  hairFront.className="hair front "+hair.color;
+
+  /* MAKEUP */
+
+  const makeup=data.makeup[state.makeup];
+
+  document.getElementById("lips").className="lips "+makeup.lip;
+
+  document.getElementById("shadowL").style.display=
+    makeup.shadow ? "block":"none";
+
+  document.getElementById("shadowR").style.display=
+    makeup.shadow ? "block":"none";
+
+  document.getElementById("blushL").style.display=
+    makeup.blush ? "block":"none";
+
+  document.getElementById("blushR").style.display=
+    makeup.blush ? "block":"none";
+
+  document.getElementById("lashL").style.display=
+    makeup.liner ? "block":"none";
+
+  document.getElementById("lashR").style.display=
+    makeup.liner ? "block":"none";
+
+  /* SHOES */
+
+  const shoe=data.shoes[state.shoes];
+
+  document.getElementById("shoeL").className=
+    "shoe left "+shoe.color;
+
+  document.getElementById("shoeR").className=
+    "shoe right "+shoe.color;
+
+  /* JEWELRY */
+
+  const jewelry=data.jewelry[state.jewelry];
+
+  document.getElementById("earringL").style.display=
+    jewelry.value>=8 ? "block":"none";
+
+  document.getElementById("earringR").style.display=
+    jewelry.value>=8 ? "block":"none";
+
+  document.getElementById("necklace").style.display=
+    jewelry.value>=10 ? "block":"none";
+
+  document.getElementById("necklaceGem").style.display=
+    jewelry.value>=15 ? "block":"none";
+
+  /* GLASSES */
+
+  const glasses=data.glasses[state.glasses];
+
+  document.getElementById("glasses").style.display=
+    glasses.value>0 ? "block":"none";
+
+  /* BACKGROUND */
+
+  const bg=data.background[state.background];
+
+  const stage=document.getElementById("stage");
+
+  stage.className="stage "+bg.bg;
+
+  updateScore();
+}
+
+/* =========================
+   SCORE
+========================= */
+
+function updateScore(){
+
+  let score=50;
+
+  if(state.outfit!==0) score+=8;
+  if(state.hair!==0) score+=7;
+  if(state.makeup!==0) score+=8;
+  if(state.shoes!==0) score+=5;
+  if(state.bags!==0) score+=5;
+  if(state.jewelry!==0) score+=6;
+  if(state.glasses!==0) score+=4;
+
+  if(
+    state.makeup===4 &&
+    state.jewelry>=2 &&
+    state.outfit>=2
+  ){
+    score+=7;
+  }
+
+  score=Math.min(score,100);
+
+  document.getElementById("score").textContent=score;
+
+  return score;
+}
+
+/* =========================
+   RANDOM LOOK
+========================= */
+
+function randomLook(){
+
+  Object.keys(state).forEach(key=>{
+    state[key]=Math.floor(Math.random()*data[key].length);
+  });
+
+  applySelection();
+  renderItems();
+}
+
+/* =========================
+   RESET
+========================= */
+
+function resetLook(){
+
+  state={
+    outfit:0,
+    hair:0,
+    makeup:0,
+    shoes:0,
+    bags:0,
+    jewelry:0,
+    glasses:0,
+    background:0
+  };
+
+  applySelection();
+  renderItems();
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+function changeBackground(){
+
+  state.background=
+    (state.background+1)%data.background.length;
+
+  applySelection();
+
+  if(currentCategory==="background"){
+    renderItems();
+  }
+}
+
+/* =========================
+   FINAL
+========================= */
+
+function showFinal(){
+
+  const score=updateScore();
+
+  let message="Nice look! 💖";
+
+  if(score>=90){
+    message="WOW! You're a true fashion superstar! ✨👑";
+  }
+  else if(score>=75){
+    message="Amazing style! This look is gorgeous! 💕";
+  }
+  else if(score>=60){
+    message="Great look! Keep experimenting! 🌸";
+  }
+
+  document.getElementById("finalText").textContent=message;
+
+  document.getElementById("finalScore").textContent=
+    score+"/100";
+
+  document.getElementById("overlay").style.display="flex";
+}
+
+function closeFinal(){
+  document.getElementById("overlay").style.display="none";
+}
+
+/* =========================
+   START
+========================= */
+
+applySelection();
+renderItems();
+
+</script>
+
+</body>
+</html>
