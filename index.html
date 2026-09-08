@@ -1332,7 +1332,7 @@ footer span{
   <div class="modal-box">
     <span class="close" onclick="closeModal('forgotModal')">×</span>
     <h2>Forgot Password</h2>
-    <p class="modal-text" style="margin-bottom:16px;">Enter the Gmail used for your Gamerex account. We will send a verification code.</p>
+    <p class="modal-text" style="margin-bottom:16px;">Enter the email used for your Gamerex account. We will send a 6-digit verification code.</p>
 
     <div id="forgotStep1">
       <input type="email" id="forgotEmail" placeholder="Gamerex account email" autocomplete="email">
@@ -1340,15 +1340,13 @@ footer span{
     </div>
 
     <div id="forgotStep2" style="display:none;">
+      <p class="modal-text" style="margin:0 0 12px;">Enter the 6-digit code sent to your email.</p>
       <input type="text" id="forgotCode" placeholder="6-digit verification code" inputmode="numeric" autocomplete="one-time-code" maxlength="6">
       <button class="main-btn" style="width:100%;" onclick="verifyForgotCode()">Verify Code</button>
-      <div style="margin-top:12px;display:flex;gap:8px;">
-        <button class="small-btn" style="flex:1;" onclick="showResetPasswordBox()">Change Password</button>
-        <button class="small-btn" style="flex:1;" onclick="loginAfterForgotCode()">Login Directly</button>
-      </div>
     </div>
 
     <div id="forgotStep3" style="display:none;">
+      <p class="modal-text" style="margin:0 0 12px;">Create a new password for your Gamerex account.</p>
       <input type="password" id="newForgotPassword" placeholder="New password" autocomplete="new-password">
       <input type="password" id="confirmForgotPassword" placeholder="Confirm new password" autocomplete="new-password">
       <button class="main-btn" style="width:100%;" onclick="changeForgotPassword()">Save New Password</button>
@@ -2330,7 +2328,8 @@ let forgotVerified=false;
 
 function openForgotPassword(){
   closeModal("authModal");
-  forgotEmail=""; forgotVerified=false;
+  forgotEmail="";
+  forgotVerified=false;
   document.getElementById("forgotEmail").value="";
   document.getElementById("forgotCode").value="";
   document.getElementById("newForgotPassword").value="";
@@ -2344,58 +2343,78 @@ function openForgotPassword(){
 async function sendForgotCode(){
   const email=document.getElementById("forgotEmail").value.trim().toLowerCase();
   if(!email){alert("Please enter your Gamerex email.");return;}
+
   try{
-    const {error}=await supabaseClient.auth.signInWithOtp({email,options:{shouldCreateUser:false}});
+    const {error}=await supabaseClient.auth.signInWithOtp({
+      email,
+      options:{shouldCreateUser:false}
+    });
     if(error) throw error;
+
     forgotEmail=email;
     document.getElementById("forgotStep1").style.display="none";
     document.getElementById("forgotStep2").style.display="block";
-    alert("Verification code sent to your Gmail. 📧");
+    alert("Verification code sent to your email. 📧");
   }catch(error){
-    console.error(error);
+    console.error("Forgot password error:",error);
     alert(error.message || "Could not send the verification code.");
   }
 }
 
 async function verifyForgotCode(){
   const token=document.getElementById("forgotCode").value.trim();
-  if(!/^\d{6}$/.test(token)){alert("Enter the 6-digit verification code.");return;}
+  if(!/^\d{6}$/.test(token)){
+    alert("Enter the 6-digit verification code.");
+    return;
+  }
+
   try{
-    const {data,error}=await supabaseClient.auth.verifyOtp({email:forgotEmail,token,type:"email"});
+    const {data,error}=await supabaseClient.auth.verifyOtp({
+      email:forgotEmail,
+      token,
+      type:"email"
+    });
     if(error) throw error;
-    if(!data.session) throw new Error("Verification succeeded but no login session was created.");
+    if(!data.session) throw new Error("Verification succeeded but no session was created.");
+
     forgotVerified=true;
-    await loadAccount();
-    alert("Email verified successfully! You can now login directly or change your password.");
+    document.getElementById("forgotStep2").style.display="none";
+    document.getElementById("forgotStep3").style.display="block";
   }catch(error){
-    console.error(error);
+    console.error("Verification error:",error);
     alert(error.message || "Invalid or expired verification code.");
   }
 }
 
-function showResetPasswordBox(){
-  if(!forgotVerified){alert("Please verify the code first.");return;}
-  document.getElementById("forgotStep3").style.display="block";
-}
-
 async function changeForgotPassword(){
-  if(!forgotVerified){alert("Please verify the code first.");return;}
+  if(!forgotVerified){
+    alert("Please verify the code first.");
+    return;
+  }
+
   const password=document.getElementById("newForgotPassword").value;
   const confirm=document.getElementById("confirmForgotPassword").value;
-  if(password.length<6){alert("New password must be at least 6 characters.");return;}
-  if(password!==confirm){alert("Passwords do not match.");return;}
-  const {error}=await supabaseClient.auth.updateUser({password});
-  if(error){alert(error.message||"Could not change password.");return;}
-  closeModal("forgotModal");
-  await loadAccount();
-  alert("Password changed successfully! You are now logged in. 🎮");
-}
 
-async function loginAfterForgotCode(){
-  if(!forgotVerified){alert("Please verify the code first.");return;}
-  closeModal("forgotModal");
-  await loadAccount();
-  alert("Logged in successfully without changing your password! 🎮");
+  if(password.length<6){
+    alert("New password must be at least 6 characters.");
+    return;
+  }
+  if(password!==confirm){
+    alert("Passwords do not match.");
+    return;
+  }
+
+  try{
+    const {error}=await supabaseClient.auth.updateUser({password});
+    if(error) throw error;
+
+    closeModal("forgotModal");
+    await loadAccount();
+    alert("Password changed successfully! 🎉 You can now login with your new password.");
+  }catch(error){
+    console.error("Password update error:",error);
+    alert(error.message || "Could not change your password.");
+  }
 }
 
 /* =====================================================
