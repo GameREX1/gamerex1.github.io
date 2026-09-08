@@ -890,7 +890,7 @@ footer span{
 
     <input
       type="search"
-      id="searchInput"
+      id="searchInput" name="game-search" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
       name="gamerex-game-search"
       placeholder="Search games..."
       autocomplete="off"
@@ -1303,6 +1303,10 @@ footer span{
       Login
     </button>
 
+    <div style="text-align:right;margin-top:10px;">
+      <span class="modal-link" id="forgotPasswordLink" onclick="openForgotPassword()">Forgot password?</span>
+    </div>
+
     <p class="modal-text">
 
       <span id="authSwitchText">
@@ -1321,6 +1325,35 @@ footer span{
 
   </div>
 
+</div>
+
+<!-- FORGOT PASSWORD -->
+<div class="modal" id="forgotModal">
+  <div class="modal-box">
+    <span class="close" onclick="closeModal('forgotModal')">×</span>
+    <h2>Forgot Password</h2>
+    <p class="modal-text" style="margin-bottom:16px;">Enter the Gmail used for your Gamerex account. We will send a verification code.</p>
+
+    <div id="forgotStep1">
+      <input type="email" id="forgotEmail" placeholder="Gamerex account email" autocomplete="email">
+      <button class="main-btn" style="width:100%;" onclick="sendForgotCode()">Send Verification Code</button>
+    </div>
+
+    <div id="forgotStep2" style="display:none;">
+      <input type="text" id="forgotCode" placeholder="6-digit verification code" inputmode="numeric" autocomplete="one-time-code" maxlength="6">
+      <button class="main-btn" style="width:100%;" onclick="verifyForgotCode()">Verify Code</button>
+      <div style="margin-top:12px;display:flex;gap:8px;">
+        <button class="small-btn" style="flex:1;" onclick="showResetPasswordBox()">Change Password</button>
+        <button class="small-btn" style="flex:1;" onclick="loginAfterForgotCode()">Login Directly</button>
+      </div>
+    </div>
+
+    <div id="forgotStep3" style="display:none;">
+      <input type="password" id="newForgotPassword" placeholder="New password" autocomplete="new-password">
+      <input type="password" id="confirmForgotPassword" placeholder="Confirm new password" autocomplete="new-password">
+      <button class="main-btn" style="width:100%;" onclick="changeForgotPassword()">Save New Password</button>
+    </div>
+  </div>
 </div>
 
 <!-- NAME -->
@@ -1521,18 +1554,13 @@ let selectedGameIcon="";
 
 
 /* =====================================================
-   SUPABASE
-   Games and authentication are stored online so they
-   work across different browsers and devices.
+   ACCOUNT STORAGE
+   Account settings remain in localStorage.
 ===================================================== */
 
 const SUPABASE_URL = "https://pmmrwjdadzjsedshrhnq.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_Ud0bITW5Afyn7SfOV5Yu-w_9e4LpxhI";
-
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let currentAccount = null;
 
@@ -1540,145 +1568,140 @@ function getAccount(){
   return currentAccount;
 }
 
-function saveAccount(account){
-  currentAccount = account;
-  try{
-    localStorage.setItem("gamerexAccount", JSON.stringify(account));
-  }catch(e){}
-}
-
-function generateGamerexId(){
-  return "GX-" + Math.floor(100000 + Math.random() * 900000);
-}
-
 async function loadAccount(){
-  const { data, error } = await supabaseClient.auth.getUser();
-
-  if(error || !data.user){
-    currentAccount = null;
+  const { data:{ user }, error } = await supabaseClient.auth.getUser();
+  if(error || !user){
+    currentAccount=null;
     updateHeaderUI();
     updateProfileUI();
     return null;
   }
 
-  const user = data.user;
-  const metadata = user.user_metadata || {};
+  let { data: profile } = await supabaseClient
+    .from("profiles")
+    .select("id,gamerex_id,profile_logo,name_changes_today,name_change_date")
+    .eq("id", user.id)
+    .maybeSingle();
 
-  let localAccount = null;
-  try{
-    localAccount = JSON.parse(localStorage.getItem("gamerexAccount") || "null");
-  }catch(e){}
+  if(!profile){
+    const metadata=user.user_metadata || {};
+    const gamerexId=metadata.gamerex_id || generateGamerexId();
+    const { data: created } = await supabaseClient.from("profiles").insert({
+      id:user.id,
+      gamerex_id:gamerexId,
+      profile_logo:"👤",
+      name_changes_today:0,
+      name_change_date:todayKey()
+    }).select().single();
+    profile=created;
+  }
 
-  currentAccount = {
-    id: user.id,
-    email: user.email || "",
-    gamerexId: metadata.gamerex_id || localAccount?.gamerexId || generateGamerexId(),
-    profileLogo: localAccount?.profileLogo || "👤",
-    nameChangesToday: Number(localAccount?.nameChangesToday || 0),
-    nameChangeDate: localAccount?.nameChangeDate || todayKey()
+  currentAccount={
+    id:user.id,
+    email:user.email || "",
+    gamerexId:profile?.gamerex_id || generateGamerexId(),
+    profileLogo:profile?.profile_logo || "👤",
+    nameChangesToday:Number(profile?.name_changes_today || 0),
+    nameChangeDate:profile?.name_change_date || todayKey()
   };
 
   resetDailyNameLimit(currentAccount);
-  saveAccount(currentAccount);
   updateHeaderUI();
   updateProfileUI();
   return currentAccount;
 }
 
+async function saveAccount(account){
+  currentAccount=account;
+  if(!account?.id) return;
+  const { error }=await supabaseClient.from("profiles").upsert({
+    id:account.id,
+    gamerex_id:account.gamerexId,
+    profile_logo:account.profileLogo || "👤",
+    name_changes_today:Number(account.nameChangesToday || 0),
+    name_change_date:account.nameChangeDate || todayKey()
+  });
+  if(error) console.error("Profile save error:",error);
+}
+
 async function getGames(){
-  const { data, error } = await supabaseClient
+  // IMPORTANT: these are the REAL columns in the public.games table.
+  const { data, error }=await supabaseClient
     .from("games")
     .select("id,created_at,title,description,thumbnail,game_url,category")
-    .order("created_at", { ascending:false });
+    .order("created_at",{ascending:false});
 
   if(error){
-    console.error("Supabase games load error:", error);
+    console.error("Games load error:",error);
     throw error;
   }
 
-  return (data || []).map(game => ({
-    ...game,
-    name: game.title || "Game",
-    url: game.game_url || "",
-    iconImage: game.thumbnail || "",
-    icon: "🎮"
+  // Convert Supabase column names to the names already used by the Gamerex UI.
+  return (data || []).map(game=>({
+    id:game.id,
+    name:game.title || "Game",
+    url:game.game_url || "",
+    category:game.category || "Games",
+    iconImage:game.thumbnail || "",
+    description:game.description || "Play this game on Gamerex.",
+    created_at:game.created_at || ""
   }));
 }
 
-async function saveGame(game){
-  const { data, error } = await supabaseClient
-    .from("games")
-    .insert({
-      title: game.name || "Game",
-      description: game.description || "Play this game on Gamerex.",
-      thumbnail: game.iconImage || "",
-      game_url: game.url || "",
-      category: game.category || "Games"
-    })
-    .select("id,created_at,title,description,thumbnail,game_url,category")
-    .single();
-
-  if(error){
-    console.error("Supabase game save error:", error);
-    throw error;
+async function saveGames(games){
+  // Kept for compatibility with the old code. New games are saved directly
+  // through submitGame() using the actual public.games schema.
+  for(const game of games || []){
+    const row={
+      title:game.title || game.name || "Game",
+      description:game.description || "Play this game on Gamerex.",
+      thumbnail:game.thumbnail || game.iconImage || "",
+      game_url:game.game_url || game.url || "",
+      category:game.category || "Games"
+    };
+    const { error }=await supabaseClient.from("games").insert(row);
+    if(error) throw error;
   }
-
-  return data;
 }
 
-async function migrateOldGames(){
+async function migrateLegacyGames(){
   try{
-    const account = await loadAccount();
+    const account=await loadAccount();
     if(!account) return;
     if(!window.indexedDB) return;
-
-    const request = indexedDB.open("GamerexGameDatabase", 1);
-
-    request.onsuccess = async function(event){
+    const request=indexedDB.open("GamerexGameDatabase",1);
+    request.onsuccess=async function(event){
       try{
-        const db = event.target.result;
+        const db=event.target.result;
         if(!db.objectStoreNames.contains("games")){ db.close(); return; }
-
-        const tx = db.transaction("games", "readonly");
-        const req = tx.objectStore("games").getAll();
-
-        req.onsuccess = async function(){
-          const oldGames = Array.isArray(req.result) ? req.result : [];
+        const tx=db.transaction("games","readonly");
+        const req=tx.objectStore("games").getAll();
+        req.onsuccess=async function(){
+          const oldGames=Array.isArray(req.result)?req.result:[];
           if(oldGames.length){
-            const { data: existing } = await supabaseClient
-              .from("games")
-              .select("title,game_url");
-
-            const keys = new Set((existing || []).map(g => String(g.title) + "|" + String(g.game_url)));
-
+            const {data:existing}=await supabaseClient.from("games").select("title,game_url");
+            const keys=new Set((existing||[]).map(g=>String(g.title)+"|"+String(g.game_url)));
             for(const game of oldGames){
-              const key = String(game.name || "") + "|" + String(game.url || "");
-              if(!keys.has(key) && game.url){
-                await saveGame({
-                  name: game.name || "Game",
-                  url: game.url || "",
-                  category: game.category || "Games",
-                  iconImage: game.iconImage || "",
-                  description: game.description || "Play this game on Gamerex."
+              const key=String(game.name||"")+"|"+String(game.url||"");
+              if(!keys.has(key)){
+                const {error}=await supabaseClient.from("games").insert({
+                  title:game.name||"Game",
+                  game_url:game.url||"",
+                  category:game.category||"Games",
+                  thumbnail:game.iconImage||"",
+                  description:game.description||"Play this game on Gamerex."
                 });
+                if(error) console.warn("Legacy game upload failed:",error);
               }
             }
             await renderGames();
           }
           db.close();
         };
-      }catch(e){
-        console.warn("Legacy game migration failed:", e);
-      }
+      }catch(e){console.warn("Legacy game migration failed:",e);}
     };
-  }catch(e){
-    console.warn("Legacy game migration failed:", e);
-  }
+  }catch(e){console.warn("Legacy game migration failed:",e);}
 }
-
-/* =====================================================
-   DATE
-===================================================== */
 
 function todayKey(){
 
@@ -2071,153 +2094,69 @@ async function filterCategory(category){
 ===================================================== */
 
 function openAuth(mode){
-
-  authMode=
-    mode;
-
-  document.getElementById(
-    "authModal"
-  ).style.display="flex";
-
+  authMode=mode;
+  document.getElementById("authModal").style.display="flex";
   updateAuthUI();
-
 }
-
 
 function updateAuthUI(){
-
-  const title=
-    document.getElementById(
-      "authTitle"
-    );
-
-  const button=
-    document.getElementById(
-      "authButton"
-    );
-
-  const switchText=
-    document.getElementById(
-      "authSwitchText"
-    );
-
-  const switchButton=
-    document.getElementById(
-      "authSwitch"
-    );
-
-
-  if(authMode==="login"){
-
-    title.textContent="Login";
-
-    button.textContent="Login";
-
-    switchText.textContent=
-      "Don't have an account?";
-
-    switchButton.textContent=
-      "Sign Up";
-
-  }else{
-
-    title.textContent=
-      "Create Account";
-
-    button.textContent=
-      "Sign Up";
-
-    switchText.textContent=
-      "Already have an account?";
-
-    switchButton.textContent=
-      "Login";
-
-  }
-
+  const title=document.getElementById("authTitle");
+  const button=document.getElementById("authButton");
+  const switchText=document.getElementById("authSwitchText");
+  const switchButton=document.getElementById("authSwitch");
+  const forgot=document.getElementById("forgotPasswordLink");
+  const signupMode=authMode==="signup";
+  title.textContent=signupMode?"Create Gamerex Account":"Login to Gamerex";
+  button.textContent=signupMode?"Sign Up":"Login";
+  switchText.textContent=signupMode?"Already have an account?":"Don't have an account?";
+  switchButton.textContent=signupMode?"Login":"Sign Up";
+  if(forgot) forgot.style.display=signupMode?"none":"inline";
 }
-
 
 function switchAuth(){
-
-  authMode=
-    authMode==="login"
-      ? "signup"
-      : "login";
-
+  authMode=authMode==="login"?"signup":"login";
   updateAuthUI();
-
 }
 
-
-/* =====================================================
-   HANDLE AUTH
-===================================================== */
-
 async function handleAuth(){
-  const email = document.getElementById("email").value.trim().toLowerCase();
-  const password = document.getElementById("password").value;
+  const email=document.getElementById("email").value.trim().toLowerCase();
+  const password=document.getElementById("password").value;
+  if(!email || !password){ alert("Please enter your email and password."); return; }
 
-  if(!email || !password){
-    alert("Please enter your email and password.");
-    return;
-  }
-
-  const button = document.getElementById("authButton");
-  button.disabled = true;
-
+  const button=document.getElementById("authButton");
+  button.disabled=true;
   try{
-    if(authMode === "signup"){
-      const gamerexId = generateGamerexId();
-
-      const { data, error } = await supabaseClient.auth.signUp({
-        email,
-        password,
-        options:{
-          data:{ gamerex_id:gamerexId }
-        }
+    if(authMode==="signup"){
+      const gamerexId=generateGamerexId();
+      const {data,error}=await supabaseClient.auth.signUp({
+        email,password,options:{data:{gamerex_id:gamerexId}}
       });
-
       if(error) throw error;
-
       if(data.user){
-        currentAccount = {
-          id:data.user.id,
-          email:data.user.email || email,
-          gamerexId,
-          profileLogo:"👤",
-          nameChangesToday:0,
-          nameChangeDate:todayKey()
-        };
-        saveAccount(currentAccount);
+        await supabaseClient.from("profiles").upsert({
+          id:data.user.id,gamerex_id:gamerexId,profile_logo:"👤",name_changes_today:0,name_change_date:todayKey()
+        });
       }
-
       if(data.session){
         await loadAccount();
         closeModal("authModal");
         alert("Account created successfully! 🎉");
       }else{
         closeModal("authModal");
-        alert("Account created! 📧 Please check your Gmail and confirm your email, then Login.");
+        alert("Account created! 📧 Please check your Gmail and confirm your email, then login.");
       }
     }else{
-      const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password
-      });
-
+      const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
       if(error) throw error;
-
-      if(data.user) await loadAccount();
-
+      if(data.user){ await loadAccount(); }
       closeModal("authModal");
       alert("Logged in successfully! 🎮");
     }
   }catch(error){
-    console.error("Authentication error:", error);
+    console.error("Authentication error:",error);
     alert(error.message || "Authentication failed. Please try again.");
   }finally{
-    button.disabled = false;
+    button.disabled=false;
   }
 }
 
@@ -2241,25 +2180,22 @@ function generateGamerexId(){
 ===================================================== */
 
 function updateHeaderUI(){
-  const loggedIn = !!currentAccount;
-  const login = document.getElementById("loginHeaderBtn");
-  const signup = document.getElementById("signupHeaderBtn");
-  const logoutBtn = document.getElementById("logoutHeaderBtn");
-  const accountName = document.getElementById("accountName");
-
-  if(!login || !signup || !logoutBtn || !accountName) return;
-
-  login.style.display = loggedIn ? "none" : "block";
-  signup.style.display = loggedIn ? "none" : "block";
-  logoutBtn.style.display = loggedIn ? "block" : "none";
-  accountName.style.display = loggedIn ? "block" : "none";
-  accountName.textContent = loggedIn ? "👤 " + currentAccount.gamerexId : "";
+  const loggedIn=!!currentAccount;
+  const login=document.getElementById("loginHeaderBtn");
+  const signup=document.getElementById("signupHeaderBtn");
+  const logoutBtn=document.getElementById("logoutHeaderBtn");
+  const accountName=document.getElementById("accountName");
+  if(!login||!signup||!logoutBtn||!accountName) return;
+  login.style.display=loggedIn?"none":"block";
+  signup.style.display=loggedIn?"none":"block";
+  logoutBtn.style.display=loggedIn?"block":"none";
+  accountName.style.display=loggedIn?"block":"none";
+  accountName.textContent=loggedIn?"👤 "+currentAccount.gamerexId:"";
 }
 
 async function logout(){
   await supabaseClient.auth.signOut();
-  currentAccount = null;
-  try{ localStorage.removeItem("gamerexAccount"); }catch(e){}
+  currentAccount=null;
   updateHeaderUI();
   updateProfileUI();
   alert("You have been logged out.");
@@ -2343,202 +2279,124 @@ function updateProfileUI(){
 
 
 function resetDailyNameLimit(account){
-
-  const today=
-    todayKey();
-
-
-  if(
-    account.nameChangeDate!==today
-  ){
-
-    account.nameChangeDate=
-      today;
-
-    account.nameChangesToday=
-      0;
-
-    saveAccount(
-      account
-    );
-
+  const today=todayKey();
+  if(account.nameChangeDate!==today){
+    account.nameChangeDate=today;
+    account.nameChangesToday=0;
+    saveAccount(account);
   }
-
 }
-
-
-/* =====================================================
-   CHANGE NAME
-===================================================== */
 
 function changeGamerexName(){
-
-  const account=
-    getAccount();
-
-
-  if(!account){
-
-    alert(
-      "Please Login or Sign Up first."
-    );
-
-    return;
-
-  }
-
-
-  resetDailyNameLimit(
-    account
-  );
-
-
-  if(
-    account.nameChangesToday>=5
-  ){
-
-    alert(
-      "You have reached today's 5 ID changes."
-    );
-
-    return;
-
-  }
-
-
-  document.getElementById(
-    "newGamerexName"
-  ).value=
-    account.gamerexId;
-
-
-  document.getElementById(
-    "nameModal"
-  ).style.display="flex";
-
+  const account=getAccount();
+  if(!account){alert("Please Login or Sign Up first.");return;}
+  resetDailyNameLimit(account);
+  if(Number(account.nameChangesToday||0)>=5){alert("You have reached today's 5 ID changes.");return;}
+  document.getElementById("newGamerexName").value=account.gamerexId;
+  document.getElementById("nameModal").style.display="flex";
 }
 
-
-function saveGamerexName(){
-
-  const account=
-    getAccount();
-
-
-  if(!account){
-
-    alert(
-      "Please Login first."
-    );
-
-    return;
-
-  }
-
-
-  const newName=
-    document.getElementById(
-      "newGamerexName"
-    ).value
-     .trim();
-
-
-  if(newName.length<3){
-
-    alert(
-      "Gamerex ID must contain at least 3 characters."
-    );
-
-    return;
-
-  }
-
-
-  account.gamerexId=
-    newName;
-
-
-  account.nameChangesToday++;
-
-
-  account.nameChangeDate=
-    todayKey();
-
-
-  saveAccount(
-    account
-  );
-
-
-  updateProfileUI();
-
-  updateHeaderUI();
-
-  closeModal(
-    "nameModal"
-  );
-
-
-  alert(
-    "Gamerex ID changed successfully! 🎉"
-  );
-
+async function saveGamerexName(){
+  const account=getAccount();
+  if(!account){alert("Please Login first.");return;}
+  const newName=document.getElementById("newGamerexName").value.trim();
+  if(newName.length<3){alert("Gamerex ID must contain at least 3 characters.");return;}
+  account.gamerexId=newName;
+  account.nameChangesToday=Number(account.nameChangesToday||0)+1;
+  account.nameChangeDate=todayKey();
+  await saveAccount(account);
+  updateProfileUI(); updateHeaderUI(); closeModal("nameModal");
+  alert("Gamerex ID changed successfully! 🎉");
 }
-
-
-/* =====================================================
-   PROFILE LOGO
-===================================================== */
 
 function changeProfileLogo(){
-
-  if(!getAccount()){
-
-    alert(
-      "Please Login or Sign Up first."
-    );
-
-    return;
-
-  }
-
-
-  document.getElementById(
-    "logoModal"
-  ).style.display="flex";
-
+  if(!getAccount()){alert("Please Login or Sign Up first.");return;}
+  document.getElementById("logoModal").style.display="flex";
 }
 
-
-function selectLogo(logo){
-
-  const account=
-    getAccount();
-
-
-  if(!account){
-    return;
-  }
-
-
-  account.profileLogo=
-    logo;
-
-
-  saveAccount(
-    account
-  );
-
-
-  updateProfileUI();
-
-
-  closeModal(
-    "logoModal"
-  );
-
+async function selectLogo(logo){
+  const account=getAccount(); if(!account) return;
+  account.profileLogo=logo;
+  await saveAccount(account);
+  updateProfileUI(); closeModal("logoModal");
 }
 
+/* =====================================================
+   FORGOT PASSWORD / EMAIL OTP
+===================================================== */
+
+let forgotEmail="";
+let forgotVerified=false;
+
+function openForgotPassword(){
+  closeModal("authModal");
+  forgotEmail=""; forgotVerified=false;
+  document.getElementById("forgotEmail").value="";
+  document.getElementById("forgotCode").value="";
+  document.getElementById("newForgotPassword").value="";
+  document.getElementById("confirmForgotPassword").value="";
+  document.getElementById("forgotStep1").style.display="block";
+  document.getElementById("forgotStep2").style.display="none";
+  document.getElementById("forgotStep3").style.display="none";
+  document.getElementById("forgotModal").style.display="flex";
+}
+
+async function sendForgotCode(){
+  const email=document.getElementById("forgotEmail").value.trim().toLowerCase();
+  if(!email){alert("Please enter your Gamerex email.");return;}
+  try{
+    const {error}=await supabaseClient.auth.signInWithOtp({email,options:{shouldCreateUser:false}});
+    if(error) throw error;
+    forgotEmail=email;
+    document.getElementById("forgotStep1").style.display="none";
+    document.getElementById("forgotStep2").style.display="block";
+    alert("Verification code sent to your Gmail. 📧");
+  }catch(error){
+    console.error(error);
+    alert(error.message || "Could not send the verification code.");
+  }
+}
+
+async function verifyForgotCode(){
+  const token=document.getElementById("forgotCode").value.trim();
+  if(!/^\d{6}$/.test(token)){alert("Enter the 6-digit verification code.");return;}
+  try{
+    const {data,error}=await supabaseClient.auth.verifyOtp({email:forgotEmail,token,type:"email"});
+    if(error) throw error;
+    if(!data.session) throw new Error("Verification succeeded but no login session was created.");
+    forgotVerified=true;
+    await loadAccount();
+    alert("Email verified successfully! You can now login directly or change your password.");
+  }catch(error){
+    console.error(error);
+    alert(error.message || "Invalid or expired verification code.");
+  }
+}
+
+function showResetPasswordBox(){
+  if(!forgotVerified){alert("Please verify the code first.");return;}
+  document.getElementById("forgotStep3").style.display="block";
+}
+
+async function changeForgotPassword(){
+  if(!forgotVerified){alert("Please verify the code first.");return;}
+  const password=document.getElementById("newForgotPassword").value;
+  const confirm=document.getElementById("confirmForgotPassword").value;
+  if(password.length<6){alert("New password must be at least 6 characters.");return;}
+  if(password!==confirm){alert("Passwords do not match.");return;}
+  const {error}=await supabaseClient.auth.updateUser({password});
+  if(error){alert(error.message||"Could not change password.");return;}
+  closeModal("forgotModal");
+  await loadAccount();
+  alert("Password changed successfully! You are now logged in. 🎮");
+}
+
+async function loginAfterForgotCode(){
+  if(!forgotVerified){alert("Please verify the code first.");return;}
+  closeModal("forgotModal");
+  await loadAccount();
+  alert("Logged in successfully without changing your password! 🎮");
+}
 
 /* =====================================================
    LANGUAGES
@@ -2950,63 +2808,44 @@ function previewGameIcon(event){
 ===================================================== */
 
 async function submitGame(){
-  const account = await loadAccount();
-
+  const account=getAccount();
   if(!account){
     alert("Please Login or Sign Up before submitting a game.");
     openAuth("login");
     return;
   }
 
-  const developerName = document.getElementById("developerName").value.trim();
-  const developerEmail = document.getElementById("developerEmail").value.trim();
-  const name = document.getElementById("developerGameName").value.trim();
-  const url = document.getElementById("developerGameUrl").value.trim();
-  const category = document.getElementById("developerGameCategory").value.trim() || "Games";
+  const developerName=account.gamerexId;
+  const developerEmail=account.email;
+  const name=document.getElementById("developerGameName").value.trim();
+  const url=document.getElementById("developerGameUrl").value.trim();
+  const category=document.getElementById("developerGameCategory").value.trim() || "Games";
 
-  if(!developerName){ alert("Please enter your name."); return; }
-  if(!developerEmail){ alert("Please enter your developer email."); return; }
-  if(!name){ alert("Please enter the Game Name."); return; }
-  if(!url){ alert("Please enter the Game URL."); return; }
-
-  try{ new URL(url); }catch(error){
-    alert("Please enter a valid Game URL.");
-    return;
-  }
-
-  if(!selectedGameIcon){
-    alert("Please choose a Game Icon.");
-    return;
-  }
+  if(!name){alert("Please enter the Game Name.");return;}
+  if(!url){alert("Please enter the Game URL.");return;}
+  try{new URL(url);}catch(e){alert("Please enter a valid Game URL.");return;}
+  if(!selectedGameIcon){alert("Please choose a Game Icon.");return;}
 
   try{
-    await saveGame({
-      name,
-      url,
-      category,
-      iconImage:selectedGameIcon,
-      description:"Play " + name + " on Gamerex."
+    const {error}=await supabaseClient.from("games").insert({
+      title:name,
+      description:"Play "+name+" on Gamerex.",
+      thumbnail:selectedGameIcon,
+      game_url:url,
+      category:category
     });
-
+    if(error) throw error;
     await renderGames();
     closeModal("developerModal");
-
-    document.getElementById("developerName").value="";
-    document.getElementById("developerEmail").value="";
-    document.getElementById("developerGameName").value="";
-    document.getElementById("developerGameUrl").value="";
-    document.getElementById("developerGameCategory").value="";
-    document.getElementById("developerGameIconFile").value="";
+    ["developerGameName","developerGameUrl","developerGameCategory","developerGameIconFile"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
     document.getElementById("iconPreviewBox").style.display="none";
     document.getElementById("iconPreview").removeAttribute("src");
     document.getElementById("iconPreviewName").textContent="";
     selectedGameIcon="";
-
-    await showGames();
-    alert("🎮 Game added successfully! It is now available to everyone.");
+    alert("🎮 Game added successfully and is now visible to everyone!");
   }catch(error){
-    console.error("Submit game error:", error);
-    alert(error.message || "The game could not be saved. Please check your Supabase setup and try again.");
+    console.error("Submit game error:",error);
+    alert(error.message || "The game could not be saved.");
   }
 }
 
@@ -3050,37 +2889,43 @@ window.onclick=function(event){
 ===================================================== */
 
 window.addEventListener("DOMContentLoaded", async function(){
+  const searchInput=document.getElementById("searchInput");
+  if(searchInput){
+    searchInput.value="";
+    searchInput.setAttribute("autocomplete","off");
+    searchInput.addEventListener("input",searchGames);
+  }
+
+  const savedLanguage=localStorage.getItem("gamerexLanguage") || "en";
+  changeLanguage(savedLanguage);
+
   try{
     await loadAccount();
-    await migrateOldGames();
+    await migrateLegacyGames();
     await renderGames();
-    updateHeaderUI();
-    updateProfileUI();
   }catch(error){
-    console.error("Gamerex initialization error:", error);
+    console.error("Gamerex initialization error:",error);
     await renderGames();
   }
 
-  const searchInput = document.getElementById("searchInput");
-  if(searchInput) searchInput.value="";
-
-  const savedLanguage = localStorage.getItem("gamerexLanguage") || "en";
-  changeLanguage(savedLanguage);
+  updateHeaderUI();
+  updateProfileUI();
 });
 
-document.addEventListener("visibilitychange", async function(){
-  if(document.visibilityState === "visible"){
-    await renderGames();
+supabaseClient.auth.onAuthStateChange(async function(event,session){
+  if(event==="SIGNED_IN" && session?.user){
+    setTimeout(()=>loadAccount(),0);
   }
-});
-
-supabaseClient.auth.onAuthStateChange(async function(event, session){
-  if(session && session.user){
-    setTimeout(() => loadAccount(), 0);
-  }else{
-    currentAccount = null;
+  if(event==="SIGNED_OUT"){
+    currentAccount=null;
     updateHeaderUI();
     updateProfileUI();
+  }
+});
+
+document.addEventListener("visibilitychange",async function(){
+  if(document.visibilityState==="visible"){
+    try{await renderGames();}catch(e){console.error(e);}
   }
 });
 
