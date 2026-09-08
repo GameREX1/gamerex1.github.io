@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gamerex - Free Online Games</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -375,234 +377,29 @@ header{
 }
 
 /* ================= GAME PLAYER ================= */
-
-.game-page{
-  display:none;
-  padding:24px 24px 50px;
-  max-width:1600px;
-  margin:auto;
-}
-
-.game-player-layout{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 320px;
-  gap:22px;
-  align-items:start;
-}
-
-.game-main-column{
-  min-width:0;
-}
-
-.game-topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  margin-bottom:15px;
-}
-
-.game-fullscreen-btn{
-  background:#111;
-  color:#fff;
-  border:1px solid #333;
-  padding:10px 14px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:700;
-  white-space:nowrap;
-}
-
-.game-fullscreen-btn:hover{
-  border-color:#00d9ff;
-  color:#00d9ff;
-}
-
-.game-stage{
-  width:100%;
-  aspect-ratio:16/9;
-  min-height:520px;
-  background:#050505;
-  border:1px solid #292929;
-  border-radius:10px;
-  overflow:hidden;
-  box-shadow:0 10px 35px rgba(0,0,0,.35);
-  position:relative;
-}
-
-.game-stage:fullscreen{
-  width:100vw;
-  height:100vh;
-  aspect-ratio:auto;
-  min-height:0;
-  border:0;
-  border-radius:0;
-  box-shadow:none;
-  background:#000;
-}
-
-.game-stage:fullscreen iframe{
-  width:100%;
-  height:100%;
-}
-
-.game-stage iframe{
-  width:100%;
-  height:100%;
-  border:0;
-  display:block;
-  background:#000;
-}
-
-.fullscreen-esc-notice{
-  position:absolute;
-  top:22px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:20;
-  background:rgba(0,0,0,.82);
-  color:#fff;
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:8px;
-  padding:9px 15px;
-  font-size:13px;
-  font-weight:700;
-  letter-spacing:.1px;
-  box-shadow:0 8px 25px rgba(0,0,0,.35);
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .2s ease;
-  white-space:nowrap;
-}
-
-.fullscreen-esc-notice.show{
-  opacity:1;
-}
-
-.game-back-btn{
-  background:#111;
-  color:#fff;
-  border:1px solid #333;
-  padding:10px 15px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:700;
-}
-
-.game-back-btn:hover{
-  border-color:#00d9ff;
-  color:#00d9ff;
-}
-
-.current-game-title{
-  font-size:24px;
-  font-weight:900;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.game-underbar{
-  background:#080808;
-  border:1px solid #242424;
-  border-radius:10px;
-  padding:16px 18px;
-  margin-top:15px;
-}
-
-.game-underbar h2{
-  font-size:20px;
-  margin-bottom:6px;
-}
-
-.game-underbar p{
-  color:#888;
-  font-size:14px;
-}
-
-.play-next-panel{
-  background:#080808;
-  border:1px solid #242424;
-  border-radius:10px;
-  padding:16px;
-  position:sticky;
-  top:90px;
-  max-height:calc(100vh - 115px);
-  overflow-y:auto;
-}
-
-.play-next-title{
-  font-size:20px;
-  font-weight:900;
-  margin-bottom:14px;
-}
-
-.recommended-list{
-  display:flex;
-  flex-direction:column;
-  gap:13px;
-}
-
-.recommended-card{
-  display:flex;
-  gap:12px;
-  background:#101010;
-  border:1px solid #242424;
-  border-radius:9px;
-  padding:9px;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.recommended-card:hover{
-  border-color:#00d9ff;
-  transform:translateY(-2px);
-}
-
-.recommended-image{
-  width:105px;
-  height:72px;
-  flex:0 0 105px;
-  border-radius:7px;
-  overflow:hidden;
-  background:#151515;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:30px;
-}
-
-.recommended-image img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-
-.recommended-info{
-  min-width:0;
-}
-
-.recommended-info h3{
-  font-size:14px;
-  font-weight:900;
-  margin:4px 0 6px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.recommended-info p{
-  color:#777;
-  font-size:11px;
-}
-
-.no-recommendations{
-  color:#777;
-  text-align:center;
-  padding:30px 10px;
-  font-size:14px;
-}
+.game-page{display:none;padding:24px 24px 50px;max-width:1600px;margin:auto;}
+.game-player-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:22px;align-items:start;}
+.game-main-column{min-width:0;}
+.game-topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:15px;}
+.game-back-btn{background:#111;color:#fff;border:1px solid #333;padding:10px 15px;border-radius:8px;cursor:pointer;font-weight:700;}
+.game-back-btn:hover{border-color:#00d9ff;color:#00d9ff;}
+.current-game-title{font-size:24px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.game-stage{width:100%;aspect-ratio:16/9;min-height:520px;background:#050505;border:1px solid #292929;border-radius:10px;overflow:hidden;box-shadow:0 10px 35px rgba(0,0,0,.35);}
+.game-stage iframe{width:100%;height:100%;border:0;display:block;background:#000;}
+.game-underbar{background:#080808;border:1px solid #242424;border-radius:10px;padding:16px 18px;margin-top:15px;}
+.game-underbar h2{font-size:20px;margin-bottom:6px;}
+.game-underbar p{color:#888;font-size:14px;}
+.play-next-panel{background:#080808;border:1px solid #242424;border-radius:10px;padding:16px;position:sticky;top:90px;max-height:calc(100vh - 115px);overflow-y:auto;}
+.play-next-title{font-size:20px;font-weight:900;margin-bottom:14px;}
+.recommended-list{display:flex;flex-direction:column;gap:13px;}
+.recommended-card{display:flex;gap:12px;background:#101010;border:1px solid #242424;border-radius:9px;padding:9px;cursor:pointer;transition:.2s;}
+.recommended-card:hover{border-color:#00d9ff;transform:translateY(-2px);}
+.recommended-image{width:105px;height:72px;flex:0 0 105px;border-radius:7px;overflow:hidden;background:#151515;display:flex;align-items:center;justify-content:center;font-size:30px;}
+.recommended-image img{width:100%;height:100%;object-fit:cover;display:block;}
+.recommended-info{min-width:0;}
+.recommended-info h3{font-size:14px;font-weight:900;margin:4px 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.recommended-info p{color:#777;font-size:11px;}
+.no-recommendations{color:#777;text-align:center;padding:30px 10px;font-size:14px;}
 
 /* ================= SETTINGS ================= */
 
@@ -706,190 +503,258 @@ header{
   color:#00d9ff;
 }
 
+.small-btn:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
 /* ================= LANGUAGE ================= */
 
 .language-search{
   width:100%;
-  padding:12px 14px;
-  background:#111;
+  padding:13px;
+  margin-bottom:15px;
+  background:#000;
+  color:white;
   border:1px solid #292929;
   border-radius:8px;
-  color:white;
   outline:none;
-  margin-bottom:15px;
 }
 
-.language-grid{
+.language-search:focus{
+  border-color:#00d9ff;
+}
+
+.language-list{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
-  gap:10px;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:8px;
+  max-height:280px;
+  overflow-y:auto;
 }
 
 .language-btn{
   padding:11px;
-  background:#111;
-  color:#ccc;
-  border:1px solid #292929;
+  background:#0d0d0d;
+  color:#bbb;
+  border:1px solid #222;
   border-radius:7px;
+  text-align:left;
   cursor:pointer;
   font-weight:500;
 }
 
-.language-btn:hover,
-.language-btn.active{
+.language-btn:hover{
   border-color:#00d9ff;
   color:#00d9ff;
 }
 
-/* ================= MODALS ================= */
-
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.78);
-  z-index:5000;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-
-.modal-box{
-  width:100%;
-  max-width:500px;
-  max-height:90vh;
-  overflow-y:auto;
-  background:#080808;
-  border:1px solid #292929;
-  border-radius:14px;
-  padding:28px;
-  box-shadow:0 20px 70px rgba(0,0,0,.55);
-}
-
-.modal-box h2{
-  font-size:25px;
-  margin-bottom:8px;
-}
-
-.modal-box p{
-  color:#777;
-  font-size:14px;
-  margin-bottom:22px;
-}
-
-.form-group{
-  margin-bottom:16px;
-}
-
-.form-group label{
-  display:block;
-  margin-bottom:7px;
-  color:#ccc;
-  font-size:13px;
-  font-weight:700;
-}
-
-.form-group input,
-.form-group select{
-  width:100%;
-  padding:12px 13px;
-  background:#111;
-  border:1px solid #2a2a2a;
-  border-radius:7px;
-  color:white;
-  outline:none;
-}
-
-.form-group input:focus,
-.form-group select:focus{
+.language-btn.active{
+  background:#00d9ff;
+  color:#000;
   border-color:#00d9ff;
 }
 
-.modal-actions{
-  display:flex;
-  gap:10px;
-  justify-content:flex-end;
-  margin-top:20px;
+/* ================= DEVELOPER ================= */
+
+.developer-big{
+  border:1px solid #252525;
+  background:#080808;
+  border-radius:14px;
+  padding:35px;
 }
 
-.modal-btn{
-  padding:11px 17px;
+.developer-big h2{
+  font-size:27px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.developer-big p{
+  color:#888;
+  line-height:1.6;
+  margin-bottom:22px;
+}
+
+/* ================= GAME ICON UPLOAD ================= */
+
+.game-icon-upload{
+  margin-bottom:15px;
+}
+
+.game-icon-label{
+  display:block;
+  color:#aaa;
+  font-size:14px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.game-icon-input{
+  width:100%;
+  padding:10px;
+  background:#000;
+  color:#aaa;
+  border:1px solid #292929;
   border-radius:7px;
-  border:1px solid #333;
-  background:#111;
-  color:white;
+  cursor:pointer;
+}
+
+.game-icon-input:hover{
+  border-color:#00d9ff;
+}
+
+.game-icon-input::file-selector-button{
+  background:#00d9ff;
+  color:#000;
+  border:0;
+  border-radius:6px;
+  padding:9px 13px;
+  margin-right:10px;
   cursor:pointer;
   font-weight:700;
 }
 
-.modal-btn.primary{
-  background:#00d9ff;
-  border-color:#00d9ff;
-  color:#000;
-}
-
-.modal-btn:hover{
-  border-color:#00d9ff;
-}
-
 .icon-preview-box{
   display:none;
-  margin-top:10px;
-  padding:10px;
-  border:1px solid #292929;
-  border-radius:8px;
-  background:#111;
+  margin-top:12px;
+  width:100%;
+  padding:12px;
+  background:#050505;
+  border:1px solid #222;
+  border-radius:9px;
+  text-align:center;
 }
 
 .icon-preview-box img{
-  width:80px;
-  height:80px;
-  border-radius:10px;
+  width:130px;
+  height:130px;
   object-fit:cover;
-  display:block;
-  margin-bottom:8px;
+  border-radius:12px;
+  border:1px solid #333;
 }
 
 .icon-preview-name{
   color:#777;
   font-size:12px;
-  word-break:break-all;
+  margin-top:8px;
+  word-break:break-word;
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.88);
+  justify-content:center;
+  align-items:center;
+  z-index:3000;
+  padding:20px;
+}
+
+.modal-box{
+  width:100%;
+  max-width:450px;
+  max-height:90vh;
+  overflow-y:auto;
+  background:#090909;
+  border:1px solid #292929;
+  border-radius:14px;
+  padding:30px;
+  position:relative;
+}
+
+.modal-box h2{
+  font-weight:900;
+  margin-bottom:20px;
+}
+
+.close{
+  position:absolute;
+  right:20px;
+  top:13px;
+  font-size:27px;
+  color:#777;
+  cursor:pointer;
+}
+
+.close:hover{
+  color:white;
+}
+
+.modal-box input{
+  width:100%;
+  padding:13px;
+  margin-bottom:12px;
+  background:#000;
+  color:white;
+  border:1px solid #292929;
+  border-radius:7px;
+  outline:none;
+}
+
+.modal-box input:focus{
+  border-color:#00d9ff;
+}
+
+.modal-text{
+  color:#777;
+  text-align:center;
+  margin-top:15px;
+  font-size:13px;
+}
+
+.modal-link{
+  color:#00d9ff;
+  cursor:pointer;
+  font-weight:700;
 }
 
 /* ================= FOOTER ================= */
 
 footer{
   border-top:1px solid #222;
-  padding:25px;
+  padding:30px;
   text-align:center;
   color:#666;
-  margin-left:68px;
+  background:#030303;
 }
 
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:1000px){
-
-  .game-player-layout{
-    grid-template-columns:1fr;
-  }
-
-  .play-next-panel{
-    position:static;
-    max-height:none;
-  }
-
+footer span{
+  color:#00d9ff;
+  font-weight:900;
 }
+
+/* ================= MADE BY ================= */
+
+.made-by{
+  position:fixed;
+  right:12px;
+  bottom:8px;
+  color:#777;
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:.2px;
+  z-index:9999;
+  pointer-events:none;
+  background:rgba(0,0,0,.65);
+  padding:3px 6px;
+  border-radius:4px;
+}
+
+/* ================= MOBILE ================= */
 
 @media(max-width:850px){
 
   header{
-    padding:0 15px;
+    padding:10px 15px;
   }
 
   .logo{
     min-width:auto;
-    font-size:23px;
+    font-size:22px;
   }
 
   .top-search{
@@ -901,43 +766,75 @@ footer{
   }
 
   .login-btn,
-  .signup-btn{
-    padding:8px 11px;
-    font-size:12px;
+  .signup-btn,
+  .logout-btn{
+    padding:8px 10px;
   }
-
-  .hero h1{
-    font-size:45px;
-  }
-
-}
-
-@media(max-width:700px){
 
   .sidebar{
-    width:58px;
-    padding-left:7px;
-    padding-right:7px;
-  }
-
-  .main{
-    margin-left:58px;
-  }
-
-  footer{
-    margin-left:58px;
+    width:60px;
   }
 
   .sidebar:hover{
-    width:220px;
+    width:200px;
+  }
+
+  .main{
+    margin-left:60px;
+  }
+
+  .hero h1{
+    font-size:42px;
+  }
+
+  .games{
+    padding:35px 20px;
+  }
+
+  .settings-page{
+    padding:30px 20px;
+  }
+
+  .game-page{padding:20px 15px 40px;}
+  .game-player-layout{grid-template-columns:1fr;}
+  .play-next-panel{position:static;max-height:none;}
+  .game-stage{min-height:420px;}
+
+}
+
+@media(max-width:650px){
+
+  header{
+    height:auto;
+    min-height:65px;
+    flex-wrap:wrap;
   }
 
   .top-search{
-    display:none;
+    order:3;
+    width:100%;
+    max-width:none;
+    margin:8px 0;
   }
 
-  .logo{
-    flex:1;
+  .sidebar{
+    width:55px;
+  }
+
+  .sidebar:hover{
+    width:170px;
+  }
+
+  .main{
+    margin-left:55px;
+  }
+
+  .auth-buttons{
+    margin-left:auto;
+  }
+
+  .signup-btn{
+    display:none;
   }
 
   .hero{
@@ -945,122 +842,36 @@ footer{
   }
 
   .hero h1{
-    font-size:38px;
+    font-size:34px;
   }
 
-  .hero p{
-    font-size:16px;
+  .games-title{
+    display:block;
   }
 
-  .games{
-    padding:35px 20px 50px;
+  .game-count{
+    display:block;
+    margin-top:7px;
   }
 
-  .games-title h2{
-    font-size:23px;
+  .profile-box{
+    align-items:flex-start;
   }
 
-  .game-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:12px;
+  .profile-actions{
+    flex-direction:column;
   }
 
-  .game-image{
-    height:120px;
-    font-size:50px;
+  .small-btn{
+    width:100%;
   }
 
-  .game-info{
-    padding:13px;
+  .made-by{
+    font-size:9px;
+    right:7px;
+    bottom:5px;
   }
 
-  .game-info h3{
-    font-size:16px;
-  }
-
-  .game-info p{
-    font-size:12px;
-  }
-
-  .settings-page{
-    padding:30px 20px;
-  }
-
-  .game-page{
-    padding:20px 15px 40px;
-  }
-
-  .game-stage{
-    min-height:420px;
-  }
-
-  .game-topbar{
-    flex-wrap:wrap;
-  }
-
-  .game-fullscreen-btn{
-    margin-left:auto;
-  }
-
-}
-
-@media(max-width:480px){
-
-  .game-grid{
-    grid-template-columns:1fr;
-  }
-
-  .auth-buttons .login-btn{
-    display:none;
-  }
-
-  .hero h1{
-    font-size:32px;
-  }
-
-  .modal-box{
-    padding:20px;
-  }
-
-}
-
-/* ================= RTL ================= */
-
-[dir="rtl"] .sidebar{
-  left:auto;
-  right:0;
-  border-right:none;
-  border-left:1px solid #222;
-}
-
-[dir="rtl"] .main{
-  margin-left:0;
-  margin-right:68px;
-}
-
-[dir="rtl"] footer{
-  margin-left:0;
-  margin-right:68px;
-}
-
-[dir="rtl"] .search-icon{
-  left:auto;
-  right:16px;
-}
-
-[dir="rtl"] .top-search input{
-  padding-left:20px;
-  padding-right:45px;
-}
-
-[dir="rtl"] .side-category{
-  padding-left:0;
-  padding-right:25px;
-}
-
-[dir="rtl"] .fullscreen-esc-notice{
-  left:50%;
-  transform:translateX(-50%);
 }
 
 </style>
@@ -1071,14 +882,11 @@ footer{
 <header>
 
   <div class="logo">
-    Game<span>rex</span>
+    🎮 GAME<span>REX</span>
   </div>
 
   <div class="top-search">
-
-    <span class="search-icon">
-      🔍
-    </span>
+    <span class="search-icon">🔎</span>
 
     <input
       type="search"
@@ -1091,24 +899,9 @@ footer{
       spellcheck="false"
       oninput="searchGames()"
     >
-
   </div>
 
   <div class="auth-buttons">
-
-    <button
-      class="login-btn"
-      onclick="openAuth('login')"
-    >
-      Login
-    </button>
-
-    <button
-      class="signup-btn"
-      onclick="openAuth('signup')"
-    >
-      Sign Up
-    </button>
 
     <span
       class="account-name"
@@ -1116,9 +909,25 @@ footer{
     ></span>
 
     <button
+      class="login-btn"
+      id="loginHeaderBtn"
+      onclick="openAuth('login')"
+    >
+      Login
+    </button>
+
+    <button
+      class="signup-btn"
+      id="signupHeaderBtn"
+      onclick="openAuth('signup')"
+    >
+      Sign Up
+    </button>
+
+    <button
       class="logout-btn"
-      id="logoutBtn"
-      onclick="logoutAccount()"
+      id="logoutHeaderBtn"
+      onclick="logout()"
       style="display:none;"
     >
       Logout
@@ -1128,103 +937,68 @@ footer{
 
 </header>
 
-
 <aside class="sidebar">
 
-  <div
-    class="sidebar-title"
-    data-i18n="menu"
-  >
+  <div class="sidebar-title">
     Menu
   </div>
 
-  <button
-    class="side-link active"
-    id="homeLink"
-    onclick="showHome()"
-  >
-    🏠 Home
+  <button class="side-link active" onclick="showHome()">
+    🏠 <span>Home</span>
   </button>
 
-  <button
-    class="side-link"
-    id="gamesLink"
-    onclick="showGames()"
-  >
-    🎮 All Games
-  </button>
-
-  <div
-    class="sidebar-title"
-    data-i18n="categories"
-  >
-    Categories
-  </div>
-
-  <button
-    class="side-link side-category"
-    onclick="filterCategory('Racing')"
-  >
-    🏎️ Racing
-  </button>
-
-  <button
-    class="side-link side-category"
-    onclick="filterCategory('Sports')"
-  >
-    ⚽ Sports
-  </button>
-
-  <button
-    class="side-link side-category"
-    onclick="filterCategory('Puzzle')"
-  >
-    🧩 Puzzle
-  </button>
-
-  <button
-    class="side-link side-category"
-    onclick="filterCategory('Adventure')"
-  >
-    🗺️ Adventure
-  </button>
-
-  <button
-    class="side-link side-category"
-    onclick="filterCategory('Dress Up')"
-  >
-    👗 Dress Up
+  <button class="side-link" onclick="showGames()">
+    🎮 <span>All Games</span>
   </button>
 
   <hr class="sidebar-divider">
 
-  <button
-    class="side-link"
-    onclick="showSettings()"
-  >
-    ⚙️ Settings
+  <div class="sidebar-title">
+    Categories
+  </div>
+
+  <button class="side-link side-category" onclick="filterCategory('Racing')">
+    🏎️ <span>Racing</span>
+  </button>
+
+  <button class="side-link side-category" onclick="filterCategory('Sports')">
+    ⚽ <span>Sports</span>
+  </button>
+
+  <button class="side-link side-category" onclick="filterCategory('Puzzle')">
+    🧩 <span>Puzzle</span>
+  </button>
+
+  <button class="side-link side-category" onclick="filterCategory('Adventure')">
+    🚀 <span>Adventure</span>
+  </button>
+
+  <button class="side-link side-category" onclick="filterCategory('Dress Up')">
+    👗 <span>Dress Up</span>
+  </button>
+
+  <hr class="sidebar-divider">
+
+  <button class="side-link" onclick="showSettings()">
+    ⚙️ <span>Settings</span>
   </button>
 
 </aside>
 
-
 <main class="main">
 
-  <section
-    class="home-page"
-    id="homePage"
-  >
+  <div id="homePage">
 
     <section class="hero">
 
       <div>
 
         <h1>
-          Welcome to
-          <span>Gamerex</span>
+          <span>Welcome to</span>
+          <span> Gamerex</span>
         </h1>
 
-        <p data-i18n="heroDescription">
+        <p>
           Discover and play awesome games online.
         </p>
 
@@ -1232,7 +1006,6 @@ footer{
           href="#games"
           class="main-btn"
           onclick="showGames()"
-          data-i18n="exploreGames"
         >
           🎮 Explore Games
         </a>
@@ -1241,15 +1014,11 @@ footer{
 
     </section>
 
-
-    <section
-      class="games"
-      id="games"
-    >
+    <section class="games" id="games">
 
       <div class="games-title">
 
-        <h2 data-i18n="featuredGames">
+        <h2>
           🔥 Featured Games
         </h2>
 
@@ -1276,131 +1045,53 @@ footer{
 
     </section>
 
-  </section>
-
+  </div>
 
   <!-- GAME PLAYER PAGE -->
-
-  <section
-    class="game-page"
-    id="gamePage"
-  >
-
+  <section class="game-page" id="gamePage">
     <div class="game-player-layout">
-
       <div class="game-main-column">
-
         <div class="game-topbar">
-
-          <button
-            class="game-back-btn"
-            onclick="closeGamePlayer()"
-          >
-            ← Back to Games
-          </button>
-
-          <div
-            class="current-game-title"
-            id="currentGameTitle"
-          >
-            Game
-          </div>
-
-          <button
-            class="game-fullscreen-btn"
-            id="gameFullscreenBtn"
-            onclick="toggleGameFullscreen()"
-          >
-            ⛶ Fullscreen
-          </button>
-
+          <button class="game-back-btn" onclick="closeGamePlayer()">← Back to Games</button>
+          <div class="current-game-title" id="currentGameTitle">Game</div>
         </div>
-
-
-        <div
-          class="game-stage"
-          id="gameStage"
-        >
-
-          <iframe
-            id="gameFrame"
-            title="Gamerex Game Player"
-            allow="fullscreen; autoplay; gamepad; clipboard-read; clipboard-write"
-            allowfullscreen
-          ></iframe>
-
-          <div
-            class="fullscreen-esc-notice"
-            id="fullscreenEscNotice"
-          >
-            Press ESC to exit fullscreen
-          </div>
-
+        <div class="game-stage">
+          <iframe id="gameFrame" title="Gamerex Game Player" allow="fullscreen; autoplay; gamepad; clipboard-read; clipboard-write" allowfullscreen></iframe>
         </div>
-
-
         <div class="game-underbar">
-
-          <h2 id="gameUnderTitle">
-            Game
-          </h2>
-
-          <p id="gameUnderDescription">
-            Play this game on Gamerex.
-          </p>
-
+          <h2 id="gameUnderTitle">Game</h2>
+          <p id="gameUnderDescription">Play this game on Gamerex.</p>
         </div>
-
       </div>
-
-
       <aside class="play-next-panel">
-
-        <div class="play-next-title">
-          Play Next
-        </div>
-
-        <div
-          class="recommended-list"
-          id="recommendedList"
-        ></div>
-
+        <div class="play-next-title">Play Next</div>
+        <div class="recommended-list" id="recommendedList"></div>
       </aside>
-
     </div>
-
   </section>
-
-
-  <!-- SETTINGS -->
 
   <section
     class="settings-page"
     id="settingsPage"
   >
 
-    <h1 data-i18n="settingsTitle">
+    <h1>
       ⚙️ Settings
     </h1>
 
-    <p
-      class="settings-subtitle"
-      data-i18n="settingsSubtitle"
-    >
+    <p class="settings-subtitle">
       Manage your Gamerex account and preferences.
     </p>
 
-
     <div class="settings-card">
 
-      <h2 data-i18n="yourId">
+      <h2>
         👤 Your ID
       </h2>
 
-      <p data-i18n="profileDescription">
+      <p>
         Manage your Gamerex name and profile logo.
       </p>
-
 
       <div class="profile-box">
 
@@ -1435,14 +1126,12 @@ footer{
 
       </div>
 
-
       <div class="profile-actions">
 
         <button
           class="small-btn"
           id="changeNameBtn"
           onclick="changeGamerexName()"
-          data-i18n="changeId"
         >
           ✏️ Change ID Name
         </button>
@@ -1450,7 +1139,6 @@ footer{
         <button
           class="small-btn"
           onclick="changeProfileLogo()"
-          data-i18n="changeLogo"
         >
           🖼️ Change Logo
         </button>
@@ -1459,34 +1147,34 @@ footer{
 
     </div>
 
-
     <div class="settings-card">
 
-      <h2 data-i18n="languageTitle">
+      <h2>
         🌐 Language
       </h2>
 
-      <p data-i18n="languageDescription">
+      <p>
         Choose the language you want to use on Gamerex.
       </p>
 
       <input
         class="language-search"
         id="languageSearch"
-        type="search"
-        placeholder="Search language..."
-        autocomplete="off"
-        oninput="searchLanguages()"
+        placeholder="🔎 Search language..."
+        onkeyup="searchLanguages()"
       >
 
-      <div class="language-grid">
+      <div
+        class="language-list"
+        id="languageList"
+      >
 
         <button
-          class="language-btn"
+          class="language-btn active"
           data-language="en"
           onclick="changeLanguage('en')"
         >
-          🇬🇧 English
+          English
         </button>
 
         <button
@@ -1494,7 +1182,7 @@ footer{
           data-language="ur"
           onclick="changeLanguage('ur')"
         >
-          🇵🇰 اردو
+          اردو
         </button>
 
         <button
@@ -1502,7 +1190,15 @@ footer{
           data-language="ar"
           onclick="changeLanguage('ar')"
         >
-          🇸🇦 العربية
+          العربية
+        </button>
+
+        <button
+          class="language-btn"
+          data-language="zh"
+          onclick="changeLanguage('zh')"
+        >
+          中文
         </button>
 
         <button
@@ -1510,7 +1206,7 @@ footer{
           data-language="es"
           onclick="changeLanguage('es')"
         >
-          🇪🇸 Español
+          Español
         </button>
 
         <button
@@ -1518,7 +1214,7 @@ footer{
           data-language="fr"
           onclick="changeLanguage('fr')"
         >
-          🇫🇷 Français
+          Français
         </button>
 
         <button
@@ -1526,28 +1222,28 @@ footer{
           data-language="de"
           onclick="changeLanguage('de')"
         >
-          🇩🇪 Deutsch
+          Deutsch
         </button>
 
       </div>
 
     </div>
 
+    <div class="developer-big">
 
-    <div class="settings-card">
-
-      <h2 data-i18n="developerTitle">
+      <h2>
         🎮 Game Developing
       </h2>
 
-      <p data-i18n="developerDescription">
-        Are you a game developer? Submit your game to Gamerex and give players a chance to discover your game.
+      <p>
+        Are you a game developer? Submit your game
+        to Gamerex and give players a chance to discover
+        your game.
       </p>
 
       <button
         class="main-btn"
         onclick="openDeveloper()"
-        data-i18n="submitGame"
       >
         🚀 Develop / Submit Your Game
       </button>
@@ -1556,20 +1252,18 @@ footer{
 
   </section>
 
+  <footer>
+    © 2026 <span>Gamerex</span>.
+    <span>All rights reserved.</span>
+  </footer>
+
 </main>
 
+<div class="made-by">
+  Made By M.Rayyan Khan
+</div>
 
-<footer>
-
-  © 2026 Gamerex —
-  <span data-i18n="allRights">
-    All rights reserved.
-  </span>
-
-</footer>
-
-
-<!-- AUTH MODAL -->
+<!-- AUTH -->
 
 <div
   class="modal"
@@ -1578,84 +1272,97 @@ footer{
 
   <div class="modal-box">
 
+    <span
+      class="close"
+      onclick="closeModal('authModal')"
+    >
+      ×
+    </span>
+
     <h2 id="authTitle">
-      Login to Gamerex
+      Login
     </h2>
 
-    <p id="authDescription">
-      Enter your details to continue.
+    <input
+      type="email"
+      id="email"
+      placeholder="Email address"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+    >
+
+    <button
+      class="main-btn"
+      id="authButton"
+      onclick="handleAuth()"
+    >
+      Login
+    </button>
+
+    <p class="modal-text">
+
+      <span id="authSwitchText">
+        Don't have an account?
+      </span>
+
+      <span
+        class="modal-link"
+        id="authSwitch"
+        onclick="switchAuth()"
+      >
+        Sign Up
+      </span>
+
     </p>
-
-
-    <div class="form-group">
-
-      <label>
-        Name
-      </label>
-
-      <input
-        type="text"
-        id="authName"
-        autocomplete="name"
-      >
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Email
-      </label>
-
-      <input
-        type="email"
-        id="authEmail"
-        autocomplete="email"
-      >
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Password
-      </label>
-
-      <input
-        type="password"
-        id="authPassword"
-        autocomplete="current-password"
-      >
-
-    </div>
-
-
-    <div class="modal-actions">
-
-      <button
-        class="modal-btn"
-        onclick="closeModal('authModal')"
-      >
-        Cancel
-      </button>
-
-      <button
-        class="modal-btn primary"
-        onclick="submitAuth()"
-      >
-        Continue
-      </button>
-
-    </div>
 
   </div>
 
 </div>
 
+<!-- NAME -->
 
-<!-- PROFILE LOGO MODAL -->
+<div
+  class="modal"
+  id="nameModal"
+>
+
+  <div class="modal-box">
+
+    <span
+      class="close"
+      onclick="closeModal('nameModal')"
+    >
+      ×
+    </span>
+
+    <h2>
+      ✏️ Change Gamerex ID
+    </h2>
+
+    <input
+      type="text"
+      id="newGamerexName"
+      placeholder="Enter new Gamerex ID"
+      maxlength="25"
+    >
+
+    <button
+      class="main-btn"
+      style="width:100%;"
+      onclick="saveGamerexName()"
+    >
+      Save New ID
+    </button>
+
+  </div>
+
+</div>
+
+<!-- LOGO -->
 
 <div
   class="modal"
@@ -1664,70 +1371,38 @@ footer{
 
   <div class="modal-box">
 
+    <span
+      class="close"
+      onclick="closeModal('logoModal')"
+    >
+      ×
+    </span>
+
     <h2>
-      Choose Profile Logo
+      🖼️ Change Profile Logo
     </h2>
 
-    <p>
-      Select a logo for your Gamerex profile.
+    <p style="color:#888;margin-bottom:15px;">
+      Choose an avatar:
     </p>
 
+    <div
+      style="
+        display:grid;
+        grid-template-columns:repeat(4,1fr);
+        gap:10px;
+        margin-bottom:20px;
+      "
+    >
 
-    <div class="language-grid">
-
-      <button
-        class="language-btn"
-        onclick="selectLogo('🎮')"
-      >
-        🎮 Gamepad
-      </button>
-
-      <button
-        class="language-btn"
-        onclick="selectLogo('🔥')"
-      >
-        🔥 Fire
-      </button>
-
-      <button
-        class="language-btn"
-        onclick="selectLogo('⚡')"
-      >
-        ⚡ Lightning
-      </button>
-
-      <button
-        class="language-btn"
-        onclick="selectLogo('👑')"
-      >
-        👑 Crown
-      </button>
-
-      <button
-        class="language-btn"
-        onclick="selectLogo('🚀')"
-      >
-        🚀 Rocket
-      </button>
-
-      <button
-        class="language-btn"
-        onclick="selectLogo('🦊')"
-      >
-        🦊 Fox
-      </button>
-
-    </div>
-
-
-    <div class="modal-actions">
-
-      <button
-        class="modal-btn"
-        onclick="closeModal('logoModal')"
-      >
-        Close
-      </button>
+      <button class="small-btn" onclick="selectLogo('👤')">👤</button>
+      <button class="small-btn" onclick="selectLogo('🎮')">🎮</button>
+      <button class="small-btn" onclick="selectLogo('😎')">😎</button>
+      <button class="small-btn" onclick="selectLogo('🔥')">🔥</button>
+      <button class="small-btn" onclick="selectLogo('⚡')">⚡</button>
+      <button class="small-btn" onclick="selectLogo('🐯')">🐯</button>
+      <button class="small-btn" onclick="selectLogo('🐺')">🐺</button>
+      <button class="small-btn" onclick="selectLogo('👾')">👾</button>
 
     </div>
 
@@ -1735,8 +1410,7 @@ footer{
 
 </div>
 
-
-<!-- DEVELOPER MODAL -->
+<!-- DEVELOPER -->
 
 <div
   class="modal"
@@ -1745,133 +1419,63 @@ footer{
 
   <div class="modal-box">
 
+    <span
+      class="close"
+      onclick="closeModal('developerModal')"
+    >
+      ×
+    </span>
+
     <h2>
-      Submit Your Game
+      🚀 Submit Your Game
     </h2>
 
-    <p>
-      Add your game to Gamerex.
-    </p>
+    <input
+      type="text"
+      id="developerName"
+      placeholder="Your name"
+    >
 
+    <input
+      type="email"
+      id="developerEmail"
+      placeholder="Developer email"
+    >
 
-    <div class="form-group">
+    <input
+      type="text"
+      id="developerGameName"
+      placeholder="Game name"
+    >
 
-      <label>
-        Your Name
+    <input
+      type="url"
+      id="developerGameUrl"
+      placeholder="Game URL"
+    >
+
+    <input
+      type="text"
+      id="developerGameCategory"
+      placeholder="Category (Racing, Sports, Puzzle, Dress Up...)"
+    >
+
+    <div class="game-icon-upload">
+
+      <label
+        class="game-icon-label"
+        for="developerGameIconFile"
+      >
+        🖼️ Game Icon
       </label>
 
       <input
-        type="text"
-        id="developerName"
-        placeholder="Your name"
-        autocomplete="name"
-      >
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Developer Email
-      </label>
-
-      <input
-        type="email"
-        id="developerEmail"
-        placeholder="developer@example.com"
-        autocomplete="email"
-      >
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Game Name
-      </label>
-
-      <input
-        type="text"
-        id="developerGameName"
-        placeholder="Game name"
-      >
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Game URL
-      </label>
-
-      <input
-        type="url"
-        id="developerGameUrl"
-        placeholder="https://example.com/game.html"
-      >
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Game Category
-      </label>
-
-      <select
-        id="developerGameCategory"
-      >
-
-        <option value="">
-          Select category
-        </option>
-
-        <option value="Racing">
-          Racing
-        </option>
-
-        <option value="Sports">
-          Sports
-        </option>
-
-        <option value="Puzzle">
-          Puzzle
-        </option>
-
-        <option value="Adventure">
-          Adventure
-        </option>
-
-        <option value="Dress Up">
-          Dress Up
-        </option>
-
-        <option value="Games">
-          Games
-        </option>
-
-      </select>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Game Icon
-      </label>
-
-      <input
+        class="game-icon-input"
         type="file"
         id="developerGameIconFile"
-        accept="image/*"
+        accept="image/png,image/jpeg,image/jpg,image/webp"
         onchange="previewGameIcon(event)"
       >
-
 
       <div
         class="icon-preview-box"
@@ -1880,7 +1484,7 @@ footer{
 
         <img
           id="iconPreview"
-          alt="Game icon preview"
+          alt="Game Icon Preview"
         >
 
         <div
@@ -1892,24 +1496,13 @@ footer{
 
     </div>
 
-
-    <div class="modal-actions">
-
-      <button
-        class="modal-btn"
-        onclick="closeModal('developerModal')"
-      >
-        Cancel
-      </button>
-
-      <button
-        class="modal-btn primary"
-        onclick="submitGame()"
-      >
-        Add Game
-      </button>
-
-    </div>
+    <button
+      class="main-btn"
+      style="width:100%;"
+      onclick="submitGame()"
+    >
+      Submit Game
+    </button>
 
   </div>
 
@@ -1928,338 +1521,160 @@ let selectedGameIcon="";
 
 
 /* =====================================================
-   ACCOUNT STORAGE
-   Account settings remain in localStorage.
+   SUPABASE
+   Games and authentication are stored online so they
+   work across different browsers and devices.
 ===================================================== */
+
+const SUPABASE_URL = "https://pmmrwjdadzjsedshrhnq.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_Ud0bITW5Afyn7SfOV5Yu-w_9e4LpxhI";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+let currentAccount = null;
 
 function getAccount(){
-
-  try{
-
-    const account=
-      localStorage.getItem("gamerexAccount");
-
-    return account
-      ? JSON.parse(account)
-      : null;
-
-  }catch(error){
-
-    console.error(error);
-    return null;
-
-  }
-
+  return currentAccount;
 }
-
 
 function saveAccount(account){
-
-  localStorage.setItem(
-    "gamerexAccount",
-    JSON.stringify(account)
-  );
-
+  currentAccount = account;
+  try{
+    localStorage.setItem("gamerexAccount", JSON.stringify(account));
+  }catch(e){}
 }
 
+function generateGamerexId(){
+  return "GX-" + Math.floor(100000 + Math.random() * 900000);
+}
 
-/* =====================================================
-   IMPORTANT GAME STORAGE FIX
-   Games are now stored in IndexedDB instead of
-   localStorage.
+async function loadAccount(){
+  const { data, error } = await supabaseClient.auth.getUser();
 
-   This prevents the Gamerex game list from being
-   destroyed if another game page uses localStorage.clear().
-===================================================== */
-
-const GAME_DB_NAME="GamerexGameDatabase";
-const GAME_DB_VERSION=1;
-const GAME_STORE_NAME="games";
-
-let gameDBPromise=null;
-
-
-function openGameDB(){
-
-  if(gameDBPromise){
-    return gameDBPromise;
+  if(error || !data.user){
+    currentAccount = null;
+    updateHeaderUI();
+    updateProfileUI();
+    return null;
   }
 
-  gameDBPromise=new Promise((resolve,reject)=>{
+  const user = data.user;
+  const metadata = user.user_metadata || {};
 
-    if(!window.indexedDB){
+  let localAccount = null;
+  try{
+    localAccount = JSON.parse(localStorage.getItem("gamerexAccount") || "null");
+  }catch(e){}
 
-      reject(
-        new Error("IndexedDB is not supported by this browser.")
-      );
+  currentAccount = {
+    id: user.id,
+    email: user.email || "",
+    gamerexId: metadata.gamerex_id || localAccount?.gamerexId || generateGamerexId(),
+    profileLogo: localAccount?.profileLogo || "👤",
+    nameChangesToday: Number(localAccount?.nameChangesToday || 0),
+    nameChangeDate: localAccount?.nameChangeDate || todayKey()
+  };
 
-      return;
-
-    }
-
-    const request=
-      indexedDB.open(
-        GAME_DB_NAME,
-        GAME_DB_VERSION
-      );
-
-
-    request.onupgradeneeded=function(event){
-
-      const db=
-        event.target.result;
-
-      if(!db.objectStoreNames.contains(GAME_STORE_NAME)){
-
-        db.createObjectStore(
-          GAME_STORE_NAME,
-          {
-            keyPath:"id"
-          }
-        );
-
-      }
-
-    };
-
-
-    request.onsuccess=function(event){
-
-      resolve(
-        event.target.result
-      );
-
-    };
-
-
-    request.onerror=function(){
-
-      reject(
-        request.error ||
-        new Error("Could not open Gamerex database.")
-      );
-
-    };
-
-  });
-
-  return gameDBPromise;
-
+  resetDailyNameLimit(currentAccount);
+  saveAccount(currentAccount);
+  updateHeaderUI();
+  updateProfileUI();
+  return currentAccount;
 }
-
-
-/* =====================================================
-   SAVE ALL GAMES
-===================================================== */
-
-async function saveGames(games){
-
-  const db=
-    await openGameDB();
-
-  return new Promise((resolve,reject)=>{
-
-    const transaction=
-      db.transaction(
-        GAME_STORE_NAME,
-        "readwrite"
-      );
-
-    const store=
-      transaction.objectStore(
-        GAME_STORE_NAME
-      );
-
-    store.clear();
-
-    games.forEach(game=>{
-      store.put(game);
-    });
-
-
-    transaction.oncomplete=function(){
-      resolve();
-    };
-
-
-    transaction.onerror=function(){
-
-      reject(
-        transaction.error ||
-        new Error("Could not save games.")
-      );
-
-    };
-
-  });
-
-}
-
-
-/* =====================================================
-   GET ALL GAMES
-===================================================== */
 
 async function getGames(){
+  const { data, error } = await supabaseClient
+    .from("games")
+    .select("id,created_at,title,description,thumbnail,game_url,category")
+    .order("created_at", { ascending:false });
 
-  const db=
-    await openGameDB();
-
-  return new Promise((resolve,reject)=>{
-
-    const transaction=
-      db.transaction(
-        GAME_STORE_NAME,
-        "readonly"
-      );
-
-    const store=
-      transaction.objectStore(
-        GAME_STORE_NAME
-      );
-
-    const request=
-      store.getAll();
-
-
-    request.onsuccess=function(){
-
-      const games=
-        Array.isArray(request.result)
-          ? request.result
-          : [];
-
-      games.sort(
-        (a,b)=>
-          Number(a.id)-Number(b.id)
-      );
-
-      resolve(games);
-
-    };
-
-
-    request.onerror=function(){
-
-      reject(
-        request.error ||
-        new Error("Could not load games.")
-      );
-
-    };
-
-  });
-
-}
-
-
-/* =====================================================
-   MIGRATE OLD LOCALSTORAGE GAMES
-   This keeps games that were already added using
-   the previous version of Gamerex.
-===================================================== */
-
-async function migrateOldGames(){
-
-  try{
-
-    const oldData=
-      localStorage.getItem("gamerexGames");
-
-    if(!oldData){
-      return;
-    }
-
-    let oldGames=[];
-
-    try{
-
-      oldGames=
-        JSON.parse(oldData);
-
-    }catch(error){
-
-      console.warn(
-        "Old Gamerex games data could not be read."
-      );
-
-      return;
-
-    }
-
-
-    if(
-      !Array.isArray(oldGames) ||
-      oldGames.length===0
-    ){
-
-      localStorage.removeItem(
-        "gamerexGames"
-      );
-
-      return;
-
-    }
-
-
-    const currentGames=
-      await getGames();
-
-
-    const existingIds=
-      new Set(
-        currentGames.map(
-          game=>String(game.id)
-        )
-      );
-
-
-    const merged=[
-      ...currentGames
-    ];
-
-
-    oldGames.forEach(game=>{
-
-      if(
-        !existingIds.has(
-          String(game.id)
-        )
-      ){
-
-        merged.push(game);
-
-      }
-
-    });
-
-
-    await saveGames(
-      merged
-    );
-
-
-    /*
-      Remove the old storage after successful migration.
-      If another page clears localStorage later,
-      the Gamerex games remain safe inside IndexedDB.
-    */
-
-    localStorage.removeItem(
-      "gamerexGames"
-    );
-
-  }catch(error){
-
-    console.error(
-      "Game migration error:",
-      error
-    );
-
+  if(error){
+    console.error("Supabase games load error:", error);
+    throw error;
   }
 
+  return (data || []).map(game => ({
+    ...game,
+    name: game.title || "Game",
+    url: game.game_url || "",
+    iconImage: game.thumbnail || "",
+    icon: "🎮"
+  }));
 }
 
+async function saveGame(game){
+  const { data, error } = await supabaseClient
+    .from("games")
+    .insert({
+      title: game.name || "Game",
+      description: game.description || "Play this game on Gamerex.",
+      thumbnail: game.iconImage || "",
+      game_url: game.url || "",
+      category: game.category || "Games"
+    })
+    .select("id,created_at,title,description,thumbnail,game_url,category")
+    .single();
+
+  if(error){
+    console.error("Supabase game save error:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+async function migrateOldGames(){
+  try{
+    const account = await loadAccount();
+    if(!account) return;
+    if(!window.indexedDB) return;
+
+    const request = indexedDB.open("GamerexGameDatabase", 1);
+
+    request.onsuccess = async function(event){
+      try{
+        const db = event.target.result;
+        if(!db.objectStoreNames.contains("games")){ db.close(); return; }
+
+        const tx = db.transaction("games", "readonly");
+        const req = tx.objectStore("games").getAll();
+
+        req.onsuccess = async function(){
+          const oldGames = Array.isArray(req.result) ? req.result : [];
+          if(oldGames.length){
+            const { data: existing } = await supabaseClient
+              .from("games")
+              .select("title,game_url");
+
+            const keys = new Set((existing || []).map(g => String(g.title) + "|" + String(g.game_url)));
+
+            for(const game of oldGames){
+              const key = String(game.name || "") + "|" + String(game.url || "");
+              if(!keys.has(key) && game.url){
+                await saveGame({
+                  name: game.name || "Game",
+                  url: game.url || "",
+                  category: game.category || "Games",
+                  iconImage: game.iconImage || "",
+                  description: game.description || "Play this game on Gamerex."
+                });
+              }
+            }
+            await renderGames();
+          }
+          db.close();
+        };
+      }catch(e){
+        console.warn("Legacy game migration failed:", e);
+      }
+    };
+  }catch(e){
+    console.warn("Legacy game migration failed:", e);
+  }
+}
 
 /* =====================================================
    DATE
@@ -2267,8 +1682,7 @@ async function migrateOldGames(){
 
 function todayKey(){
 
-  const date=
-    new Date();
+  const date=new Date();
 
   return date.getFullYear()+
     "-"+
@@ -2280,254 +1694,266 @@ function todayKey(){
 
 
 /* =====================================================
-   ACCOUNT AUTH
+   HOME
 ===================================================== */
 
-function openAuth(mode){
+function showHome(){
 
-  authMode=
-    mode;
+  closeGamePlayer(false);
 
-  const modal=
-    document.getElementById(
-      "authModal"
-    );
+  document.getElementById(
+    "homePage"
+  ).style.display="block";
 
-  const title=
-    document.getElementById(
-      "authTitle"
-    );
+  document.getElementById(
+    "settingsPage"
+  ).style.display="none";
 
-  const description=
-    document.getElementById(
-      "authDescription"
-    );
-
-  if(mode==="signup"){
-
-    title.textContent=
-      "Create Gamerex Account";
-
-    description.textContent=
-      "Create your Gamerex account.";
-
-  }else{
-
-    title.textContent=
-      "Login to Gamerex";
-
-    description.textContent=
-      "Enter your details to continue.";
-
-  }
-
-
-  modal.style.display=
-    "flex";
+  window.scrollTo(0,0);
 
 }
 
 
-function submitAuth(){
+async function showGames(){
 
-  const name=
-    document.getElementById(
-      "authName"
-    ).value.trim();
+  closeGamePlayer(false);
 
-  const email=
-    document.getElementById(
-      "authEmail"
-    ).value.trim();
+  document.getElementById(
+    "homePage"
+  ).style.display="block";
 
-  const password=
-    document.getElementById(
-      "authPassword"
-    ).value.trim();
+  document.getElementById(
+    "settingsPage"
+  ).style.display="none";
 
+  await renderGames();
 
-  if(!name){
-
-    alert(
-      "Please enter your name."
-    );
-
-    return;
-
-  }
-
-
-  if(!email){
-
-    alert(
-      "Please enter your email."
-    );
-
-    return;
-
-  }
-
-
-  if(!password){
-
-    alert(
-      "Please enter your password."
-    );
-
-    return;
-
-  }
-
-
-  const existing=
-    getAccount();
-
-
-  if(authMode==="signup"){
-
-    const account={
-
-      name:name,
-
-      email:email,
-
-      password:password,
-
-      gamerexId:
-        existing?.gamerexId ||
-        "GX-"+Date.now(),
-
-      profileLogo:
-        existing?.profileLogo ||
-        "👤",
-
-      nameChangesToday:
-        0,
-
-      nameChangeDate:
-        todayKey()
-
-    };
-
-
-    saveAccount(
-      account
-    );
-
-
-    closeModal(
-      "authModal"
-    );
-
-
-    updateHeaderUI();
-    updateProfileUI();
-
-
-    alert(
-      "🎉 Gamerex account created successfully!"
-    );
-
-  }else{
-
-    if(
-      existing &&
-      existing.email===email &&
-      existing.password===password
-    ){
-
-      closeModal(
-        "authModal"
-      );
-
-      updateHeaderUI();
-      updateProfileUI();
-
-      alert(
-        "Welcome back to Gamerex! 🎮"
-      );
-
-    }else{
-
-      alert(
-        "Login details are incorrect."
-      );
-
-    }
-
-  }
+  document.getElementById(
+    "games"
+  ).scrollIntoView();
 
 }
 
 
-function logoutAccount(){
+/* =====================================================
+   SETTINGS
+===================================================== */
 
-  localStorage.removeItem(
-    "gamerexAccount"
-  );
+function showSettings(){
 
-  updateHeaderUI();
+  closeGamePlayer(false);
+
+  document.getElementById(
+    "homePage"
+  ).style.display="none";
+
+  document.getElementById(
+    "settingsPage"
+  ).style.display="block";
+
   updateProfileUI();
 
+  window.scrollTo(0,0);
+
 }
 
 
-function updateHeaderUI(){
+/* =====================================================
+   RENDER GAMES
+===================================================== */
 
-  const account=
-    getAccount();
+async function renderGames(){
 
-  const accountName=
+  const grid=
     document.getElementById(
-      "accountName"
+      "gameGrid"
     );
 
-  const loginBtn=
-    document.querySelector(
-      ".login-btn"
-    );
-
-  const signupBtn=
-    document.querySelector(
-      ".signup-btn"
-    );
-
-  const logoutBtn=
+  const noGames=
     document.getElementById(
-      "logoutBtn"
+      "noGames"
+    );
+
+  try{
+
+    const games=
+      await getGames();
+
+    grid.innerHTML="";
+
+    let visible=0;
+
+
+    const search=
+      document.getElementById(
+        "searchInput"
+      ).value
+       .trim()
+       .toLowerCase();
+
+
+    games.forEach(game=>{
+
+      const gameCategory=
+        String(
+          game.category ||
+          "Games"
+        );
+
+
+      const matchesCategory=
+        currentCategory==="All" ||
+        gameCategory===currentCategory;
+
+
+      const gameName=
+        String(
+          game.name ||
+          ""
+        );
+
+
+      const matchesSearch=
+        gameName
+          .toLowerCase()
+          .includes(search);
+
+
+      if(
+        !matchesCategory ||
+        !matchesSearch
+      ){
+
+        return;
+
+      }
+
+
+      visible++;
+
+
+      const card=
+        document.createElement(
+          "div"
+        );
+
+
+      card.className=
+        "game-card";
+
+
+      card.setAttribute(
+        "data-name",
+        gameName
+      );
+
+
+      card.setAttribute(
+        "data-category",
+        gameCategory
+      );
+
+
+      const iconHtml=
+        game.iconImage
+          ? `
+            <img
+              src="${escapeHtml(game.iconImage)}"
+              alt="${escapeHtml(gameName)} icon"
+              onerror="this.style.display='none';this.parentElement.textContent='🎮';"
+            >
+          `
+          : escapeHtml(
+              game.icon ||
+              "🎮"
+            );
+
+
+      card.innerHTML=`
+
+        <div class="game-image">
+          ${iconHtml}
+        </div>
+
+        <div class="game-info">
+
+          <h3>
+            ${escapeHtml(gameName)}
+          </h3>
+
+          <p>
+            ${escapeHtml(
+              game.description ||
+              "Play this game on Gamerex."
+            )}
+          </p>
+
+          <div class="game-meta">
+            🎮 ${escapeHtml(gameCategory)} • Free
+          </div>
+
+        </div>
+
+      `;
+
+
+      card.style.cursor="pointer";
+
+
+      card.onclick=function(){
+
+        if(!game.url){
+
+          alert(
+            "This game does not have a valid URL."
+          );
+
+          return;
+
+        }
+        openGamePlayer(game);
+
+      };
+
+
+      grid.appendChild(card);
+
+    });
+
+
+    document.getElementById(
+      "gameCount"
+    ).textContent=
+      visible+
+      (
+        visible===1
+          ? " Game"
+          : " Games"
+      );
+
+
+    noGames.style.display=
+      visible===0
+        ? "block"
+        : "none";
+
+
+  }catch(error){
+
+    console.error(
+      "Render games error:",
+      error
     );
 
 
-  if(account){
+    grid.innerHTML="";
 
-    accountName.style.display=
-      "inline-block";
 
-    accountName.textContent=
-      account.name;
+    noGames.style.display="block";
 
-    loginBtn.style.display=
-      "none";
 
-    signupBtn.style.display=
-      "none";
-
-    logoutBtn.style.display=
-      "inline-block";
-
-  }else{
-
-    accountName.style.display=
-      "none";
-
-    loginBtn.style.display=
-      "inline-block";
-
-    signupBtn.style.display=
-      "inline-block";
-
-    logoutBtn.style.display=
-      "none";
+    noGames.textContent=
+      "⚠️ Games could not be loaded. Please refresh the page.";
 
   }
 
@@ -2535,17 +1961,395 @@ function updateHeaderUI(){
 
 
 /* =====================================================
-   DAILY NAME LIMIT
+   GAME PLAYER
 ===================================================== */
+async function openGamePlayer(game){
+  if(!game || !game.url){alert("This game does not have a valid URL.");return;}
+
+  document.getElementById("homePage").style.display="none";
+  document.getElementById("settingsPage").style.display="none";
+  document.getElementById("gamePage").style.display="block";
+
+  document.getElementById("currentGameTitle").textContent=game.name || "Game";
+  document.getElementById("gameUnderTitle").textContent=game.name || "Game";
+  document.getElementById("gameUnderDescription").textContent=game.description || "Play this game on Gamerex.";
+
+  const frame=document.getElementById("gameFrame");
+  frame.src="about:blank";
+  setTimeout(()=>{frame.src=game.url;},20);
+
+  await renderRecommendations(game.id);
+  window.scrollTo(0,0);
+}
+
+function closeGamePlayer(goHome=true){
+  const page=document.getElementById("gamePage");
+  const frame=document.getElementById("gameFrame");
+  if(page) page.style.display="none";
+  if(frame) frame.src="about:blank";
+  if(goHome){
+    document.getElementById("homePage").style.display="block";
+    document.getElementById("settingsPage").style.display="none";
+    window.scrollTo(0,0);
+  }
+}
+
+async function renderRecommendations(currentId){
+  const list=document.getElementById("recommendedList");
+  if(!list) return;
+  list.innerHTML="";
+  try{
+    const games=await getGames();
+    const recommendations=games.filter(game=>String(game.id)!==String(currentId)).slice(0,10);
+    if(!recommendations.length){
+      list.innerHTML='<div class="no-recommendations">🎮 More games coming soon.</div>';
+      return;
+    }
+    recommendations.forEach(game=>{
+      const card=document.createElement("div");
+      card.className="recommended-card";
+      const imageHtml=game.iconImage
+        ? `<img src="${escapeHtml(game.iconImage)}" alt="${escapeHtml(game.name || "Game")} icon" onerror="this.style.display='none';this.parentElement.textContent='🎮';">`
+        : escapeHtml(game.icon || "🎮");
+      card.innerHTML=`<div class="recommended-image">${imageHtml}</div><div class="recommended-info"><h3>${escapeHtml(game.name || "Game")}</h3><p>${escapeHtml(game.category || "Games")} • Free</p></div>`;
+      card.onclick=()=>openGamePlayer(game);
+      list.appendChild(card);
+    });
+  }catch(error){
+    console.error("Recommendations error:",error);
+    list.innerHTML='<div class="no-recommendations">Unable to load recommendations.</div>';
+  }
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(text){
+
+  const div=
+    document.createElement(
+      "div"
+    );
+
+  div.textContent=
+    String(text || "");
+
+  return div.innerHTML;
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+async function searchGames(){
+
+  await renderGames();
+
+}
+
+
+/* =====================================================
+   CATEGORY
+===================================================== */
+
+async function filterCategory(category){
+
+  currentCategory=
+    category;
+
+  await showGames();
+
+}
+
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+function openAuth(mode){
+
+  authMode=
+    mode;
+
+  document.getElementById(
+    "authModal"
+  ).style.display="flex";
+
+  updateAuthUI();
+
+}
+
+
+function updateAuthUI(){
+
+  const title=
+    document.getElementById(
+      "authTitle"
+    );
+
+  const button=
+    document.getElementById(
+      "authButton"
+    );
+
+  const switchText=
+    document.getElementById(
+      "authSwitchText"
+    );
+
+  const switchButton=
+    document.getElementById(
+      "authSwitch"
+    );
+
+
+  if(authMode==="login"){
+
+    title.textContent="Login";
+
+    button.textContent="Login";
+
+    switchText.textContent=
+      "Don't have an account?";
+
+    switchButton.textContent=
+      "Sign Up";
+
+  }else{
+
+    title.textContent=
+      "Create Account";
+
+    button.textContent=
+      "Sign Up";
+
+    switchText.textContent=
+      "Already have an account?";
+
+    switchButton.textContent=
+      "Login";
+
+  }
+
+}
+
+
+function switchAuth(){
+
+  authMode=
+    authMode==="login"
+      ? "signup"
+      : "login";
+
+  updateAuthUI();
+
+}
+
+
+/* =====================================================
+   HANDLE AUTH
+===================================================== */
+
+async function handleAuth(){
+  const email = document.getElementById("email").value.trim().toLowerCase();
+  const password = document.getElementById("password").value;
+
+  if(!email || !password){
+    alert("Please enter your email and password.");
+    return;
+  }
+
+  const button = document.getElementById("authButton");
+  button.disabled = true;
+
+  try{
+    if(authMode === "signup"){
+      const gamerexId = generateGamerexId();
+
+      const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options:{
+          data:{ gamerex_id:gamerexId }
+        }
+      });
+
+      if(error) throw error;
+
+      if(data.user){
+        currentAccount = {
+          id:data.user.id,
+          email:data.user.email || email,
+          gamerexId,
+          profileLogo:"👤",
+          nameChangesToday:0,
+          nameChangeDate:todayKey()
+        };
+        saveAccount(currentAccount);
+      }
+
+      if(data.session){
+        await loadAccount();
+        closeModal("authModal");
+        alert("Account created successfully! 🎉");
+      }else{
+        closeModal("authModal");
+        alert("Account created! 📧 Please check your Gmail and confirm your email, then Login.");
+      }
+    }else{
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if(error) throw error;
+
+      if(data.user) await loadAccount();
+
+      closeModal("authModal");
+      alert("Logged in successfully! 🎮");
+    }
+  }catch(error){
+    console.error("Authentication error:", error);
+    alert(error.message || "Authentication failed. Please try again.");
+  }finally{
+    button.disabled = false;
+  }
+}
+
+/* =====================================================
+   ID
+===================================================== */
+
+function generateGamerexId(){
+
+  return "GX-"+
+    Math.floor(
+      100000+
+      Math.random()*900000
+    );
+
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+function updateHeaderUI(){
+  const loggedIn = !!currentAccount;
+  const login = document.getElementById("loginHeaderBtn");
+  const signup = document.getElementById("signupHeaderBtn");
+  const logoutBtn = document.getElementById("logoutHeaderBtn");
+  const accountName = document.getElementById("accountName");
+
+  if(!login || !signup || !logoutBtn || !accountName) return;
+
+  login.style.display = loggedIn ? "none" : "block";
+  signup.style.display = loggedIn ? "none" : "block";
+  logoutBtn.style.display = loggedIn ? "block" : "none";
+  accountName.style.display = loggedIn ? "block" : "none";
+  accountName.textContent = loggedIn ? "👤 " + currentAccount.gamerexId : "";
+}
+
+async function logout(){
+  await supabaseClient.auth.signOut();
+  currentAccount = null;
+  try{ localStorage.removeItem("gamerexAccount"); }catch(e){}
+  updateHeaderUI();
+  updateProfileUI();
+  alert("You have been logged out.");
+}
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+function updateProfileUI(){
+
+  const account=
+    getAccount();
+
+
+  const id=
+    document.getElementById(
+      "gamerexId"
+    );
+
+
+  const icon=
+    document.getElementById(
+      "profileIcon"
+    );
+
+
+  const changeInfo=
+    document.getElementById(
+      "nameChangeInfo"
+    );
+
+
+  const changeButton=
+    document.getElementById(
+      "changeNameBtn"
+    );
+
+
+  if(!account){
+
+    id.textContent=
+      "GX-2026-001";
+
+    icon.innerHTML="👤";
+
+    changeInfo.textContent=
+      "Login to customize your Gamerex ID.";
+
+    changeButton.disabled=true;
+
+    return;
+
+  }
+
+
+  resetDailyNameLimit(
+    account
+  );
+
+
+  id.textContent=
+    account.gamerexId;
+
+
+  icon.innerHTML=
+    account.profileLogo ||
+    "👤";
+
+
+  changeInfo.textContent=
+    "Name changes today: "+
+    account.nameChangesToday+
+    " / 5";
+
+
+  changeButton.disabled=
+    account.nameChangesToday>=5;
+
+}
+
 
 function resetDailyNameLimit(account){
 
   const today=
     todayKey();
 
+
   if(
-    account.nameChangeDate !==
-    today
+    account.nameChangeDate!==today
   ){
 
     account.nameChangeDate=
@@ -2563,10 +2367,15 @@ function resetDailyNameLimit(account){
 }
 
 
+/* =====================================================
+   CHANGE NAME
+===================================================== */
+
 function changeGamerexName(){
 
   const account=
     getAccount();
+
 
   if(!account){
 
@@ -2585,11 +2394,41 @@ function changeGamerexName(){
 
 
   if(
-    Number(account.nameChangesToday || 0)>=5
+    account.nameChangesToday>=5
   ){
 
     alert(
-      "You can change your Gamerex ID name up to 5 times per day."
+      "You have reached today's 5 ID changes."
+    );
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "newGamerexName"
+  ).value=
+    account.gamerexId;
+
+
+  document.getElementById(
+    "nameModal"
+  ).style.display="flex";
+
+}
+
+
+function saveGamerexName(){
+
+  const account=
+    getAccount();
+
+
+  if(!account){
+
+    alert(
+      "Please Login first."
     );
 
     return;
@@ -2598,27 +2437,16 @@ function changeGamerexName(){
 
 
   const newName=
-    prompt(
-      "Enter your new Gamerex ID name:",
-      account.name
-    );
+    document.getElementById(
+      "newGamerexName"
+    ).value
+     .trim();
 
 
-  if(
-    newName===null
-  ){
-    return;
-  }
-
-
-  const cleanName=
-    newName.trim();
-
-
-  if(!cleanName){
+  if(newName.length<3){
 
     alert(
-      "Name cannot be empty."
+      "Gamerex ID must contain at least 3 characters."
     );
 
     return;
@@ -2626,13 +2454,15 @@ function changeGamerexName(){
   }
 
 
-  account.name=
-    cleanName;
+  account.gamerexId=
+    newName;
 
-  account.nameChangesToday=
-    Number(
-      account.nameChangesToday || 0
-    )+1;
+
+  account.nameChangesToday++;
+
+
+  account.nameChangeDate=
+    todayKey();
 
 
   saveAccount(
@@ -2640,8 +2470,13 @@ function changeGamerexName(){
   );
 
 
-  updateHeaderUI();
   updateProfileUI();
+
+  updateHeaderUI();
+
+  closeModal(
+    "nameModal"
+  );
 
 
   alert(
@@ -2679,6 +2514,7 @@ function selectLogo(logo){
 
   const account=
     getAccount();
+
 
   if(!account){
     return;
@@ -2753,8 +2589,8 @@ const translations={
     languageTitle:"🌐 زبان",
     languageDescription:"Gamerex پر اپنی پسند کی زبان منتخب کریں۔",
     developerTitle:"🎮 گیم ڈیولپمنٹ",
-    developerDescription:"کیا آپ گیم ڈیولپر ہیں؟ اپنی گیم Gamerex پر جمع کریں۔",
-    submitGame:"🚀 گیم جمع کریں",
+    developerDescription:"کیا آپ گیم ڈیولپر ہیں؟ اپنی گیم Gamerex پر جمع کروائیں۔",
+    submitGame:"🚀 گیم جمع کروائیں",
     allRights:"تمام حقوق محفوظ ہیں۔"
   },
 
@@ -2765,21 +2601,45 @@ const translations={
     categories:"الفئات",
     settings:"الإعدادات",
     welcomeText:"مرحباً بك في",
-    heroDescription:"اكتشف والعب ألعاباً رائعة عبر الإنترنت.",
+    heroDescription:"اكتشف والعب ألعاباً رائعة على الإنترنت.",
     exploreGames:"🎮 استكشف الألعاب",
-    featuredGames:"🔥 ألعاب مميزة",
+    featuredGames:"🔥 الألعاب المميزة",
     settingsTitle:"⚙️ الإعدادات",
-    settingsSubtitle:"إدارة حساب Gamerex وتفضيلاتك.",
-    yourId:"👤 معرّفك",
-    profileDescription:"إدارة اسم Gamerex وصورة الملف الشخصي.",
-    changeId:"✏️ تغيير اسم المعرّف",
+    settingsSubtitle:"إدارة حساب Gamerex والتفضيلات الخاصة بك.",
+    yourId:"👤 معرفك",
+    profileDescription:"إدارة اسم Gamerex وشعار ملفك الشخصي.",
+    changeId:"✏️ تغيير اسم المعرف",
     changeLogo:"🖼️ تغيير الشعار",
     languageTitle:"🌐 اللغة",
     languageDescription:"اختر اللغة التي تريد استخدامها في Gamerex.",
     developerTitle:"🎮 تطوير الألعاب",
     developerDescription:"هل أنت مطور ألعاب؟ أرسل لعبتك إلى Gamerex.",
-    submitGame:"🚀 إرسال لعبة",
+    submitGame:"🚀 إرسال لعبتك",
     allRights:"جميع الحقوق محفوظة."
+  },
+
+  zh:{
+    menu:"菜单",
+    home:"首页",
+    allGames:"所有游戏",
+    categories:"类别",
+    settings:"设置",
+    welcomeText:"欢迎来到",
+    heroDescription:"发现并在线畅玩精彩游戏。",
+    exploreGames:"🎮 探索游戏",
+    featuredGames:"🔥 精选游戏",
+    settingsTitle:"⚙️ 设置",
+    settingsSubtitle:"管理你的 Gamerex 账户和偏好设置。",
+    yourId:"👤 你的 ID",
+    profileDescription:"管理你的 Gamerex 名称和头像。",
+    changeId:"✏️ 更改 ID 名称",
+    changeLogo:"🖼️ 更改头像",
+    languageTitle:"🌐 语言",
+    languageDescription:"选择你想在 Gamerex 使用的语言。",
+    developerTitle:"🎮 游戏开发",
+    developerDescription:"你是游戏开发者吗？将你的游戏提交到 Gamerex。",
+    submitGame:"🚀 提交游戏",
+    allRights:"版权所有。"
   },
 
   es:{
@@ -2957,936 +2817,6 @@ function searchLanguages(){
 
 
 /* =====================================================
-   PAGE NAVIGATION
-===================================================== */
-
-function showHome(){
-
-  closeGamePlayer(false);
-
-  document.getElementById(
-    "homePage"
-  ).style.display=
-    "block";
-
-  document.getElementById(
-    "settingsPage"
-  ).style.display=
-    "none";
-
-
-  document
-    .querySelectorAll(".side-link")
-    .forEach(
-      link=>
-        link.classList.remove("active")
-    );
-
-
-  document.getElementById(
-    "homeLink"
-  ).classList.add("active");
-
-
-  window.scrollTo(
-    0,
-    0
-  );
-
-}
-
-
-async function showGames(){
-
-  closeGamePlayer(false);
-
-  document.getElementById(
-    "homePage"
-  ).style.display=
-    "block";
-
-  document.getElementById(
-    "settingsPage"
-  ).style.display=
-    "none";
-
-
-  document
-    .querySelectorAll(".side-link")
-    .forEach(
-      link=>
-        link.classList.remove("active")
-    );
-
-
-  document.getElementById(
-    "gamesLink"
-  ).classList.add("active");
-
-
-  await renderGames();
-
-
-  const gamesSection=
-    document.getElementById(
-      "games"
-    );
-
-
-  if(gamesSection){
-
-    gamesSection.scrollIntoView({
-      behavior:"smooth"
-    });
-
-  }
-
-}
-
-
-function showSettings(){
-
-  closeGamePlayer(false);
-
-  document.getElementById(
-    "homePage"
-  ).style.display=
-    "none";
-
-  document.getElementById(
-    "settingsPage"
-  ).style.display=
-    "block";
-
-
-  document
-    .querySelectorAll(".side-link")
-    .forEach(
-      link=>
-        link.classList.remove("active")
-    );
-
-
-  window.scrollTo(
-    0,
-    0
-  );
-
-}
-
-
-function filterCategory(category){
-
-  currentCategory=
-    category;
-
-  showGames();
-
-}
-
-
-/* =====================================================
-   RENDER GAMES
-===================================================== */
-
-async function renderGames(){
-
-  const grid=
-    document.getElementById(
-      "gameGrid"
-    );
-
-  const noGames=
-    document.getElementById(
-      "noGames"
-    );
-
-  const count=
-    document.getElementById(
-      "gameCount"
-    );
-
-
-  if(!grid || !noGames || !count){
-    return;
-  }
-
-
-  grid.innerHTML="";
-
-
-  try{
-
-    const games=
-      await getGames();
-
-
-    let filtered=
-      games;
-
-
-    if(
-      currentCategory !==
-      "All"
-    ){
-
-      filtered=
-        games.filter(
-          game=>
-            String(game.category || "")
-              .toLowerCase() ===
-            currentCategory.toLowerCase()
-        );
-
-    }
-
-
-    const searchInput=
-      document.getElementById(
-        "searchInput"
-      );
-
-
-    const search=
-      searchInput
-        ? searchInput.value.trim().toLowerCase()
-        : "";
-
-
-    if(search){
-
-      filtered=
-        filtered.filter(
-          game=>
-            String(game.name || "")
-              .toLowerCase()
-              .includes(search)
-        );
-
-    }
-
-
-    count.textContent=
-      filtered.length+
-      (
-        filtered.length===1
-          ? " Game"
-          : " Games"
-      );
-
-
-    if(filtered.length===0){
-
-      noGames.style.display=
-        "block";
-
-      noGames.textContent=
-        "🎮 No games available yet.";
-
-      return;
-
-    }
-
-
-    noGames.style.display=
-      "none";
-
-
-    filtered.forEach(
-      game=>{
-
-        const card=
-          document.createElement(
-            "div"
-          );
-
-
-        card.className=
-          "game-card";
-
-
-        card.onclick=()=>{
-          openGamePlayer(game);
-        };
-
-
-        const image=
-          document.createElement(
-            "div"
-          );
-
-        image.className=
-          "game-image";
-
-
-        if(game.iconImage){
-
-          const img=
-            document.createElement(
-              "img"
-            );
-
-          img.src=
-            game.iconImage;
-
-          img.alt=
-            game.name || "Game";
-
-          image.appendChild(
-            img
-          );
-
-        }else{
-
-          image.textContent=
-            game.icon || "🎮";
-
-        }
-
-
-        const info=
-          document.createElement(
-            "div"
-          );
-
-        info.className=
-          "game-info";
-
-
-        const title=
-          document.createElement(
-            "h3"
-          );
-
-        title.textContent=
-          game.name || "Untitled Game";
-
-
-        const description=
-          document.createElement(
-            "p"
-          );
-
-        description.textContent=
-          game.description ||
-          "Play this game on Gamerex.";
-
-
-        const meta=
-          document.createElement(
-            "div"
-          );
-
-        meta.className=
-          "game-meta";
-
-        meta.textContent=
-          game.category ||
-          "Games";
-
-
-        info.appendChild(
-          title
-        );
-
-        info.appendChild(
-          description
-        );
-
-        info.appendChild(
-          meta
-        );
-
-
-        card.appendChild(
-          image
-        );
-
-        card.appendChild(
-          info
-        );
-
-
-        grid.appendChild(
-          card
-        );
-
-      }
-    );
-
-  }catch(error){
-
-    console.error(
-      "Render games error:",
-      error
-    );
-
-
-    count.textContent=
-      "0 Games";
-
-
-    noGames.style.display=
-      "block";
-
-
-    noGames.textContent=
-      "⚠️ Games could not be loaded. Please refresh the page.";
-
-  }
-
-}
-
-
-/* =====================================================
-   SEARCH
-===================================================== */
-
-function searchGames(){
-
-  renderGames();
-
-}
-
-
-/* =====================================================
-   GAME PLAYER
-===================================================== */
-
-async function openGamePlayer(game){
-
-  if(
-    !game ||
-    !game.url
-  ){
-
-    alert(
-      "This game does not have a valid URL."
-    );
-
-    return;
-
-  }
-
-
-  document.getElementById(
-    "homePage"
-  ).style.display=
-    "none";
-
-
-  document.getElementById(
-    "settingsPage"
-  ).style.display=
-    "none";
-
-
-  document.getElementById(
-    "gamePage"
-  ).style.display=
-    "block";
-
-
-  document.getElementById(
-    "currentGameTitle"
-  ).textContent=
-    game.name ||
-    "Game";
-
-
-  document.getElementById(
-    "gameUnderTitle"
-  ).textContent=
-    game.name ||
-    "Game";
-
-
-  document.getElementById(
-    "gameUnderDescription"
-  ).textContent=
-    game.description ||
-    "Play this game on Gamerex.";
-
-
-  const frame=
-    document.getElementById(
-      "gameFrame"
-    );
-
-
-  frame.src=
-    "about:blank";
-
-
-  setTimeout(
-    ()=>{
-      frame.src=
-        game.url;
-    },
-    20
-  );
-
-
-  await renderRecommendations(
-    game.id
-  );
-
-
-  window.scrollTo(
-    0,
-    0
-  );
-
-}
-
-
-/* =====================================================
-   FULLSCREEN
-===================================================== */
-
-let fullscreenNoticeTimer=null;
-
-
-async function toggleGameFullscreen(){
-
-  const stage=
-    document.getElementById(
-      "gameStage"
-    );
-
-
-  if(!stage){
-    return;
-  }
-
-
-  try{
-
-    if(document.fullscreenElement){
-
-      await document.exitFullscreen();
-
-    }else if(stage.requestFullscreen){
-
-      await stage.requestFullscreen();
-
-    }
-
-  }catch(error){
-
-    console.warn(
-      "Fullscreen could not be enabled:",
-      error
-    );
-
-  }
-
-}
-
-
-function showFullscreenEscNotice(){
-
-  const notice=
-    document.getElementById(
-      "fullscreenEscNotice"
-    );
-
-
-  if(!notice){
-    return;
-  }
-
-
-  clearTimeout(
-    fullscreenNoticeTimer
-  );
-
-
-  notice.classList.add(
-    "show"
-  );
-
-
-  fullscreenNoticeTimer=
-    setTimeout(
-      ()=>{
-        notice.classList.remove(
-          "show"
-        );
-      },
-      5000
-    );
-
-}
-
-
-function updateFullscreenButton(){
-
-  const btn=
-    document.getElementById(
-      "gameFullscreenBtn"
-    );
-
-
-  if(btn){
-
-    btn.textContent=
-      document.fullscreenElement
-        ? "⛶ Exit Fullscreen"
-        : "⛶ Fullscreen";
-
-  }
-
-
-  if(
-    document.fullscreenElement
-  ){
-
-    showFullscreenEscNotice();
-
-  }else{
-
-    const notice=
-      document.getElementById(
-        "fullscreenEscNotice"
-      );
-
-
-    if(notice){
-
-      notice.classList.remove(
-        "show"
-      );
-
-    }
-
-
-    clearTimeout(
-      fullscreenNoticeTimer
-    );
-
-  }
-
-}
-
-
-document.addEventListener(
-  "fullscreenchange",
-  updateFullscreenButton
-);
-
-
-/* =====================================================
-   CLOSE GAME PLAYER
-===================================================== */
-
-function closeGamePlayer(
-  goHome=true
-){
-
-  if(document.fullscreenElement){
-
-    document.exitFullscreen().catch(
-      ()=>{}
-    );
-
-  }
-
-
-  const page=
-    document.getElementById(
-      "gamePage"
-    );
-
-  const frame=
-    document.getElementById(
-      "gameFrame"
-    );
-
-
-  if(page){
-
-    page.style.display=
-      "none";
-
-  }
-
-
-  if(frame){
-
-    frame.src=
-      "about:blank";
-
-  }
-
-
-  if(goHome){
-
-    document.getElementById(
-      "homePage"
-    ).style.display=
-      "block";
-
-    document.getElementById(
-      "settingsPage"
-    ).style.display=
-      "none";
-
-    window.scrollTo(
-      0,
-      0
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   RECOMMENDED GAMES
-===================================================== */
-
-async function renderRecommendations(
-  currentId
-){
-
-  const list=
-    document.getElementById(
-      "recommendedList"
-    );
-
-
-  if(!list){
-    return;
-  }
-
-
-  list.innerHTML="";
-
-
-  try{
-
-    const games=
-      await getGames();
-
-
-    const recommended=
-      games
-        .filter(
-          game=>
-            String(game.id)!==
-            String(currentId)
-        )
-        .slice(
-          0,
-          10
-        );
-
-
-    if(
-      recommended.length===0
-    ){
-
-      list.innerHTML=
-        '<div class="no-recommendations">No other games available.</div>';
-
-      return;
-
-    }
-
-
-    recommended.forEach(
-      game=>{
-
-        const card=
-          document.createElement(
-            "div"
-          );
-
-
-        card.className=
-          "recommended-card";
-
-
-        card.onclick=()=>{
-          openGamePlayer(game);
-        };
-
-
-        const image=
-          document.createElement(
-            "div"
-          );
-
-
-        image.className=
-          "recommended-image";
-
-
-        if(game.iconImage){
-
-          const img=
-            document.createElement(
-              "img"
-            );
-
-          img.src=
-            game.iconImage;
-
-          img.alt=
-            game.name || "Game";
-
-          image.appendChild(
-            img
-          );
-
-        }else{
-
-          image.textContent=
-            game.icon || "🎮";
-
-        }
-
-
-        const info=
-          document.createElement(
-            "div"
-          );
-
-        info.className=
-          "recommended-info";
-
-
-        const title=
-          document.createElement(
-            "h3"
-          );
-
-        title.textContent=
-          game.name ||
-          "Untitled Game";
-
-
-        const category=
-          document.createElement(
-            "p"
-          );
-
-        category.textContent=
-          game.category ||
-          "Games";
-
-
-        info.appendChild(
-          title
-        );
-
-        info.appendChild(
-          category
-        );
-
-
-        card.appendChild(
-          image
-        );
-
-        card.appendChild(
-          info
-        );
-
-
-        list.appendChild(
-          card
-        );
-
-      }
-    );
-
-  }catch(error){
-
-    console.error(
-      "Recommendations error:",
-      error
-    );
-
-    list.innerHTML=
-      '<div class="no-recommendations">Could not load recommendations.</div>';
-
-  }
-
-}
-
-
-/* =====================================================
-   PROFILE UI
-===================================================== */
-
-function updateProfileUI(){
-
-  const account=
-    getAccount();
-
-
-  const idElement=
-    document.getElementById(
-      "gamerexId"
-    );
-
-
-  const profileIcon=
-    document.getElementById(
-      "profileIcon"
-    );
-
-
-  const nameChangeInfo=
-    document.getElementById(
-      "nameChangeInfo"
-    );
-
-
-  if(!account){
-
-    idElement.textContent=
-      "GX-2026-001";
-
-    profileIcon.textContent=
-      "👤";
-
-    nameChangeInfo.textContent=
-      "Name changes today: 0 / 5";
-
-    return;
-
-  }
-
-
-  resetDailyNameLimit(
-    account
-  );
-
-
-  idElement.textContent=
-    account.gamerexId ||
-    "GX-2026-001";
-
-
-  profileIcon.innerHTML=
-    account.profileLogo ||
-    "👤";
-
-
-  nameChangeInfo.textContent=
-    "Name changes today: "+
-    Number(
-      account.nameChangesToday || 0
-    )+
-    " / 5";
-
-}
-
-
-/* =====================================================
    DEVELOPER
 ===================================================== */
 
@@ -3941,60 +2871,45 @@ function previewGameIcon(event){
 
     selectedGameIcon="";
 
-    previewBox.style.display=
-      "none";
+    previewBox.style.display="none";
 
-    preview.removeAttribute(
-      "src"
-    );
+    preview.removeAttribute("src");
 
-    previewName.textContent=
-      "";
+    previewName.textContent="";
 
     return;
 
   }
 
 
-  if(
-    !file.type.startsWith(
-      "image/"
-    )
-  ){
+  if(!file.type.startsWith("image/")){
 
     alert(
       "Please select an image file."
     );
 
-    event.target.value=
-      "";
+    event.target.value="";
 
     selectedGameIcon="";
 
-    previewBox.style.display=
-      "none";
+    previewBox.style.display="none";
 
     return;
 
   }
 
 
-  if(
-    file.size>
-    5*1024*1024
-  ){
+  if(file.size>5*1024*1024){
 
     alert(
       "Please choose an image smaller than 5 MB."
     );
 
-    event.target.value=
-      "";
+    event.target.value="";
 
     selectedGameIcon="";
 
-    previewBox.style.display=
-      "none";
+    previewBox.style.display="none";
 
     return;
 
@@ -4025,9 +2940,7 @@ function previewGameIcon(event){
   };
 
 
-  reader.readAsDataURL(
-    file
-  );
+  reader.readAsDataURL(file);
 
 }
 
@@ -4037,244 +2950,65 @@ function previewGameIcon(event){
 ===================================================== */
 
 async function submitGame(){
+  const account = await loadAccount();
 
-  const developerName=
-    document.getElementById(
-      "developerName"
-    ).value.trim();
-
-
-  const developerEmail=
-    document.getElementById(
-      "developerEmail"
-    ).value.trim();
-
-
-  const name=
-    document.getElementById(
-      "developerGameName"
-    ).value.trim();
-
-
-  const url=
-    document.getElementById(
-      "developerGameUrl"
-    ).value.trim();
-
-
-  const category=
-    document.getElementById(
-      "developerGameCategory"
-    ).value.trim() ||
-    "Games";
-
-
-  if(!developerName){
-
-    alert(
-      "Please enter your name."
-    );
-
+  if(!account){
+    alert("Please Login or Sign Up before submitting a game.");
+    openAuth("login");
     return;
-
   }
 
+  const developerName = document.getElementById("developerName").value.trim();
+  const developerEmail = document.getElementById("developerEmail").value.trim();
+  const name = document.getElementById("developerGameName").value.trim();
+  const url = document.getElementById("developerGameUrl").value.trim();
+  const category = document.getElementById("developerGameCategory").value.trim() || "Games";
 
-  if(!developerEmail){
+  if(!developerName){ alert("Please enter your name."); return; }
+  if(!developerEmail){ alert("Please enter your developer email."); return; }
+  if(!name){ alert("Please enter the Game Name."); return; }
+  if(!url){ alert("Please enter the Game URL."); return; }
 
-    alert(
-      "Please enter your developer email."
-    );
-
+  try{ new URL(url); }catch(error){
+    alert("Please enter a valid Game URL.");
     return;
-
   }
-
-
-  if(!name){
-
-    alert(
-      "Please enter the Game Name."
-    );
-
-    return;
-
-  }
-
-
-  if(!url){
-
-    alert(
-      "Please enter the Game URL."
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    new URL(url);
-
-  }catch(error){
-
-    alert(
-      "Please enter a valid Game URL."
-    );
-
-    return;
-
-  }
-
 
   if(!selectedGameIcon){
-
-    alert(
-      "Please choose a Game Icon."
-    );
-
+    alert("Please choose a Game Icon.");
     return;
-
   }
-
 
   try{
-
-    const games=
-      await getGames();
-
-
-    games.push({
-
-      id:
-        Date.now(),
-
-      developerName:
-        developerName,
-
-      developerEmail:
-        developerEmail,
-
-      name:
-        name,
-
-      url:
-        url,
-
-      category:
-        category,
-
-      iconImage:
-        selectedGameIcon,
-
-      icon:
-        "🎮",
-
-      description:
-        "Play "+
-        name+
-        " on Gamerex."
-
+    await saveGame({
+      name,
+      url,
+      category,
+      iconImage:selectedGameIcon,
+      description:"Play " + name + " on Gamerex."
     });
 
-
-    await saveGames(
-      games
-    );
-
-
     await renderGames();
+    closeModal("developerModal");
 
-
-    closeModal(
-      "developerModal"
-    );
-
-
-    document.getElementById(
-      "developerName"
-    ).value=
-      "";
-
-
-    document.getElementById(
-      "developerEmail"
-    ).value=
-      "";
-
-
-    document.getElementById(
-      "developerGameName"
-    ).value=
-      "";
-
-
-    document.getElementById(
-      "developerGameUrl"
-    ).value=
-      "";
-
-
-    document.getElementById(
-      "developerGameCategory"
-    ).value=
-      "";
-
-
-    document.getElementById(
-      "developerGameIconFile"
-    ).value=
-      "";
-
-
-    document.getElementById(
-      "iconPreviewBox"
-    ).style.display=
-      "none";
-
-
-    document.getElementById(
-      "iconPreview"
-    ).removeAttribute(
-      "src"
-    );
-
-
-    document.getElementById(
-      "iconPreviewName"
-    ).textContent=
-      "";
-
-
-    selectedGameIcon=
-      "";
-
+    document.getElementById("developerName").value="";
+    document.getElementById("developerEmail").value="";
+    document.getElementById("developerGameName").value="";
+    document.getElementById("developerGameUrl").value="";
+    document.getElementById("developerGameCategory").value="";
+    document.getElementById("developerGameIconFile").value="";
+    document.getElementById("iconPreviewBox").style.display="none";
+    document.getElementById("iconPreview").removeAttribute("src");
+    document.getElementById("iconPreviewName").textContent="";
+    selectedGameIcon="";
 
     await showGames();
-
-
-    alert(
-      "🎮 Game added successfully!"
-    );
-
-
+    alert("🎮 Game added successfully! It is now available to everyone.");
   }catch(error){
-
-    console.error(
-      "Submit game error:",
-      error
-    );
-
-
-    alert(
-      "The game could not be saved. Please refresh the page and try again."
-    );
-
+    console.error("Submit game error:", error);
+    alert(error.message || "The game could not be saved. Please check your Supabase setup and try again.");
   }
-
 }
-
 
 /* =====================================================
    CLOSE MODALS
@@ -4283,9 +3017,7 @@ async function submitGame(){
 function closeModal(id){
 
   const modal=
-    document.getElementById(
-      id
-    );
+    document.getElementById(id);
 
 
   if(modal){
@@ -4302,9 +3034,7 @@ window.onclick=function(event){
 
   if(
     event.target.classList &&
-    event.target.classList.contains(
-      "modal"
-    )
+    event.target.classList.contains("modal")
   ){
 
     event.target.style.display=
@@ -4319,107 +3049,40 @@ window.onclick=function(event){
    PAGE LOAD
 ===================================================== */
 
-window.addEventListener(
-  "DOMContentLoaded",
-  async function(){
-
-    try{
-
-      /*
-        First create/open the new Gamerex game database.
-      */
-
-      await openGameDB();
-
-
-      /*
-        Move old localStorage games into IndexedDB.
-      */
-
-      await migrateOldGames();
-
-
-    }catch(error){
-
-      console.error(
-        "Game database initialization error:",
-        error
-      );
-
-    }
-
-
-    const account=
-      getAccount();
-
-
-    if(account){
-
-      resetDailyNameLimit(
-        account
-      );
-
-    }
-
-
-    const searchInput=
-      document.getElementById(
-        "searchInput"
-      );
-
-
-    if(searchInput){
-
-      searchInput.value=
-        "";
-
-    }
-
-
-    const savedLanguage=
-      localStorage.getItem(
-        "gamerexLanguage"
-      ) ||
-      "en";
-
-
-    changeLanguage(
-      savedLanguage
-    );
-
-
+window.addEventListener("DOMContentLoaded", async function(){
+  try{
+    await loadAccount();
+    await migrateOldGames();
     await renderGames();
-
-
     updateHeaderUI();
-
     updateProfileUI();
-
+  }catch(error){
+    console.error("Gamerex initialization error:", error);
+    await renderGames();
   }
-);
 
+  const searchInput = document.getElementById("searchInput");
+  if(searchInput) searchInput.value="";
 
-/* =====================================================
-   KEEP GAME LIST UPDATED
-   If another Gamerex tab changes IndexedDB,
-   refresh the current list when it becomes visible.
-===================================================== */
+  const savedLanguage = localStorage.getItem("gamerexLanguage") || "en";
+  changeLanguage(savedLanguage);
+});
 
-document.addEventListener(
-  "visibilitychange",
-  async function(){
-
-    if(
-      document.visibilityState===
-      "visible"
-    ){
-
-      await renderGames();
-
-    }
-
+document.addEventListener("visibilitychange", async function(){
+  if(document.visibilityState === "visible"){
+    await renderGames();
   }
-);
+});
+
+supabaseClient.auth.onAuthStateChange(async function(event, session){
+  if(session && session.user){
+    setTimeout(() => loadAccount(), 0);
+  }else{
+    currentAccount = null;
+    updateHeaderUI();
+    updateProfileUI();
+  }
+});
 
 </script>
 
