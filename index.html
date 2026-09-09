@@ -744,6 +744,37 @@ footer span{
   border-radius:4px;
 }
 
+/* ================= GAME FULLSCREEN ================= */
+.game-fullscreen-btn{
+  background:#00d9ff;
+  color:#000;
+  border:1px solid #00d9ff;
+  padding:10px 15px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.game-fullscreen-btn:hover{
+  background:#fff;
+  border-color:#fff;
+}
+
+.game-stage:fullscreen{
+  width:100vw;
+  height:100vh;
+  min-height:100vh;
+  border:0;
+  border-radius:0;
+  background:#000;
+}
+
+.game-stage:fullscreen iframe{
+  width:100%;
+  height:100%;
+}
+
 /* ================= MOBILE ================= */
 
 @media(max-width:850px){
@@ -799,6 +830,7 @@ footer span{
   .game-player-layout{grid-template-columns:1fr;}
   .play-next-panel{position:static;max-height:none;}
   .game-stage{min-height:420px;}
+  .game-fullscreen-btn{padding:8px 11px;font-size:12px;}
 
 }
 
@@ -1054,6 +1086,7 @@ footer span{
         <div class="game-topbar">
           <button class="game-back-btn" onclick="closeGamePlayer()">← Back to Games</button>
           <div class="current-game-title" id="currentGameTitle">Game</div>
+          <button class="game-fullscreen-btn" id="gameFullscreenBtn" onclick="toggleGameFullscreen()">⛶ Full Screen</button>
         </div>
         <div class="game-stage">
           <iframe id="gameFrame" title="Gamerex Game Player" allow="fullscreen; autoplay; gamepad; clipboard-read; clipboard-write" allowfullscreen></iframe>
@@ -2014,6 +2047,33 @@ function closeGamePlayer(goHome=true){
     window.scrollTo(0,0);
   }
 }
+
+function toggleGameFullscreen(){
+  const gameStage=document.querySelector(".game-stage");
+  const button=document.getElementById("gameFullscreenBtn");
+
+  if(!gameStage) return;
+
+  if(!document.fullscreenElement){
+    if(gameStage.requestFullscreen){
+      gameStage.requestFullscreen();
+    }else if(gameStage.webkitRequestFullscreen){
+      gameStage.webkitRequestFullscreen();
+    }else{
+      alert("Full Screen is not supported by your browser.");
+    }
+  }else{
+    if(document.exitFullscreen){
+      document.exitFullscreen();
+    }
+  }
+}
+
+document.addEventListener("fullscreenchange",function(){
+  const button=document.getElementById("gameFullscreenBtn");
+  if(!button) return;
+  button.textContent=document.fullscreenElement ? "✕ Exit Full Screen" : "⛶ Full Screen";
+});
 
 async function renderRecommendations(currentId){
   const list=document.getElementById("recommendedList");
