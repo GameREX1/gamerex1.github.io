@@ -488,6 +488,42 @@ header{
   margin-top:20px;
 }
 
+.logo-choice{
+  width:100%;
+  aspect-ratio:1/1;
+  padding:4px;
+  border-radius:12px;
+  border:1px solid #333;
+  background:#080808;
+  cursor:pointer;
+  overflow:hidden;
+  transition:.2s ease;
+}
+
+.logo-choice img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  border-radius:9px;
+}
+
+.logo-choice:hover{
+  border-color:#00d9ff;
+  transform:translateY(-2px);
+  box-shadow:0 0 18px rgba(0,217,255,.18);
+}
+
+.header-profile-logo{
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  object-fit:cover;
+  vertical-align:middle;
+  margin-right:7px;
+  border:1px solid #333;
+}
+
 .small-btn{
   padding:10px 15px;
   border-radius:7px;
@@ -1459,14 +1495,18 @@ footer span{
       "
     >
 
-      <button class="small-btn" onclick="selectLogo('👤')">👤</button>
-      <button class="small-btn" onclick="selectLogo('🎮')">🎮</button>
-      <button class="small-btn" onclick="selectLogo('😎')">😎</button>
-      <button class="small-btn" onclick="selectLogo('🔥')">🔥</button>
-      <button class="small-btn" onclick="selectLogo('⚡')">⚡</button>
-      <button class="small-btn" onclick="selectLogo('🐯')">🐯</button>
-      <button class="small-btn" onclick="selectLogo('🐺')">🐺</button>
-      <button class="small-btn" onclick="selectLogo('👾')">👾</button>
+      <button class="logo-choice" onclick="selectLogo('lion')" title="Lion">
+        <img src="__LION__" alt="Lion">
+      </button>
+      <button class="logo-choice" onclick="selectLogo('unicorn')" title="Unicorn">
+        <img src="__UNICORN__" alt="Unicorn">
+      </button>
+      <button class="logo-choice" onclick="selectLogo('panda')" title="Panda">
+        <img src="__PANDA__" alt="Panda">
+      </button>
+      <button class="logo-choice" onclick="selectLogo('eagle')" title="Eagle">
+        <img src="__EAGLE__" alt="Eagle">
+      </button>
 
     </div>
 
@@ -1599,6 +1639,24 @@ function getAccount(){
   return currentAccount;
 }
 
+function logoKeyFromStoredValue(value){
+  const valid=["lion","unicorn","panda","eagle"];
+  if(valid.includes(value)) return value;
+  return "lion";
+}
+
+function logoSrc(logoKey){
+  const key=logoKeyFromStoredValue(logoKey);
+  return LOGO_IMAGES[key];
+}
+
+const LOGO_IMAGES={
+  lion:"gamerex-lion.png",
+  unicorn:"gamerex-unicorn.png",
+  panda:"gamerex-panda.png",
+  eagle:"gamerex-eagle.png"
+};
+
 async function loadAccount(){
   const { data:{ user }, error } = await supabaseClient.auth.getUser();
   if(error || !user){
@@ -1608,33 +1666,76 @@ async function loadAccount(){
     return null;
   }
 
-  let { data: profile } = await supabaseClient
+  const metadata=user.user_metadata || {};
+  let { data: profile, error: profileError } = await supabaseClient
     .from("profiles")
     .select("id,gamerex_id,profile_logo,name_changes_today,name_change_date")
     .eq("id", user.id)
     .maybeSingle();
 
-  if(!profile){
-    const metadata=user.user_metadata || {};
-    const gamerexId=metadata.gamerex_id || generateGamerexId();
-    const { data: created } = await supabaseClient.from("profiles").insert({
-      id:user.id,
-      gamerex_id:gamerexId,
-      profile_logo:"👤",
-      name_changes_today:0,
-      name_change_date:todayKey()
-    }).select().single();
-    profile=created;
+  // IMPORTANT: never generate a new ID just because the profiles table
+  // is unavailable. Auth metadata is the permanent backup for the account.
+  let gamerexId=metadata.gamerex_id || profile?.gamerex_id || "";
+  if(!gamerexId){
+    gamerexId=generateGamerexId();
+    try{
+      await supabaseClient.auth.updateUser({
+        data:{gamerex_id:gamerexId}
+      });
+    }catch(saveError){
+      console.error("Gamerex ID metadata save error:",saveError);
+    }
   }
+
+  const profileLogo=logoKeyFromStoredValue(
+    metadata.profile_logo || profile?.profile_logo || "lion"
+  );
+  const nameChangesToday=Number(
+    metadata.name_changes_today ?? profile?.name_changes_today ?? 0
+  );
+  const nameChangeDate=
+    metadata.name_change_date || profile?.name_change_date || todayKey();
 
   currentAccount={
     id:user.id,
     email:user.email || "",
-    gamerexId:profile?.gamerex_id || generateGamerexId(),
-    profileLogo:profile?.profile_logo || "👤",
-    nameChangesToday:Number(profile?.name_changes_today || 0),
-    nameChangeDate:profile?.name_change_date || todayKey()
+    gamerexId,
+    profileLogo,
+    nameChangesToday,
+    nameChangeDate
   };
+
+  // Keep the Auth metadata synchronized so the account survives even if
+  // the profiles table has an RLS/permission problem.
+  const metadataNeedsSync=
+    metadata.gamerex_id!==gamerexId ||
+    metadata.profile_logo!==profileLogo ||
+    Number(metadata.name_changes_today ?? -1)!==nameChangesToday ||
+    metadata.name_change_date!==nameChangeDate;
+
+  if(metadataNeedsSync){
+    const {error:metaError}=await supabaseClient.auth.updateUser({
+      data:{
+        gamerex_id:gamerexId,
+        profile_logo:profileLogo,
+        name_changes_today:nameChangesToday,
+        name_change_date:nameChangeDate
+      }
+    });
+    if(metaError) console.error("Account metadata sync error:",metaError);
+  }
+
+  // Repair/create the profiles row when possible, but NEVER let a profiles
+  // error replace the already recovered Gamerex ID with a new random one.
+  const {error:profileSaveError}=await supabaseClient.from("profiles").upsert({
+    id:user.id,
+    gamerex_id:gamerexId,
+    profile_logo:profileLogo,
+    name_changes_today:nameChangesToday,
+    name_change_date:nameChangeDate
+  });
+  if(profileSaveError) console.error("Profile sync error:",profileSaveError);
+  if(profileError) console.error("Profile load error:",profileError);
 
   resetDailyNameLimit(currentAccount);
   updateHeaderUI();
@@ -1645,10 +1746,26 @@ async function loadAccount(){
 async function saveAccount(account){
   currentAccount=account;
   if(!account?.id) return;
+
+  const logoKey=logoKeyFromStoredValue(account.profileLogo);
+  account.profileLogo=logoKey;
+
+  // Save to Auth metadata first. This is the reliable fallback that keeps
+  // the same ID/logo after refresh or reopening the browser.
+  const {error:metaError}=await supabaseClient.auth.updateUser({
+    data:{
+      gamerex_id:account.gamerexId,
+      profile_logo:logoKey,
+      name_changes_today:Number(account.nameChangesToday || 0),
+      name_change_date:account.nameChangeDate || todayKey()
+    }
+  });
+  if(metaError) console.error("Account metadata save error:",metaError);
+
   const { error }=await supabaseClient.from("profiles").upsert({
     id:account.id,
     gamerex_id:account.gamerexId,
-    profile_logo:account.profileLogo || "👤",
+    profile_logo:logoKey,
     name_changes_today:Number(account.nameChangesToday || 0),
     name_change_date:account.nameChangeDate || todayKey()
   });
@@ -2191,9 +2308,26 @@ async function handleAuth(){
       });
       if(error) throw error;
       if(data.user){
-        await supabaseClient.from("profiles").upsert({
-          id:data.user.id,gamerex_id:gamerexId,profile_logo:"👤",name_changes_today:0,name_change_date:todayKey()
+        // The Gamerex ID is stored in Supabase Auth metadata as the primary
+        // permanent backup, then mirrored to the profiles table.
+        const {error:metaError}=await supabaseClient.auth.updateUser({
+          data:{
+            gamerex_id:gamerexId,
+            profile_logo:"lion",
+            name_changes_today:0,
+            name_change_date:todayKey()
+          }
         });
+        if(metaError) console.error("Signup metadata save error:",metaError);
+
+        const {error:profileError}=await supabaseClient.from("profiles").upsert({
+          id:data.user.id,
+          gamerex_id:gamerexId,
+          profile_logo:"lion",
+          name_changes_today:0,
+          name_change_date:todayKey()
+        });
+        if(profileError) console.error("Signup profile save error:",profileError);
       }
       if(data.session){
         await loadAccount();
@@ -2248,7 +2382,9 @@ function updateHeaderUI(){
   signup.style.display=loggedIn?"none":"block";
   logoutBtn.style.display=loggedIn?"block":"none";
   accountName.style.display=loggedIn?"block":"none";
-  accountName.textContent=loggedIn?"👤 "+currentAccount.gamerexId:"";
+  accountName.innerHTML=loggedIn
+    ? '<img class="header-profile-logo" src="'+logoSrc(currentAccount.profileLogo)+'" alt="Profile">'+currentAccount.gamerexId
+    : "";
 }
 
 async function logout(){
@@ -2298,7 +2434,7 @@ function updateProfileUI(){
     id.textContent=
       "GX-2026-001";
 
-    icon.innerHTML="👤";
+    icon.innerHTML="";
 
     changeInfo.textContent=
       "Login to customize your Gamerex ID.";
@@ -2320,8 +2456,7 @@ function updateProfileUI(){
 
 
   icon.innerHTML=
-    account.profileLogo ||
-    "👤";
+    '<img src="'+logoSrc(account.profileLogo)+'" alt="Gamerex profile logo">';
 
 
   changeInfo.textContent=
@@ -2374,9 +2509,11 @@ function changeProfileLogo(){
 
 async function selectLogo(logo){
   const account=getAccount(); if(!account) return;
-  account.profileLogo=logo;
+  account.profileLogo=logoKeyFromStoredValue(logo);
   await saveAccount(account);
-  updateProfileUI(); closeModal("logoModal");
+  updateProfileUI();
+  updateHeaderUI();
+  closeModal("logoModal");
 }
 
 /* =====================================================
