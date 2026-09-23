@@ -9,7 +9,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 
 <style>
 
@@ -941,24 +941,7 @@ footer span{
   }
 
 }
-/* ================= ADMIN PANEL ================= */
-.admin-login-btn{width:100%;margin-top:12px;padding:12px 16px;background:#111;color:#00d9ff;border:1px solid #333;border-radius:8px;cursor:pointer;font-weight:700;text-align:left;}
-.admin-login-btn:hover{border-color:#00d9ff;background:#0b0b0b;}
-.admin-panel{display:none;padding:45px;max-width:1200px;margin:auto;}
-.admin-panel-header{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:25px;}
-.admin-panel-header h1{font-size:38px;font-weight:900;}
-.admin-search{width:100%;padding:14px 16px;background:#080808;color:white;border:1px solid #292929;border-radius:8px;outline:none;margin-bottom:22px;}
-.admin-search:focus{border-color:#00d9ff;}
-.admin-game-list{display:flex;flex-direction:column;gap:12px;}
-.admin-game-item{display:flex;align-items:center;gap:15px;padding:14px;background:#080808;border:1px solid #242424;border-radius:10px;}
-.admin-game-thumb{width:75px;height:55px;border-radius:7px;object-fit:cover;background:#111;flex-shrink:0;}
-.admin-game-details{flex:1;min-width:0;}
-.admin-game-details h3{font-size:16px;margin-bottom:5px;}
-.admin-game-details p{color:#777;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.admin-delete-btn{background:#111;color:#ff5c5c;border:1px solid #333;border-radius:7px;padding:9px 13px;cursor:pointer;font-weight:700;}
-.admin-delete-btn:hover{border-color:#ff5c5c;background:#160909;}
-.admin-empty{text-align:center;padding:50px;color:#777;}
-@media(max-width:650px){.admin-panel{padding:30px 20px}.admin-panel-header{display:block}.admin-panel-header h1{font-size:30px;margin-bottom:15px}.admin-game-item{align-items:flex-start}.admin-delete-btn{padding:8px 10px}}
+
 </style>
 </head>
 
@@ -967,11 +950,11 @@ footer span{
 <header>
 
   <div class="logo">
-    ?? GAME<span>REX</span>
+     GAME<span>REX</span>
   </div>
 
   <div class="top-search">
-    <span class="search-icon">??</span>
+    <span class="search-icon"></span>
 
     <input
       type="search"
@@ -1029,11 +1012,11 @@ footer span{
   </div>
 
   <button class="side-link active" onclick="showHome()">
-    ?? <span>Home</span>
+     <span>Home</span>
   </button>
 
   <button class="side-link" onclick="showGames()">
-    ?? <span>All Games</span>
+     <span>All Games</span>
   </button>
 
   <hr class="sidebar-divider">
@@ -1043,29 +1026,29 @@ footer span{
   </div>
 
   <button class="side-link side-category" onclick="filterCategory('Racing')">
-    ??? <span>Racing</span>
+    Home <span>Racing</span>
   </button>
 
   <button class="side-link side-category" onclick="filterCategory('Sports')">
-    ? <span>Sports</span>
+     <span>Sports</span>
   </button>
 
   <button class="side-link side-category" onclick="filterCategory('Puzzle')">
-    ?? <span>Puzzle</span>
+     <span>Puzzle</span>
   </button>
 
   <button class="side-link side-category" onclick="filterCategory('Adventure')">
-    ?? <span>Adventure</span>
+     <span>Adventure</span>
   </button>
 
   <button class="side-link side-category" onclick="filterCategory('Dress Up')">
-    ?? <span>Dress Up</span>
+     <span>Dress Up</span>
   </button>
 
   <hr class="sidebar-divider">
 
   <button class="side-link" onclick="showSettings()">
-    ?? <span>Settings</span>
+     <span>Settings</span>
   </button>
 
 </aside>
@@ -1092,7 +1075,7 @@ footer span{
           class="main-btn"
           onclick="showGames()"
         >
-          ?? Explore Games
+          🎮 Explore Games
         </a>
 
       </div>
@@ -1104,7 +1087,7 @@ footer span{
       <div class="games-title">
 
         <h2>
-          ?? Featured Games
+          🔥 Featured Games
         </h2>
 
         <span
@@ -1125,7 +1108,7 @@ footer span{
         class="no-games"
         id="noGames"
       >
-        ?? No games available yet.
+         No games available yet.
       </div>
 
     </section>
@@ -1137,9 +1120,9 @@ footer span{
     <div class="game-player-layout">
       <div class="game-main-column">
         <div class="game-topbar">
-          <button class="game-back-btn" onclick="closeGamePlayer()">? Back to Games</button>
+          <button class="game-back-btn" onclick="closeGamePlayer()"> Back to Games</button>
           <div class="current-game-title" id="currentGameTitle">Game</div>
-          <button class="game-fullscreen-btn" id="gameFullscreenBtn" onclick="toggleGameFullscreen()">? Full Screen</button>
+          <button class="game-fullscreen-btn" id="gameFullscreenBtn" onclick="toggleGameFullscreen()"> Full Screen</button>
         </div>
         <div class="game-stage">
           <iframe id="gameFrame" title="Gamerex Game Player" allow="fullscreen; autoplay; gamepad; clipboard-read; clipboard-write" allowfullscreen></iframe>
@@ -1162,7 +1145,7 @@ footer span{
   >
 
     <h1>
-      ?? Settings
+      ⚙️ Settings
     </h1>
 
     <p class="settings-subtitle">
@@ -1172,7 +1155,7 @@ footer span{
     <div class="settings-card">
 
       <h2>
-        ?? Your ID
+        👤 Your ID
       </h2>
 
       <p>
@@ -1185,7 +1168,7 @@ footer span{
           class="profile-icon"
           id="profileIcon"
         >
-          ??
+          
         </div>
 
         <div>
@@ -1219,14 +1202,14 @@ footer span{
           id="changeNameBtn"
           onclick="changeGamerexName()"
         >
-          ?? Change ID Name
+          ✏️ Change ID Name
         </button>
 
         <button
           class="small-btn"
           onclick="changeProfileLogo()"
         >
-          ??? Change Logo
+          🖼️ Change Profile Logo
         </button>
 
       </div>
@@ -1236,7 +1219,7 @@ footer span{
     <div class="settings-card">
 
       <h2>
-        ?? Language
+        🌐 Language
       </h2>
 
       <p>
@@ -1246,7 +1229,7 @@ footer span{
       <input
         class="language-search"
         id="languageSearch"
-        placeholder="?? Search language..."
+        placeholder=" Search language..."
         onkeyup="searchLanguages()"
       >
 
@@ -1268,7 +1251,7 @@ footer span{
           data-language="ur"
           onclick="changeLanguage('ur')"
         >
-          ????
+          Menu
         </button>
 
         <button
@@ -1276,7 +1259,7 @@ footer span{
           data-language="ar"
           onclick="changeLanguage('ar')"
         >
-          ???????
+          MenuHome
         </button>
 
         <button
@@ -1284,7 +1267,7 @@ footer span{
           data-language="zh"
           onclick="changeLanguage('zh')"
         >
-          ??
+          
         </button>
 
         <button
@@ -1292,7 +1275,7 @@ footer span{
           data-language="es"
           onclick="changeLanguage('es')"
         >
-          Espa ol
+          Español
         </button>
 
         <button
@@ -1300,7 +1283,7 @@ footer span{
           data-language="fr"
           onclick="changeLanguage('fr')"
         >
-          Fran ais
+          Français
         </button>
 
         <button
@@ -1318,11 +1301,11 @@ footer span{
     <div class="developer-big">
 
       <h2>
-        ?? Game Developing
+        🎮 Game Developing
       </h2>
 
       <p>
-        Are you a game developer? Submit your game
+        Are you a game developer Submit your game
         to Gamerex and give players a chance to discover
         your game.
       </p>
@@ -1331,54 +1314,23 @@ footer span{
         class="main-btn"
         onclick="openDeveloper()"
       >
-        ?? Develop / Submit Your Game
+        🚀 Develop / Submit Your Game
       </button>
 
     </div>
 
-
-
-    <div class="settings-card" id="adminAccessCard">
-      <h2>Admin</h2>
-      <p>Gamerex game management. Admin access is restricted to authorized accounts.</p>
-      <button class="admin-login-btn" onclick="openAdminLogin()">Admin Login</button>
-    </div>
   </section>
 
   <footer>
-      2026 <span>Gamerex</span>.
+    © 2026 <span>Gamerex</span>.
     <span>All rights reserved.</span>
   </footer>
-
-  <!-- ADMIN PANEL -->
-  <section class="admin-panel" id="adminPanel">
-    <div class="admin-panel-header">
-      <div><h1>Admin Panel</h1><p style="color:#777;margin-top:7px;">Manage submitted Gamerex games.</p></div>
-      <button class="small-btn" onclick="closeAdminPanel()">Back</button>
-    </div>
-    <input type="search" id="adminGameSearch" class="admin-search" placeholder="Search games..." autocomplete="off" oninput="filterAdminGames()">
-    <div id="adminGameList" class="admin-game-list"></div>
-  </section>
-
 
 </main>
 
 <div class="made-by">
   Made By M.Rayyan Khan
 </div>
-
-<!-- ADMIN LOGIN -->
-<div class="modal" id="adminLoginModal">
-  <div class="modal-box">
-    <span class="close" onclick="closeModal('adminLoginModal')">&times;</span>
-    <h2>Admin Login</h2>
-    <input type="email" id="adminEmail" placeholder="Admin email" autocomplete="email">
-    <input type="password" id="adminPassword" placeholder="Password" autocomplete="current-password">
-    <button class="main-btn" style="width:100%;" onclick="adminLogin()">Login</button>
-    <p class="modal-text">Only authorized Gamerex administrators can access this panel.</p>
-  </div>
-</div>
-
 
 <!-- AUTH -->
 
@@ -1393,7 +1345,7 @@ footer span{
       class="close"
       onclick="closeModal('authModal')"
     >
-       
+      ×
     </span>
 
     <h2 id="authTitle">
@@ -1421,13 +1373,13 @@ footer span{
     </button>
 
     <div style="text-align:right;margin-top:10px;">
-      <span class="modal-link" id="forgotPasswordLink" onclick="openForgotPassword()">Forgot password?</span>
+      <span class="modal-link" id="forgotPasswordLink" onclick="openForgotPassword()">Forgot password</span>
     </div>
 
     <p class="modal-text">
 
       <span id="authSwitchText">
-        Don't have an account?
+        Don't have an account
       </span>
 
       <span
@@ -1447,7 +1399,7 @@ footer span{
 <!-- FORGOT PASSWORD -->
 <div class="modal" id="forgotModal">
   <div class="modal-box">
-    <span class="close" onclick="closeModal('forgotModal')"> </span>
+    <span class="close" onclick="closeModal('forgotModal')">×</span>
     <h2>Forgot Password</h2>
     <p class="modal-text" style="margin-bottom:16px;">Enter the email used for your Gamerex account. We will send a 6-digit verification code.</p>
 
@@ -1484,11 +1436,11 @@ footer span{
       class="close"
       onclick="closeModal('nameModal')"
     >
-       
+      ×
     </span>
 
     <h2>
-      ?? Change Gamerex ID
+       Change Gamerex ID
     </h2>
 
     <input
@@ -1523,11 +1475,11 @@ footer span{
       class="close"
       onclick="closeModal('logoModal')"
     >
-       
+      ×
     </span>
 
     <h2>
-      ??? Change Profile Logo
+      🖼️ Change Profile Logo
     </h2>
 
     <p style="color:#888;margin-bottom:15px;">
@@ -1543,17 +1495,23 @@ footer span{
       "
     >
 
-      <button class="logo-choice" onclick="selectLogo('lion')" title="Lion">
-        <img src="__LION__" alt="Lion">
+      <button class="logo-choice" onclick="selectLogo('lion')" title="Logo 1">
+        <img src="https://i.ibb.co/svFWDt4W/Screenshot-2026-09-12-152342.png" alt="Logo 1">
       </button>
-      <button class="logo-choice" onclick="selectLogo('unicorn')" title="Unicorn">
-        <img src="__UNICORN__" alt="Unicorn">
+      <button class="logo-choice" onclick="selectLogo('unicorn')" title="Logo 2">
+        <img src="https://i.ibb.co/PS4Mg7H/Chat-GPT-Image-Sep-12-2026-03-21-48-PM.png" alt="Logo 2">
       </button>
-      <button class="logo-choice" onclick="selectLogo('panda')" title="Panda">
-        <img src="__PANDA__" alt="Panda">
+      <button class="logo-choice" onclick="selectLogo('panda')" title="Logo 3">
+        <img src="https://i.ibb.co/bjJNF5Qj/Chat-GPT-Image-Sep-12-2026-03-21-57-PM.png" alt="Logo 3">
       </button>
-      <button class="logo-choice" onclick="selectLogo('eagle')" title="Eagle">
-        <img src="__EAGLE__" alt="Eagle">
+      <button class="logo-choice" onclick="selectLogo('eagle')" title="Logo 4">
+        <img src="https://i.ibb.co/Q3JnVpcX/Chat-GPT-Image-Sep-12-2026-03-22-06-PM.png" alt="Logo 4">
+      </button>
+      <button class="logo-choice" onclick="selectLogo('logo5')" title="Logo 5">
+        <img src="https://i.ibb.co/fYL96HrD/Chat-GPT-Image-Sep-12-2026-03-22-14-PM.png" alt="Logo 5">
+      </button>
+      <button class="logo-choice" onclick="selectLogo('logo6')" title="Logo 6">
+        <img src="https://i.ibb.co/HpLzh5sX/Chat-GPT-Image-Sep-12-2026-03-23-55-PM.png" alt="Logo 6">
       </button>
 
     </div>
@@ -1575,11 +1533,11 @@ footer span{
       class="close"
       onclick="closeModal('developerModal')"
     >
-       
+      ×
     </span>
 
     <h2>
-      ?? Submit Your Game
+      🚀 Submit Your Game
     </h2>
 
     <input
@@ -1618,7 +1576,7 @@ footer span{
         class="game-icon-label"
         for="developerGameIconFile"
       >
-        ??? Game Icon
+        🖼️ Game Icon
       </label>
 
       <input
@@ -1688,7 +1646,7 @@ function getAccount(){
 }
 
 function logoKeyFromStoredValue(value){
-  const valid=["lion","unicorn","panda","eagle"];
+  const valid=["lion","unicorn","panda","eagle","logo5","logo6"];
   if(valid.includes(value)) return value;
   return "lion";
 }
@@ -1699,10 +1657,12 @@ function logoSrc(logoKey){
 }
 
 const LOGO_IMAGES={
-  lion:"https://gamerex1.github.io/gamerex-lion.png",
-  unicorn:"https://gamerex1.github.io/gamerex-unicorn.png",
-  panda:"https://gamerex1.github.io/gamerex-panda.png",
-  eagle:"https://gamerex1.github.io/gamerex-eagle.png"
+  lion:"https://i.ibb.co/svFWDt4W/Screenshot-2026-09-12-152342.png",
+  unicorn:"https://i.ibb.co/PS4Mg7H/Chat-GPT-Image-Sep-12-2026-03-21-48-PM.png",
+  panda:"https://i.ibb.co/bjJNF5Qj/Chat-GPT-Image-Sep-12-2026-03-21-57-PM.png",
+  eagle:"https://i.ibb.co/Q3JnVpcX/Chat-GPT-Image-Sep-12-2026-03-22-06-PM.png",
+  logo5:"https://i.ibb.co/fYL96HrD/Chat-GPT-Image-Sep-12-2026-03-22-14-PM.png",
+  logo6:"https://i.ibb.co/HpLzh5sX/Chat-GPT-Image-Sep-12-2026-03-23-55-PM.png"
 };
 
 async function loadAccount(){
@@ -2079,12 +2039,12 @@ async function renderGames(){
             <img
               src="${escapeHtml(game.iconImage)}"
               alt="${escapeHtml(gameName)} icon"
-              onerror="this.style.display='none';this.parentElement.textContent='??';"
+              onerror="this.style.display='none';this.parentElement.textContent='';"
             >
           `
           : escapeHtml(
               game.icon ||
-              "??"
+              ""
             );
 
 
@@ -2108,7 +2068,7 @@ async function renderGames(){
           </p>
 
           <div class="game-meta">
-            ?? ${escapeHtml(gameCategory)}   Free
+             ${escapeHtml(gameCategory)}  Free
           </div>
 
         </div>
@@ -2172,7 +2132,7 @@ async function renderGames(){
 
 
     noGames.textContent=
-      "?? Games could not be loaded. Please refresh the page.";
+      " Games could not be loaded. Please refresh the page.";
 
   }
 
@@ -2237,7 +2197,7 @@ function toggleGameFullscreen(){
 document.addEventListener("fullscreenchange",function(){
   const button=document.getElementById("gameFullscreenBtn");
   if(!button) return;
-  button.textContent=document.fullscreenElement ? "? Exit Full Screen" : "? Full Screen";
+  button.textContent=document.fullscreenElement ? " Exit Full Screen" : " Full Screen";
 });
 
 async function renderRecommendations(currentId){
@@ -2248,16 +2208,16 @@ async function renderRecommendations(currentId){
     const games=await getGames();
     const recommendations=games.filter(game=>String(game.id)!==String(currentId)).slice(0,10);
     if(!recommendations.length){
-      list.innerHTML='<div class="no-recommendations">?? More games coming soon.</div>';
+      list.innerHTML='<div class="no-recommendations"> More games coming soon.</div>';
       return;
     }
     recommendations.forEach(game=>{
       const card=document.createElement("div");
       card.className="recommended-card";
       const imageHtml=game.iconImage
-        ? `<img src="${escapeHtml(game.iconImage)}" alt="${escapeHtml(game.name || "Game")} icon" onerror="this.style.display='none';this.parentElement.textContent='??';">`
-        : escapeHtml(game.icon || "??");
-      card.innerHTML=`<div class="recommended-image">${imageHtml}</div><div class="recommended-info"><h3>${escapeHtml(game.name || "Game")}</h3><p>${escapeHtml(game.category || "Games")}   Free</p></div>`;
+        ? `<img src="${escapeHtml(game.iconImage)}" alt="${escapeHtml(game.name || "Game")} icon" onerror="this.style.display='none';this.parentElement.textContent='';">`
+        : escapeHtml(game.icon || "");
+      card.innerHTML=`<div class="recommended-image">${imageHtml}</div><div class="recommended-info"><h3>${escapeHtml(game.name || "Game")}</h3><p>${escapeHtml(game.category || "Games")}  Free</p></div>`;
       card.onclick=()=>openGamePlayer(game);
       list.appendChild(card);
     });
@@ -2331,7 +2291,7 @@ function updateAuthUI(){
   const signupMode=authMode==="signup";
   title.textContent=signupMode?"Create Gamerex Account":"Login to Gamerex";
   button.textContent=signupMode?"Sign Up":"Login";
-  switchText.textContent=signupMode?"Already have an account?":"Don't have an account?";
+  switchText.textContent=signupMode?"Already have an account":"Don't have an account";
   switchButton.textContent=signupMode?"Login":"Sign Up";
   if(forgot) forgot.style.display=signupMode?"none":"inline";
 }
@@ -2380,17 +2340,17 @@ async function handleAuth(){
       if(data.session){
         await loadAccount();
         closeModal("authModal");
-        alert("Account created successfully! ??");
+        alert("Account created successfully! ");
       }else{
         closeModal("authModal");
-        alert("Account created! ?? Please check your Gmail and confirm your email, then login.");
+        alert("Account created!  Please check your Gmail and confirm your email, then login.");
       }
     }else{
       const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
       if(error) throw error;
       if(data.user){ await loadAccount(); }
       closeModal("authModal");
-      alert("Logged in successfully! ??");
+      alert("Logged in successfully! ");
     }
   }catch(error){
     console.error("Authentication error:",error);
@@ -2438,12 +2398,8 @@ function updateHeaderUI(){
 async function logout(){
   await supabaseClient.auth.signOut();
   currentAccount=null;
-  isGamerexAdmin=false;
-  const admin=document.getElementById("adminPanel");
-  if(admin)admin.style.display="none";
   updateHeaderUI();
   updateProfileUI();
-  showHome();
   alert("You have been logged out.");
 }
 
@@ -2551,7 +2507,7 @@ async function saveGamerexName(){
   account.nameChangeDate=todayKey();
   await saveAccount(account);
   updateProfileUI(); updateHeaderUI(); closeModal("nameModal");
-  alert("Gamerex ID changed successfully! ??");
+  alert("Gamerex ID changed successfully! ");
 }
 
 function changeProfileLogo(){
@@ -2603,7 +2559,7 @@ async function sendForgotCode(){
     forgotEmail=email;
     document.getElementById("forgotStep1").style.display="none";
     document.getElementById("forgotStep2").style.display="block";
-    alert("Verification code sent to your email. ??");
+    alert("Verification code sent to your email. ");
   }catch(error){
     console.error("Forgot password error:",error);
     alert(error.message || "Could not send the verification code.");
@@ -2659,7 +2615,7 @@ async function changeForgotPassword(){
 
     closeModal("forgotModal");
     await loadAccount();
-    alert("Password changed successfully! ?? You can now login with your new password.");
+    alert("Password changed successfully!  You can now login with your new password.");
   }catch(error){
     console.error("Password update error:",error);
     alert(error.message || "Could not change your password.");
@@ -2680,115 +2636,115 @@ const translations={
     settings:"Settings",
     welcomeText:"Welcome to",
     heroDescription:"Discover and play awesome games online.",
-    exploreGames:"?? Explore Games",
-    featuredGames:"?? Featured Games",
-    settingsTitle:"?? Settings",
+    exploreGames:"🎮 Explore Games",
+    featuredGames:"🔥 Featured Games",
+    settingsTitle:"⚙️ Settings",
     settingsSubtitle:"Manage your Gamerex account and preferences.",
-    yourId:"?? Your ID",
+    yourId:"👤 Your ID",
     profileDescription:"Manage your Gamerex name and profile logo.",
-    changeId:"?? Change ID Name",
-    changeLogo:"??? Change Logo",
-    languageTitle:"?? Language",
+    changeId:"✏️ Change ID Name",
+    changeLogo:"🖼️ Change Profile Logo",
+    languageTitle:"🌐 Language",
     languageDescription:"Choose the language you want to use on Gamerex.",
-    developerTitle:"?? Game Developing",
-    developerDescription:"Are you a game developer? Submit your game to Gamerex and give players a chance to discover your game.",
-    submitGame:"?? Develop / Submit Your Game",
+    developerTitle:"🎮 Game Developing",
+    developerDescription:"Are you a game developer Submit your game to Gamerex and give players a chance to discover your game.",
+    submitGame:"🚀 Develop / Submit Your Game",
     allRights:"All rights reserved."
   },
 
   ur:{
-    menu:"????",
-    home:"???",
-    allGames:"???? ????",
-    categories:"????????",
-    settings:"??????",
-    welcomeText:"??? ?????",
-    heroDescription:"?????? ?? ???? ???? ?????? ???? ??? ???????",
-    exploreGames:"?? ???? ??????",
-    featuredGames:"?? ?????? ????",
-    settingsTitle:"?? ??????",
-    settingsSubtitle:"???? Gamerex ?????? ??? ??????? ?? ????? ?????",
-    yourId:"?? ?? ?? ID",
-    profileDescription:"???? Gamerex ??? ??? ??????? ???? ????? ?????",
-    changeId:"?? ID ?? ??? ????? ????",
-    changeLogo:"??? ???? ????? ????",
-    languageTitle:"?? ????",
-    languageDescription:"Gamerex ?? ???? ???? ?? ???? ????? ?????",
-    developerTitle:"?? ??? ????????",
-    developerDescription:"??? ?? ??? ?????? ???? ???? ??? Gamerex ?? ??? ????????",
-    submitGame:"?? ??? ??? ???????",
-    allRights:"???? ???? ????? ????"
+    menu:"Menu",
+    home:"Home",
+    allGames:"Menu Menu",
+    categories:"MenuMenu",
+    settings:"Menu",
+    welcomeText:"Home Menu",
+    heroDescription:"Menu  Menu Menu Menu Menu Home MenuHome",
+    exploreGames:" Menu Menu",
+    featuredGames:" Menu Menu",
+    settingsTitle:" Menu",
+    settingsSubtitle:"Menu Gamerex Menu Home MenuHome  Menu Menu",
+    yourId:"   ID",
+    profileDescription:"Menu Gamerex Home Home MenuHome Menu Menu Menu",
+    changeId:" ID  Home Menu Menu",
+    changeLogo:"Home Menu Menu Menu",
+    languageTitle:" Menu",
+    languageDescription:"Gamerex  Menu Menu  Menu Menu Menu",
+    developerTitle:" Home MenuMenu",
+    developerDescription:"Home  Home Menu Menu Menu Home Gamerex  Home MenuMenu",
+    submitGame:" Home Home MenuHome",
+    allRights:"Menu Menu Menu Menu"
   },
 
   ar:{
-    menu:"???????",
-    home:"????????",
-    allGames:"?? ???????",
-    categories:"??????",
-    settings:"?????????",
-    welcomeText:"?????? ?? ??",
-    heroDescription:"????? ????? ??????? ????? ??? ????????.",
-    exploreGames:"?? ?????? ???????",
-    featuredGames:"?? ??????? ???????",
-    settingsTitle:"?? ?????????",
-    settingsSubtitle:"????? ???? Gamerex ?????????? ?????? ??.",
-    yourId:"?? ?????",
-    profileDescription:"????? ??? Gamerex ????? ???? ??????.",
-    changeId:"?? ????? ??? ??????",
-    changeLogo:"??? ????? ??????",
-    languageTitle:"?? ?????",
-    languageDescription:"???? ????? ???? ???? ????????? ?? Gamerex.",
-    developerTitle:"?? ????? ???????",
-    developerDescription:"?? ??? ???? ?????? ???? ????? ??? Gamerex.",
-    submitGame:"?? ????? ?????",
-    allRights:"???? ?????? ??????."
+    menu:"MenuHome",
+    home:"MenuMenu",
+    allGames:" MenuHome",
+    categories:"Menu",
+    settings:"MenuMenu",
+    welcomeText:"Menu  ",
+    heroDescription:"Menu Menu MenuHome Menu Home MenuMenu.",
+    exploreGames:" Menu MenuHome",
+    featuredGames:" MenuHome MenuHome",
+    settingsTitle:" MenuMenu",
+    settingsSubtitle:"Menu Menu Gamerex MenuMenu Menu .",
+    yourId:" Menu",
+    profileDescription:"Menu Home Gamerex Menu Menu Menu.",
+    changeId:" Menu Home Menu",
+    changeLogo:"Home Menu Menu",
+    languageTitle:" Menu",
+    languageDescription:"Menu Menu Menu Menu MenuMenu  Gamerex.",
+    developerTitle:" Menu MenuHome",
+    developerDescription:" Home Menu Menu Menu Menu Home Gamerex.",
+    submitGame:" Menu Menu",
+    allRights:"Menu Menu Menu."
   },
 
   zh:{
-    menu:"??",
-    home:"??",
-    allGames:"????",
-    categories:"??",
-    settings:"??",
-    welcomeText:"????",
-    heroDescription:"????????????",
-    exploreGames:"?? ????",
-    featuredGames:"?? ????",
-    settingsTitle:"?? ??",
-    settingsSubtitle:"???? Gamerex ????????",
-    yourId:"?? ?? ID",
-    profileDescription:"???? Gamerex ??????",
-    changeId:"?? ?? ID ??",
-    changeLogo:"??? ????",
-    languageTitle:"?? ??",
-    languageDescription:"????? Gamerex ??????",
-    developerTitle:"?? ????",
-    developerDescription:"????????????????? Gamerex?",
-    submitGame:"?? ????",
-    allRights:"?????"
+    menu:"",
+    home:"",
+    allGames:"Menu",
+    categories:"",
+    settings:"",
+    welcomeText:"Menu",
+    heroDescription:"MenuMenuMenu",
+    exploreGames:" Menu",
+    featuredGames:" Menu",
+    settingsTitle:" ",
+    settingsSubtitle:"Menu Gamerex MenuMenu",
+    yourId:"  ID",
+    profileDescription:"Menu Gamerex Menu",
+    changeId:"  ID ",
+    changeLogo:"Home Menu",
+    languageTitle:" ",
+    languageDescription:"Menu Gamerex Menu",
+    developerTitle:" Menu",
+    developerDescription:"MenuMenuMenuMenu Gamerex",
+    submitGame:" Menu",
+    allRights:"Menu"
   },
 
   es:{
-    menu:"Men ",
+    menu:"Menú",
     home:"Inicio",
     allGames:"Todos los juegos",
-    categories:"Categor as",
-    settings:"Configuraci n",
+    categories:"Categorías",
+    settings:"Configuración",
     welcomeText:"Bienvenido a",
-    heroDescription:"Descubre y juega incre bles juegos en l nea.",
-    exploreGames:"?? Explorar juegos",
-    featuredGames:"?? Juegos destacados",
-    settingsTitle:"?? Configuraci n",
+    heroDescription:"Descubre y juega increíbles juegos en línea.",
+    exploreGames:" Explorar juegos",
+    featuredGames:" Juegos destacados",
+    settingsTitle:" Configuración",
     settingsSubtitle:"Administra tu cuenta y preferencias de Gamerex.",
-    yourId:"?? Tu ID",
+    yourId:" Tu ID",
     profileDescription:"Administra tu nombre y logo de perfil de Gamerex.",
-    changeId:"?? Cambiar nombre de ID",
-    changeLogo:"??? Cambiar logo",
-    languageTitle:"?? Idioma",
+    changeId:" Cambiar nombre de ID",
+    changeLogo:"Home Cambiar logo",
+    languageTitle:" Idioma",
     languageDescription:"Elige el idioma que quieres usar en Gamerex.",
-    developerTitle:"?? Desarrollo de juegos",
-    developerDescription:" Eres desarrollador de juegos? Env a tu juego a Gamerex.",
-    submitGame:"?? Enviar juego",
+    developerTitle:" Desarrollo de juegos",
+    developerDescription:"¿Eres desarrollador de juegos Envía tu juego a Gamerex.",
+    submitGame:" Enviar juego",
     allRights:"Todos los derechos reservados."
   },
 
@@ -2796,47 +2752,47 @@ const translations={
     menu:"Menu",
     home:"Accueil",
     allGames:"Tous les jeux",
-    categories:"Cat gories",
-    settings:"Param tres",
+    categories:"Catégories",
+    settings:"Paramètres",
     welcomeText:"Bienvenue sur",
-    heroDescription:"D couvrez et jouez   des jeux incroyables en ligne.",
-    exploreGames:"?? Explorer les jeux",
-    featuredGames:"?? Jeux en vedette",
-    settingsTitle:"?? Param tres",
-    settingsSubtitle:"G rez votre compte et vos pr f rences Gamerex.",
-    yourId:"?? Votre ID",
-    profileDescription:"G rez votre nom et votre logo de profil Gamerex.",
-    changeId:"?? Modifier le nom",
-    changeLogo:"??? Modifier le logo",
-    languageTitle:"?? Langue",
+    heroDescription:"Découvrez et jouez à des jeux incroyables en ligne.",
+    exploreGames:" Explorer les jeux",
+    featuredGames:" Jeux en vedette",
+    settingsTitle:" Paramètres",
+    settingsSubtitle:"Gérez votre compte et vos préférences Gamerex.",
+    yourId:" Votre ID",
+    profileDescription:"Gérez votre nom et votre logo de profil Gamerex.",
+    changeId:" Modifier le nom",
+    changeLogo:"Home Modifier le logo",
+    languageTitle:" Langue",
     languageDescription:"Choisissez la langue que vous souhaitez utiliser sur Gamerex.",
-    developerTitle:"?? D veloppement de jeux",
-    developerDescription:" tes-vous d veloppeur de jeux ? Envoyez votre jeu   Gamerex.",
-    submitGame:"?? Envoyer le jeu",
-    allRights:"Tous droits r serv s."
+    developerTitle:" Développement de jeux",
+    developerDescription:"Êtes-vous développeur de jeux  Envoyez votre jeu à Gamerex.",
+    submitGame:" Envoyer le jeu",
+    allRights:"Tous droits réservés."
   },
 
   de:{
-    menu:"Men ",
+    menu:"Menü",
     home:"Startseite",
     allGames:"Alle Spiele",
     categories:"Kategorien",
     settings:"Einstellungen",
     welcomeText:"Willkommen bei",
     heroDescription:"Entdecke und spiele tolle Online-Spiele.",
-    exploreGames:"?? Spiele entdecken",
-    featuredGames:"?? Empfohlene Spiele",
-    settingsTitle:"?? Einstellungen",
+    exploreGames:" Spiele entdecken",
+    featuredGames:" Empfohlene Spiele",
+    settingsTitle:" Einstellungen",
     settingsSubtitle:"Verwalte dein Gamerex-Konto und deine Einstellungen.",
-    yourId:"?? Deine ID",
+    yourId:" Deine ID",
     profileDescription:"Verwalte deinen Gamerex-Namen und dein Profilbild.",
-    changeId:"?? ID-Namen  ndern",
-    changeLogo:"??? Logo  ndern",
-    languageTitle:"?? Sprache",
-    languageDescription:"W hle die Sprache, die du auf Gamerex verwenden m chtest.",
-    developerTitle:"?? Spieleentwicklung",
-    developerDescription:"Bist du Spieleentwickler? Sende dein Spiel an Gamerex.",
-    submitGame:"?? Spiel einreichen",
+    changeId:" ID-Namen ändern",
+    changeLogo:"Home Logo ändern",
+    languageTitle:" Sprache",
+    languageDescription:"Wähle die Sprache, die du auf Gamerex verwenden möchtest.",
+    developerTitle:" Spieleentwicklung",
+    developerDescription:"Bist du Spieleentwickler Sende dein Spiel an Gamerex.",
+    submitGame:" Spiel einreichen",
     allRights:"Alle Rechte vorbehalten."
   }
 
@@ -3110,57 +3066,13 @@ async function submitGame(){
     document.getElementById("iconPreview").removeAttribute("src");
     document.getElementById("iconPreviewName").textContent="";
     selectedGameIcon="";
-    alert("?? Game added successfully and is now visible to everyone!");
+    alert(" Game added successfully and is now visible to everyone!");
   }catch(error){
     console.error("Submit game error:",error);
     alert(error.message || "The game could not be saved.");
   }
 }
 
-
-
-/* =====================================================
-   ADMIN PANEL
-===================================================== */
-const GAMEREX_ADMIN_EMAILS=["uk7186979@gmail.com","m.rayyan.khan.120@gmail.com"];
-let isGamerexAdmin=false;
-let adminGamesCache=[];
-function isAuthorizedGamerexAdmin(email){return GAMEREX_ADMIN_EMAILS.includes(String(email||"").trim().toLowerCase());}
-function openAdminLogin(){document.getElementById("adminLoginModal").style.display="flex";}
-async function adminLogin(){
-  const email=document.getElementById("adminEmail").value.trim().toLowerCase(),password=document.getElementById("adminPassword").value;
-  if(!email||!password){alert("Please enter your admin email and password.");return;}
-  if(!isAuthorizedGamerexAdmin(email)){alert("This email is not authorized as a Gamerex admin.");return;}
-  const button=document.querySelector("#adminLoginModal .main-btn");if(button)button.disabled=true;
-  try{
-    const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error)throw error;
-    if(!isAuthorizedGamerexAdmin(data?.user?.email||email)){await supabaseClient.auth.signOut();throw new Error("Admin access denied.");}
-    isGamerexAdmin=true;closeModal("adminLoginModal");document.getElementById("adminEmail").value="";document.getElementById("adminPassword").value="";await openAdminPanel();
-  }catch(error){console.error("Admin login error:",error);alert(error.message||"Admin login failed.");}
-  finally{if(button)button.disabled=false;}
-}
-async function openAdminPanel(){
-  if(!isGamerexAdmin){openAdminLogin();return;}
-  ["homePage","settingsPage","gamePage"].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display="none";});
-  const admin=document.getElementById("adminPanel");if(admin)admin.style.display="block";window.scrollTo(0,0);await loadAdminGames();
-}
-function closeAdminPanel(){const admin=document.getElementById("adminPanel");if(admin)admin.style.display="none";showSettings();}
-async function loadAdminGames(){
-  const list=document.getElementById("adminGameList");if(!list)return;list.innerHTML='<div class="admin-empty">Loading games...</div>';
-  try{const {data,error}=await supabaseClient.from("games").select("id,created_at,title,description,thumbnail,game_url,category").order("created_at",{ascending:false});if(error)throw error;adminGamesCache=data||[];filterAdminGames();}
-  catch(error){console.error("Admin games load error:",error);list.innerHTML='<div class="admin-empty">Could not load games. Check the Supabase admin RLS policy.</div>';}
-}
-function renderAdminGames(games){
-  const list=document.getElementById("adminGameList");if(!list)return;if(!games.length){list.innerHTML='<div class="admin-empty">No games found.</div>';return;}
-  list.innerHTML=games.map(game=>{const id=String(game.id);return `<div class="admin-game-item"><img class="admin-game-thumb" src="${escapeHtml(game.thumbnail||"")}" alt="" onerror="this.style.display='none'"><div class="admin-game-details"><h3>${escapeHtml(game.title||"Untitled Game")}</h3><p>${escapeHtml(game.category||"Games")}${game.game_url?" &bull; "+escapeHtml(game.game_url):""}</p></div><button class="admin-delete-btn" data-game-id="${escapeHtml(id)}" onclick="deleteAdminGame(this.dataset.gameId)">Delete</button></div>`;}).join("");
-}
-function filterAdminGames(){const query=String(document.getElementById("adminGameSearch")?.value||"").trim().toLowerCase();renderAdminGames(adminGamesCache.filter(game=>String(game.title||"").toLowerCase().includes(query)||String(game.category||"").toLowerCase().includes(query)||String(game.game_url||"").toLowerCase().includes(query)));}
-async function deleteAdminGame(gameId){
-  if(!isGamerexAdmin){alert("Admin access required.");return;}
-  const game=adminGamesCache.find(item=>String(item.id)===String(gameId));if(!game)return;if(!confirm('Delete "'+(game.title||"this game")+'" permanently?'))return;
-  try{const {error}=await supabaseClient.from("games").delete().eq("id",gameId);if(error)throw error;adminGamesCache=adminGamesCache.filter(item=>String(item.id)!==String(gameId));filterAdminGames();await renderGames();alert("Game deleted successfully.");}
-  catch(error){console.error("Delete game error:",error);alert(error.message||"Game could not be deleted. Supabase RLS may be blocking the delete.");}
-}
 /* =====================================================
    CLOSE MODALS
 ===================================================== */
@@ -3212,8 +3124,6 @@ window.addEventListener("DOMContentLoaded", async function(){
   changeLanguage(savedLanguage);
 
   try{
-    const {data:{user:initialUser}}=await supabaseClient.auth.getUser();
-    isGamerexAdmin=isAuthorizedGamerexAdmin(initialUser?.email);
     await loadAccount();
     await migrateLegacyGames();
     await renderGames();
@@ -3228,7 +3138,6 @@ window.addEventListener("DOMContentLoaded", async function(){
 
 supabaseClient.auth.onAuthStateChange(async function(event,session){
   if(event==="SIGNED_IN" && session?.user){
-    isGamerexAdmin=isAuthorizedGamerexAdmin(session.user.email);
     setTimeout(()=>loadAccount(),0);
   }
   if(event==="SIGNED_OUT"){
