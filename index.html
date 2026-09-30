@@ -1571,6 +1571,10 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
 
     <div class="admin-card">
       <h2>🎮 Published Games</h2>
+      <div class="admin-toolbar" style="margin-bottom:10px;">
+        <button class="small-btn" onclick="migrateOldGameIcons()">🚀 Migrate Old Game Icons</button>
+        <span id="migrationStatus" style="color:#77778a;font-size:12px;align-self:center;"></span>
+      </div>
       <div id="adminGamesList"><div class="admin-empty">Loading games...</div></div>
     </div>
   </section>
@@ -2036,6 +2040,7 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
 </div>
 
 <script>
+
 
 /* =====================================================
    GLOBAL
@@ -4863,26 +4868,6 @@ function searchLanguages(){
 ===================================================== */
 
 function openDeveloper(){
-
-  selectedGameIcon="";
-
-  document.getElementById(
-    "developerModal"
-  ).style.display=
-    "flex";
-
-  document.getElementById(
-    "developerGameIconFile"
-  ).value="";
-
-  document.getElementById(
-    "iconPreviewBox"
-  ).style.display=
-    "none";
-
-}
-
-function openDeveloper(){
   selectedGameIcon="";document.getElementById("developerModal").style.display="flex";
   ["developerGameName","developerGameUrl","developerGameCategory","developerGameDescription","developerEmail","developerName"].forEach(function(id){const el=document.getElementById(id);if(el)el.value="";});
   const file=document.getElementById("developerGameIconFile");if(file)file.value="";
@@ -4915,6 +4900,78 @@ async function uploadGameThumbnail(file){
   const {error}=await supabaseClient.storage.from("game-thumbnails").upload(path,blob,{contentType:"image/webp",cacheControl:"31536000",upsert:false});
   if(error)throw error;
   const {data}=supabaseClient.storage.from("game-thumbnails").getPublicUrl(path);return data.publicUrl;
+}
+
+async function dataUrlToBlob(dataUrl){
+  if(!/^data:image\//i.test(String(dataUrl||""))){
+    throw new Error("This thumbnail is not a supported data URL.");
+  }
+  const response=await fetch(dataUrl);
+  if(!response.ok)throw new Error("Could not read the old game icon.");
+  return response.blob();
+}
+
+async function migrateOldGameIcons(){
+  if(!isAdmin()){
+    alert("Admin access required.");
+    return;
+  }
+
+  if(!confirm("Migrate old Base64 game icons to Supabase Storage? This does not delete any games."))return;
+
+  const status=document.getElementById("migrationStatus");
+  const button=document.querySelector('.admin-card .admin-toolbar button[onclick="migrateOldGameIcons()"]');
+  if(status)status.textContent="Loading old icons...";
+  if(button){button.disabled=true;button.textContent="Migrating...";}
+
+  try{
+    const {data:games,error}=await supabaseClient
+      .from("games")
+      .select("id,title,thumbnail")
+      .order("created_at",{ascending:false})
+      .limit(GAMES_SERVER_LIMIT);
+
+    if(error)throw error;
+
+    const oldGames=(games||[]).filter(function(game){
+      return /^data:image\//i.test(String(game.thumbnail||""));
+    });
+
+    if(!oldGames.length){
+      if(status)status.textContent="No Base64 icons found.";
+      alert("No old Base64 game icons need migration.");
+      return;
+    }
+
+    let done=0;
+    for(const game of oldGames){
+      if(status)status.textContent="Migrating "+(done+1)+" / "+oldGames.length+" — "+(game.title||"Game");
+
+      const oldThumbnail=String(game.thumbnail||"");
+      const blob=await dataUrlToBlob(oldThumbnail);
+      const file=new File([blob],(game.title||"game")+".png",{type:blob.type||"image/png"});
+      const publicUrl=await uploadGameThumbnail(file);
+
+      const {error:updateError}=await supabaseClient
+        .from("games")
+        .update({thumbnail:publicUrl})
+        .eq("id",game.id);
+
+      if(updateError)throw updateError;
+      done++;
+    }
+
+    if(status)status.textContent="Done — "+done+" game icons migrated.";
+    await refreshGamesFromServer();
+    await loadAdminPanel();
+    alert("Migration complete. "+done+" old game icons are now in Supabase Storage.");
+  }catch(error){
+    console.error("Game icon migration error:",error);
+    if(status)status.textContent="Migration failed.";
+    alert(error.message||"Could not migrate the old game icons.");
+  }finally{
+    if(button){button.disabled=false;button.textContent="🚀 Migrate Old Game Icons";}
+  }
 }
 
 async function submitGame(){
@@ -5521,6 +5578,7 @@ supabaseClient.auth.onAuthStateChange(
 window.addEventListener("offline",function(){setCacheStatus("Offline — showing saved games.","offline");renderGameHome();});
 window.addEventListener("online",function(){setCacheStatus("Internet restored — updating games...","online");refreshGamesFromServer();loadPopularIdsFromSupabase().then(function(){renderGameHome();});});
 document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"){renderGameHome();}});
+
 
 </script>
 
