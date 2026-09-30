@@ -1188,8 +1188,15 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
 .horizontal-games::-webkit-scrollbar{height:7px;}.horizontal-games::-webkit-scrollbar-thumb{background:#333344;border-radius:10px;}
 .mini-card{background:#1a1a26;border-radius:10px;overflow:hidden;border:1px solid transparent;cursor:pointer;transition:.18s;min-width:0;}
 .mini-card:hover{transform:translateY(-3px);border-color:#39394a;}
-.mini-image{height:112px;background:#272738;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:40px;}
-.mini-image img{width:100%;height:100%;object-fit:cover;display:block;}
+.mini-image{height:112px;background:#272738;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:40px;position:relative;}
+.mini-image img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .18s ease;}
+.game-image{position:relative;}
+.game-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#272738;color:#fff;text-align:center;font-weight:900;letter-spacing:1px;z-index:1;pointer-events:none;}
+.game-loading strong{font-size:18px;color:#00d9ff;line-height:1.1;}
+.game-loading span{font-size:12px;color:#9d9daf;margin-top:6px;font-weight:700;letter-spacing:.5px;}
+.image-loaded .game-loading{display:none;}
+.image-loaded img{opacity:1;}
+
 .mini-info{padding:9px 10px 11px;}.mini-info h3{font-size:14px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.mini-info p{font-size:11px;color:#77778a;}
 .game-grid{grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:14px;}
 .game-card{background:#171722;border:1px solid transparent;border-radius:10px;box-shadow:none;}
@@ -2931,7 +2938,12 @@ function renderSidebarCategories(games){
 
 function createMiniCard(game){
   const card=document.createElement("div");card.className="mini-card";
-  const image=game.iconImage?'<img src="'+escapeHtml(game.iconImage)+'" alt="" loading="lazy" decoding="async" fetchpriority="low">':escapeHtml(game.icon||"🎮");
+  let image="";
+  if(game.iconImage){
+    image='<div class="game-loading"><strong>GAMERAX</strong><span>Loading......</span></div><img src="'+escapeHtml(game.iconImage)+'" alt="'+escapeHtml(game.name||"Game")+' icon" loading="lazy" decoding="async" fetchpriority="low" onload="this.parentElement.parentElement.classList.add(\'image-loaded\')" onerror="this.parentElement.innerHTML=\'<div class=\"game-loading\"><strong>GAMERAX</strong><span>Loading......</span></div>\';">';
+  }else{
+    image=escapeHtml(game.icon||"🎮");
+  }
   card.innerHTML='<div class="mini-image">'+image+'</div><div class="mini-info"><h3>'+escapeHtml(game.name||"Game")+'</h3><p>'+escapeHtml(game.category||"Games")+'</p></div>';
   card.onclick=function(){openGamePlayer(game);};
   return card;
@@ -2957,7 +2969,12 @@ function renderAllGrid(games){
   const visible=filterGames(games);grid.innerHTML="";
   visible.forEach(function(game){
     const card=document.createElement("div");card.className="game-card";
-    const icon=game.iconImage?'<img src="'+escapeHtml(game.iconImage)+'" alt="'+escapeHtml(game.name)+'" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.display=\'none\';this.parentElement.textContent=\'🎮\';">':escapeHtml(game.icon||"🎮");
+    let icon="";
+    if(game.iconImage){
+      icon='<div class="game-loading"><strong>GAMERAX</strong><span>Loading......</span></div><img src="'+escapeHtml(game.iconImage)+'" alt="'+escapeHtml(game.name||"Game")+' icon" loading="lazy" decoding="async" fetchpriority="high" onload="this.parentElement.parentElement.classList.add(\'image-loaded\')" onerror="this.parentElement.innerHTML=\'<div class=\"game-loading\"><strong>GAMERAX</strong><span>Loading......</span></div>\';">';
+    }else{
+      icon=escapeHtml(game.icon||"🎮");
+    }
     card.innerHTML='<div class="game-image">'+icon+'</div><div class="game-info"><h3>'+escapeHtml(game.name||"Game")+'</h3><p>'+escapeHtml(game.description||"Play this game on GameRAX.")+'</p><div class="game-meta">'+escapeHtml(game.category||"Games")+' · Free</div></div>';
     card.onclick=function(){openGamePlayer(game);};grid.appendChild(card);
   });
@@ -3562,7 +3579,7 @@ async function renderRecommendations(
         const imageHtml=
           game.iconImage
 
-            ? `<img src="${escapeHtml(game.iconImage)}" alt="${escapeHtml(game.name || "Game")} icon" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.display='none';this.parentElement.textContent='';">`
+            ? `<div class="game-loading"><strong>GAMERAX</strong><span>Loading......</span></div><img src="${escapeHtml(game.iconImage)}" alt="${escapeHtml(game.name || "Game")} icon" loading="lazy" decoding="async" fetchpriority="low" onload="this.parentElement.classList.add('image-loaded')" onerror="this.parentElement.innerHTML='<div class=\"game-loading\"><strong>GAMERAX</strong><span>Loading......</span></div>'">`
 
             : escapeHtml(
                 game.icon ||
