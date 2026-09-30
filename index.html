@@ -1145,182 +1145,169 @@ footer span{
 
 }
 
+
+/* ================= GAME RAX 2.0 HOME / PERFORMANCE ================= */
+:root{
+  --gx-cyan:#00d9ff;
+  --gx-panel:#0b0b10;
+  --gx-panel-2:#14141d;
+  --gx-border:#262635;
+  --gx-muted:#858596;
+}
+
+body{background:#09090d;overflow-x:hidden;}
+header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 20px;}
+.logo{min-width:180px;font-size:23px;letter-spacing:.4px;}
+.top-search{max-width:460px;margin:0 auto;}
+.top-search input{background:#35354b;border:0;border-radius:22px;padding:12px 44px 12px 18px;font-size:14px;}
+.top-search input:focus{border:0;box-shadow:0 0 0 2px rgba(0,217,255,.18);}
+.search-icon{left:auto;right:15px;top:10px;font-size:0;}
+.search-icon::after{content:'⌕';font-size:24px;color:#a9a9bc;}
+.sidebar{top:58px;width:58px;background:#101018;border-right:1px solid #272735;padding:15px 8px;}
+.sidebar:hover{width:245px;}
+.sidebar-title{margin:8px 10px 12px;}
+.side-link{padding:11px 12px;border-radius:9px;color:#bdbdca;}
+.side-link:hover,.side-link.active{background:#1f1f2e;color:#fff;}
+.side-link.active::before{content:'';position:absolute;left:0;width:4px;height:28px;background:#7d5cff;border-radius:0 4px 4px 0;}
+.side-link{position:relative;}
+.side-category{padding-left:12px;}
+.main{margin-left:58px;padding-top:58px;}
+
+.hero{min-height:140px;padding:28px 36px 18px;justify-content:flex-start;text-align:left;background:linear-gradient(180deg,#12121b 0%,#09090d 100%);}
+.hero h1{font-size:32px;margin-bottom:8px;}
+.hero p{font-size:15px;margin-bottom:0;color:#8f8fa2;}
+.hero .main-btn{display:none;}
+
+.games{padding:18px 30px 50px;max-width:none;margin:0;}
+.home-section{margin-bottom:28px;}
+.home-section-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:0 0 12px;}
+.home-section-head h2{font-size:21px;font-weight:900;}
+.home-section-head button{background:transparent;border:0;color:#9b9baa;cursor:pointer;font-weight:700;}
+.home-section-head button:hover{color:#fff;}
+.horizontal-games{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(190px,220px);grid-template-rows:1fr;gap:10px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 10px;scrollbar-width:thin;}
+.horizontal-games::-webkit-scrollbar{height:7px;}.horizontal-games::-webkit-scrollbar-thumb{background:#333344;border-radius:10px;}
+.mini-card{background:#1a1a26;border-radius:10px;overflow:hidden;border:1px solid transparent;cursor:pointer;transition:.18s;min-width:0;}
+.mini-card:hover{transform:translateY(-3px);border-color:#39394a;}
+.mini-image{height:112px;background:#272738;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:40px;}
+.mini-image img{width:100%;height:100%;object-fit:cover;display:block;}
+.mini-info{padding:9px 10px 11px;}.mini-info h3{font-size:14px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.mini-info p{font-size:11px;color:#77778a;}
+.game-grid{grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:14px;}
+.game-card{background:#171722;border:1px solid transparent;border-radius:10px;box-shadow:none;}
+.game-card:hover{transform:translateY(-3px);border-color:#38384a;box-shadow:0 10px 25px rgba(0,0,0,.22);}
+.game-image{height:132px;background:#272738;}
+.game-info{padding:12px 13px 14px;}.game-info h3{font-size:16px;margin-bottom:5px;}.game-info p{font-size:12px;min-height:32px;margin-bottom:9px;color:#858597;}.game-meta{font-size:11px;color:#67677a;}
+.no-games{padding:35px 15px;color:#76768a;}
+.cache-status{margin:0 0 13px;background:#11111a;}
+
+.sidebar-cat-icon{width:18px;display:inline-flex;justify-content:center;margin-right:12px;opacity:.9;}
+.side-text{vertical-align:middle;}
+.sidebar-categories-wrap{max-height:290px;overflow:auto;}
+
+#searchResultsBar{display:none;margin:-2px 30px 18px;padding:10px 13px;border:1px solid var(--gx-border);border-radius:10px;background:#11111a;color:#a5a5b5;font-size:13px;}
+
+/* ADMIN */
+.admin-page{display:none;padding:30px;max-width:1400px;margin:auto;}
+.admin-header{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:20px;}
+.admin-header h1{font-size:34px;}.admin-header p{color:#77778a;font-size:13px;margin-top:4px;}
+.admin-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:20px;}
+.admin-stat{background:#11111a;border:1px solid var(--gx-border);border-radius:12px;padding:18px;}.admin-stat span{display:block;color:#77778a;font-size:12px;margin-bottom:6px}.admin-stat strong{font-size:28px;}
+.admin-card{background:#11111a;border:1px solid var(--gx-border);border-radius:14px;padding:18px;margin-bottom:16px;overflow:auto;}
+.admin-card h2{font-size:20px;margin-bottom:12px;}
+.admin-toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;}
+.admin-item{display:grid;grid-template-columns:74px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid #232330;}.admin-item:last-child{border-bottom:0;}
+.admin-thumb{width:74px;height:52px;border-radius:8px;overflow:hidden;background:#232333;display:flex;align-items:center;justify-content:center;}.admin-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.admin-item h3{font-size:15px;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.admin-item p{font-size:12px;color:#7f7f91;line-height:1.45;word-break:break-word;}.admin-actions{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end;}
+.admin-empty{padding:25px;text-align:center;color:#747486;}.admin-badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#252538;color:#c2c2d0;font-size:11px;font-weight:700;}
+.danger-btn{color:#ff7272!important;border-color:#452c2c!important;}.success-btn{color:#7ff7b3!important;border-color:#284b3a!important;}
+
+.modal-box.wide{max-width:700px;}
+.modal-box input,.modal-box textarea,.modal-box select{font-family:'Roboto',sans-serif;}
+.modal-box textarea{width:100%;min-height:100px;padding:13px;margin-bottom:12px;background:#000;color:#fff;border:1px solid #292929;border-radius:7px;outline:none;resize:vertical;}
+.modal-box select{width:100%;padding:13px;margin-bottom:12px;background:#000;color:#fff;border:1px solid #292929;border-radius:7px;outline:none;}
+.modal-box textarea:focus,.modal-box select:focus{border-color:var(--gx-cyan);}
+.upload-note{font-size:11px;color:#66677a;margin:-4px 0 12px;line-height:1.45;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+@media(max-width:900px){.admin-grid{grid-template-columns:1fr 1fr;}.game-grid{grid-template-columns:repeat(auto-fill,minmax(165px,1fr));}.horizontal-games{grid-auto-columns:175px;}}
+@media(max-width:650px){header{height:auto;min-height:58px;flex-wrap:wrap;padding:8px 12px}.top-search{order:3;width:100%;max-width:none;margin:6px 0}.sidebar{top:58px}.main{margin-left:58px;padding-top:58px}.hero{padding:24px 18px 14px}.hero h1{font-size:27px}.games{padding:15px 14px 35px}.admin-page{padding:20px 14px}.admin-grid{grid-template-columns:1fr}.admin-item{grid-template-columns:55px minmax(0,1fr)}.admin-actions{grid-column:2;justify-content:flex-start}.admin-thumb{width:55px;height:42px}.form-row{grid-template-columns:1fr}.logo{min-width:auto;font-size:20px}.auth-buttons{margin-left:auto}.login-btn,.signup-btn,.logout-btn{padding:8px 10px;font-size:12px}}
+
 </style>
 </head>
 
 <body>
 
 <header>
-
-  <div class="logo">
-     GAME<span>RAX</span>
-  </div>
-
+  <div class="logo">GAME<span>RAX</span></div>
   <div class="top-search">
-    <span class="search-icon"></span>
-
-    <input
-      type="search"
-      id="searchInput"
-      name="gamerax-game-search"
-      autocomplete="off"
-      autocorrect="off"
-      autocapitalize="none"
-      spellcheck="false"
-      placeholder="Search games..."
-      oninput="searchGames()"
-    >
+    <span class="search-icon" aria-hidden="true"></span>
+    <input type="search" id="searchInput" name="gamerax-game-search" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" placeholder="Search games and categories...">
   </div>
-
   <div class="auth-buttons">
-
-    <span
-      class="account-name"
-      id="accountName"
-    ></span>
-
-    <button
-      class="login-btn"
-      id="loginHeaderBtn"
-      onclick="openAuth('login')"
-    >
-      Login
-    </button>
-
-    <button
-      class="signup-btn"
-      id="signupHeaderBtn"
-      onclick="openAuth('signup')"
-    >
-      Sign Up
-    </button>
-
-    <button
-      class="logout-btn"
-      id="logoutHeaderBtn"
-      onclick="logout()"
-      style="display:none;"
-    >
-      Logout
-    </button>
-
+    <span class="account-name" id="accountName"></span>
+    <button class="login-btn" id="loginHeaderBtn" onclick="openAuth('login')">Login</button>
+    <button class="signup-btn" id="signupHeaderBtn" onclick="openAuth('signup')">Sign Up</button>
+    <button class="logout-btn" id="logoutHeaderBtn" onclick="logout()" style="display:none;">Logout</button>
   </div>
-
 </header>
 
 <aside class="sidebar">
-
-  <div class="sidebar-title">
-    Menu
-  </div>
-
-  <button class="side-link active" onclick="showHome()">
-     <span>Home</span>
-  </button>
-
-  <button class="side-link" onclick="showGames()">
-     <span>All Games</span>
-  </button>
-
+  <div class="sidebar-title">Menu</div>
+  <button class="side-link active" data-nav="home" onclick="showHome()"><span class="sidebar-cat-icon">⌂</span><span class="side-text">Home</span></button>
+  <button class="side-link" data-nav="recent" onclick="showRecentlyPlayed()"><span class="sidebar-cat-icon">◷</span><span class="side-text">Recently Played</span></button>
+  <button class="side-link" data-nav="popular" onclick="showPopularGames()"><span class="sidebar-cat-icon">★</span><span class="side-text">Popular Games</span></button>
+  <button class="side-link" data-nav="all" onclick="showGames()"><span class="sidebar-cat-icon">▦</span><span class="side-text">All Games</span></button>
   <hr class="sidebar-divider">
-
-  <div class="sidebar-title">
-    Categories
+  <div class="sidebar-title">Categories</div>
+  <div id="sidebarCategories" class="sidebar-categories-wrap">
+    <button class="side-link side-category" onclick="filterCategory('All')"><span class="sidebar-cat-icon">◉</span><span class="side-text">All Categories</span></button>
   </div>
-
-  <button class="side-link side-category" onclick="filterCategory('Racing')">
-     <span>Racing</span>
-  </button>
-
-  <button class="side-link side-category" onclick="filterCategory('Sports')">
-     <span>Sports</span>
-  </button>
-
-  <button class="side-link side-category" onclick="filterCategory('Puzzle')">
-     <span>Puzzle</span>
-  </button>
-
-  <button class="side-link side-category" onclick="filterCategory('Adventure')">
-     <span>Adventure</span>
-  </button>
-
-  <button class="side-link side-category" onclick="filterCategory('Dress Up')">
-     <span>Dress Up</span>
-  </button>
-
   <hr class="sidebar-divider">
-
-  <button class="side-link" onclick="showSettings()">
-     <span>Settings</span>
-  </button>
-
+  <button class="side-link" data-nav="settings" onclick="showSettings()"><span class="sidebar-cat-icon">⚙</span><span class="side-text">Settings</span></button>
+  <button class="side-link" data-nav="submit" onclick="openDeveloper()"><span class="sidebar-cat-icon">＋</span><span class="side-text">Submit Your Game</span></button>
+  <button class="side-link" id="adminSidebarLink" data-nav="admin" onclick="showAdminPanel()" style="display:none;"><span class="sidebar-cat-icon">◆</span><span class="side-text">Admin Panel</span></button>
 </aside>
 
 <main class="main">
 
   <div id="homePage">
-
     <section class="hero">
-
       <div>
-
-        <h1>
-          <span>Welcome to</span>
-          <span> GameRAX</span>
-        </h1>
-
-        <p>
-          Discover and play awesome games online.
-        </p>
-
-        <a
-          href="#games"
-          class="main-btn"
-          onclick="showGames()"
-        >
-          🎮 Explore Games
-        </a>
-
+        <h1><span>Welcome to</span> <span>GameRAX</span></h1>
+        <p>Play free browser games instantly.</p>
       </div>
-
     </section>
+
+    <div id="searchResultsBar"></div>
 
     <section class="games" id="games">
-
-      <div class="games-title">
-
-        <h2>
-          🔥 Featured Games
-        </h2>
-
-        <span
-          class="game-count"
-          id="gameCount"
-        >
-          0 Games
-        </span>
-
+      <div class="home-section" id="recentSection">
+        <div class="home-section-head">
+          <h2>🕘 Recently Played</h2>
+          <button onclick="showRecentlyPlayed()">See all</button>
+        </div>
+        <div class="horizontal-games" id="recentGamesRow"></div>
+        <div class="no-games" id="recentEmpty" style="display:none;">Play a game and it will appear here.</div>
       </div>
 
-      <div
-        class="cache-status"
-        id="cacheStatus"
-      ></div>
-
-      <div
-        class="game-grid"
-        id="gameGrid"
-      ></div>
-
-      <div
-        class="no-games"
-        id="noGames"
-      >
-         No games available yet.
+      <div class="home-section" id="popularSection">
+        <div class="home-section-head">
+          <h2>🔥 Popular Games</h2>
+          <button onclick="showPopularGames()">See all</button>
+        </div>
+        <div class="horizontal-games" id="popularGamesRow"></div>
+        <div class="no-games" id="popularEmpty" style="display:none;">Popular games are selected by the GameRAX admin.</div>
       </div>
 
+      <div class="home-section" id="allSection">
+        <div class="games-title">
+          <h2 id="allGamesTitle">🎮 All Games</h2>
+          <span class="game-count" id="gameCount">0 Games</span>
+        </div>
+        <div class="cache-status" id="cacheStatus"></div>
+        <div class="game-grid" id="gameGrid"></div>
+        <div class="no-games" id="noGames">Games are loading...</div>
+      </div>
     </section>
-
   </div>
 
   <!-- GAME PLAYER PAGE -->
@@ -1533,6 +1520,45 @@ footer span{
 
     </div>
 
+  </section>
+
+  <section class="admin-page" id="adminPage">
+    <div class="admin-header">
+      <div>
+        <h1>Admin Panel</h1>
+        <p>Manage GameRAX games, requests, and the Popular Games list.</p>
+        <div id="adminSignedInEmail" style="margin-top:7px;color:#00d9ff;font-size:12px;font-weight:700;"></div>
+      </div>
+      <button class="small-btn" onclick="openAdminAddGame()">＋ Add Game Directly</button>
+    </div>
+
+    <div class="admin-grid">
+      <div class="admin-stat"><span>Published games</span><strong id="adminPublishedCount">0</strong></div>
+      <div class="admin-stat"><span>Pending requests</span><strong id="adminPendingCount">0</strong></div>
+      <div class="admin-stat"><span>Categories</span><strong id="adminCategoryCount">0</strong></div>
+    </div>
+
+    <div class="admin-card">
+      <h2>📥 Game Requests</h2>
+      <div class="admin-toolbar"><button class="small-btn" onclick="loadAdminPanel()">Refresh</button></div>
+      <div id="adminRequestsList"><div class="admin-empty">Loading requests...</div></div>
+    </div>
+
+    <div class="admin-card">
+      <h2>🔥 Popular Games Manager</h2>
+      <p style="color:#77778a;font-size:13px;line-height:1.5;margin-bottom:14px;">Select exactly which published games should appear in the Popular Games section for visitors. This control is visible only to the two GameRAX admin accounts.</p>
+      <div class="admin-toolbar">
+        <button class="small-btn" onclick="selectAllPopularGames()">Select All</button>
+        <button class="small-btn" onclick="clearAllPopularGames()">Clear All</button>
+        <button class="small-btn" onclick="loadAdminPopularManager()">Refresh</button>
+      </div>
+      <div id="adminPopularList"><div class="admin-empty">Loading popular game controls...</div></div>
+    </div>
+
+    <div class="admin-card">
+      <h2>🎮 Published Games</h2>
+      <div id="adminGamesList"><div class="admin-empty">Loading games...</div></div>
+    </div>
   </section>
 
   <footer>
@@ -1958,6 +1984,8 @@ footer span{
 
       </div>
 
+    <textarea id="developerGameDescription" placeholder="Short game description (optional)"></textarea>
+
     </div>
 
     <button
@@ -1970,6 +1998,27 @@ footer span{
 
   </div>
 
+</div>
+
+
+<!-- ADMIN DIRECT ADD / EDIT GAME -->
+<div class="modal" id="adminGameModal">
+  <div class="modal-box wide">
+    <span class="close" onclick="closeModal('adminGameModal')">×</span>
+    <h2 id="adminGameModalTitle">➕ Add Game Directly</h2>
+    <input type="hidden" id="adminEditGameId">
+    <div class="form-row">
+      <input type="text" id="adminGameName" placeholder="Game name">
+      <input type="text" id="adminGameCategory" placeholder="Category (Racing, Action, Puzzle...)" value="Games">
+    </div>
+    <input type="url" id="adminGameUrl" placeholder="Game URL">
+    <textarea id="adminGameDescription" placeholder="Game description"></textarea>
+    <label class="game-icon-label" for="adminGameIconFile">🖼️ Game thumbnail</label>
+    <input class="game-icon-input" type="file" id="adminGameIconFile" accept="image/png,image/jpeg,image/jpg,image/webp" onchange="previewAdminGameIcon(event)">
+    <div class="upload-note">Images are compressed in the browser and uploaded to Supabase Storage instead of being saved as huge Base64 data in the database.</div>
+    <div class="icon-preview-box" id="adminIconPreviewBox"><img id="adminIconPreview" alt="Preview"><div class="icon-preview-name" id="adminIconPreviewName"></div></div>
+    <button class="main-btn" style="width:100%;" onclick="saveAdminGame()">Save Game</button>
+  </div>
 </div>
 
 <script>
@@ -1989,315 +2038,156 @@ let selectedGameIcon="";
 ===================================================== */
 
 const GAME_CACHE_DB_NAME="GameRAXGameCache";
-const GAME_CACHE_DB_VERSION=1;
+const GAME_CACHE_DB_VERSION=2;
 const GAME_CACHE_STORE="games";
 const GAME_CACHE_META_STORE="meta";
-
+const GAMES_LOCAL_CACHE_KEY="gamerax_games_v2";
+const RECENT_GAMES_KEY="gamerax_recent_games_v1";
+const POPULAR_GAMES_KEY="gamerax_popular_games_v1";
+const ADMIN_POPULAR_GAMES_KEY="gamerax_admin_popular_games_v1";
+const GAME_CACHE_TTL_MS=6*60*60*1000;
 let cachedGamesMemory=[];
+let gameRefreshPromise=null;
+let renderTimer=null;
 
 function openGameCacheDB(){
-
   return new Promise(function(resolve,reject){
-
-    if(!window.indexedDB){
-      reject(new Error("IndexedDB is not available."));
-      return;
-    }
-
-    const request=
-      indexedDB.open(
-        GAME_CACHE_DB_NAME,
-        GAME_CACHE_DB_VERSION
-      );
-
+    if(!window.indexedDB){reject(new Error("IndexedDB unavailable"));return;}
+    const request=indexedDB.open(GAME_CACHE_DB_NAME,GAME_CACHE_DB_VERSION);
     request.onupgradeneeded=function(event){
-
       const db=event.target.result;
-
-      if(!db.objectStoreNames.contains(GAME_CACHE_STORE)){
-
-        db.createObjectStore(
-          GAME_CACHE_STORE,
-          {
-            keyPath:"id"
-          }
-        );
-
-      }
-
-      if(!db.objectStoreNames.contains(GAME_CACHE_META_STORE)){
-
-        db.createObjectStore(
-          GAME_CACHE_META_STORE,
-          {
-            keyPath:"key"
-          }
-        );
-
-      }
-
+      if(!db.objectStoreNames.contains(GAME_CACHE_STORE)) db.createObjectStore(GAME_CACHE_STORE,{keyPath:"id"});
+      if(!db.objectStoreNames.contains(GAME_CACHE_META_STORE)) db.createObjectStore(GAME_CACHE_META_STORE,{keyPath:"key"});
     };
-
-    request.onsuccess=function(){
-
-      resolve(request.result);
-
-    };
-
-    request.onerror=function(){
-
-      reject(
-        request.error ||
-        new Error("Could not open game cache.")
-      );
-
-    };
-
+    request.onsuccess=function(){resolve(request.result);};
+    request.onerror=function(){reject(request.error||new Error("Could not open game cache."));};
   });
+}
 
+function normalizeGames(games){
+  return (Array.isArray(games)?games:[]).map(function(game){
+    return {id:game.id,name:game.name||game.title||"Game",url:game.url||game.game_url||"",category:game.category||"Games",iconImage:game.iconImage||game.thumbnail||"",description:game.description||"Play this game on GameRAX.",created_at:game.created_at||""};
+  }).filter(function(game){return game.id!==undefined&&game.id!==null&&game.url;});
+}
+
+function readFastLocalGames(){
+  try{
+    const raw=localStorage.getItem(GAMES_LOCAL_CACHE_KEY);
+    if(!raw) return [];
+    const parsed=JSON.parse(raw);
+    if(!parsed || !Array.isArray(parsed.games)) return [];
+    if(Date.now()-Number(parsed.savedAt||0)>GAME_CACHE_TTL_MS*2) return [];
+    return normalizeGames(parsed.games);
+  }catch(e){return [];}
+}
+
+function writeFastLocalGames(games){
+  try{localStorage.setItem(GAMES_LOCAL_CACHE_KEY,JSON.stringify({savedAt:Date.now(),games:normalizeGames(games)}));}catch(e){}
 }
 
 async function readCachedGames(){
-
+  const fast=readFastLocalGames();
+  if(fast.length){ cachedGamesMemory=fast.slice(); return fast; }
   try{
-
-    const db=
-      await openGameCacheDB();
-
+    const db=await openGameCacheDB();
     return await new Promise(function(resolve,reject){
-
-      const tx=
-        db.transaction(
-          GAME_CACHE_STORE,
-          "readonly"
-        );
-
-      const store=
-        tx.objectStore(
-          GAME_CACHE_STORE
-        );
-
-      const request=
-        store.getAll();
-
+      const tx=db.transaction(GAME_CACHE_STORE,"readonly");
+      const request=tx.objectStore(GAME_CACHE_STORE).getAll();
       request.onsuccess=function(){
-
-        const games=
-          Array.isArray(request.result)
-            ? request.result
-            : [];
-
+        const games=normalizeGames(request.result||[]).sort(function(a,b){return String(b.created_at).localeCompare(String(a.created_at));});
         db.close();
-
-        games.sort(function(a,b){
-
-          return String(
-            b.created_at || ""
-          ).localeCompare(
-            String(
-              a.created_at || ""
-            )
-          );
-
-        });
-
+        if(games.length){writeFastLocalGames(games);cachedGamesMemory=games.slice();}
         resolve(games);
-
       };
-
-      request.onerror=function(){
-
-        db.close();
-
-        reject(
-          request.error ||
-          new Error("Could not read game cache.")
-        );
-
-      };
-
+      request.onerror=function(){db.close();reject(request.error||new Error("Could not read game cache."));};
     });
-
-  }catch(error){
-
-    console.warn(
-      "Game cache read failed:",
-      error
-    );
-
-    return [];
-
-  }
-
+  }catch(error){console.warn("Game cache read failed:",error);return []}
 }
 
 async function writeCachedGames(games){
-
-  if(!Array.isArray(games)){
-    return;
-  }
-
+  const safeGames=normalizeGames(games);
+  cachedGamesMemory=safeGames.slice();
+  writeFastLocalGames(safeGames);
+  if(!window.indexedDB)return;
   try{
-
-    const db=
-      await openGameCacheDB();
-
+    const db=await openGameCacheDB();
     await new Promise(function(resolve,reject){
-
-      const tx=
-        db.transaction(
-          GAME_CACHE_STORE,
-          "readwrite"
-        );
-
-      const store=
-        tx.objectStore(
-          GAME_CACHE_STORE
-        );
-
-      games.forEach(function(game){
-
-        if(
-          game &&
-          game.id !== undefined &&
-          game.id !== null
-        ){
-
-          store.put(game);
-
-        }
-
-      });
-
-      tx.oncomplete=function(){
-
-        db.close();
-
-        resolve();
-
-      };
-
-      tx.onerror=function(){
-
-        db.close();
-
-        reject(
-          tx.error ||
-          new Error("Could not write game cache.")
-        );
-
-      };
-
-      tx.onabort=function(){
-
-        db.close();
-
-        reject(
-          tx.error ||
-          new Error("Game cache transaction aborted.")
-        );
-
-      };
-
+      const tx=db.transaction(GAME_CACHE_STORE,"readwrite");
+      const store=tx.objectStore(GAME_CACHE_STORE);
+      store.clear();
+      safeGames.forEach(function(game){store.put(game);});
+      tx.oncomplete=function(){db.close();resolve();};
+      tx.onerror=function(){db.close();reject(tx.error||new Error("Could not write game cache."));};
+      tx.onabort=function(){db.close();reject(tx.error||new Error("Game cache transaction aborted."));};
     });
-
-    cachedGamesMemory=
-      games.slice();
-
-  }catch(error){
-
-    console.warn(
-      "Game cache write failed:",
-      error
-    );
-
-  }
-
+  }catch(error){console.warn("Game cache write failed:",error);}
 }
 
 async function clearGameCache(){
-
-  try{
-
-    const db=
-      await openGameCacheDB();
-
-    await new Promise(function(resolve,reject){
-
-      const tx=
-        db.transaction(
-          GAME_CACHE_STORE,
-          "readwrite"
-        );
-
-      const request=
-        tx.objectStore(
-          GAME_CACHE_STORE
-        ).clear();
-
-      request.onsuccess=function(){
-        resolve();
-      };
-
-      request.onerror=function(){
-        reject(request.error);
-      };
-
-      tx.oncomplete=function(){
-        db.close();
-      };
-
-      tx.onerror=function(){
-        db.close();
-      };
-
-    });
-
-  }catch(error){
-
-    console.warn(
-      "Game cache clear failed:",
-      error
-    );
-
-  }
-
+  cachedGamesMemory=[];
+  try{localStorage.removeItem(GAMES_LOCAL_CACHE_KEY);}catch(e){}
+  try{const db=await openGameCacheDB();await new Promise(function(resolve,reject){const tx=db.transaction(GAME_CACHE_STORE,"readwrite");tx.objectStore(GAME_CACHE_STORE).clear();tx.oncomplete=function(){db.close();resolve();};tx.onerror=function(){db.close();reject(tx.error);};});}catch(error){console.warn("Game cache clear failed:",error);}
 }
 
 function setCacheStatus(message,type){
+  const element=document.getElementById("cacheStatus");
+  if(!element)return;
+  if(!message){element.textContent="";element.className="cache-status";return;}
+  element.textContent=message;element.className="cache-status "+(type||"");
+}
+function browserIsOnline(){return navigator.onLine!==false;}
 
-  const element=
-    document.getElementById(
-      "cacheStatus"
-    );
-
-  if(!element){
-    return;
-  }
-
-  if(!message){
-
-    element.textContent="";
-    element.className="cache-status";
-
-    return;
-  }
-
-  element.textContent=message;
-
-  element.className=
-    "cache-status "+
-    (
-      type ||
-      ""
-    );
-
+function getRecentIds(){try{return JSON.parse(localStorage.getItem(RECENT_GAMES_KEY)||"[]");}catch(e){return [];}}
+function saveRecentGame(game){
+  const id=String(game.id);let ids=getRecentIds().filter(function(x){return String(x)!==id;});ids.unshift(game.id);ids=ids.slice(0,24);try{localStorage.setItem(RECENT_GAMES_KEY,JSON.stringify(ids));}catch(e){}
+}
+function getAdminPopularIds(){
+  try{const value=JSON.parse(localStorage.getItem(ADMIN_POPULAR_GAMES_KEY)||"[]");return Array.isArray(value)?value.map(String):[];}catch(e){return [];}
+}
+function saveAdminPopularIds(ids){
+  const clean=[...new Set((Array.isArray(ids)?ids:[]).map(String))];
+  try{localStorage.setItem(ADMIN_POPULAR_GAMES_KEY,JSON.stringify(clean));}catch(e){}
+  return clean;
+}
+function isGameMarkedPopular(gameId){return getAdminPopularIds().includes(String(gameId));}
+function trackGamePlay(game){if(!game)return;saveRecentGame(game);}
+function getRecentGames(allGames){
+  const ids=getRecentIds();const byId=new Map((allGames||[]).map(function(g){return [String(g.id),g];}));return ids.map(function(id){return byId.get(String(id));}).filter(Boolean);
+}
+function getPopularGames(allGames){
+  const ids=getAdminPopularIds();const byId=new Map((allGames||[]).map(function(g){return [String(g.id),g];}));return ids.map(function(id){return byId.get(String(id));}).filter(Boolean);
 }
 
-function browserIsOnline(){
+async function getGamesFromSupabase(){
+  const {data,error}=await supabaseClient.from("games").select("id,created_at,title,description,thumbnail,game_url,category").order("created_at",{ascending:false}).limit(500);
+  if(error){console.error("Games load error:",error);throw error;}
+  return normalizeGames(data||[]);
+}
+async function getGames(){
+  if(cachedGamesMemory.length)return cachedGamesMemory.slice();
+  const cached=await readCachedGames();
+  if(cached.length)return cached;
+  return getGamesFromSupabase();
+}
 
-  return navigator.onLine !== false;
-
+async function refreshGamesFromServer(){
+  if(!browserIsOnline()){setCacheStatus("Offline — showing saved games.","offline");return false;}
+  if(gameRefreshPromise)return gameRefreshPromise;
+  gameRefreshPromise=(async function(){
+    try{
+      const fresh=await getGamesFromSupabase();
+      await writeCachedGames(fresh);
+      renderGameHome(fresh);
+      renderSidebarCategories(fresh);
+      setCacheStatus("","");
+      return true;
+    }catch(error){
+      console.warn("Background game refresh failed:",error);
+      if(cachedGamesMemory.length){setCacheStatus("Couldn’t refresh right now — showing saved games.","offline");renderGameHome(cachedGamesMemory);}
+      return false;
+    }finally{gameRefreshPromise=null;}
+  })();
+  return gameRefreshPromise;
 }
 
 /* =====================================================
@@ -2556,6 +2446,7 @@ async function loadAccount(){
 
   updateHeaderUI();
   updateProfileUI();
+  updateAdminVisibility();
 
   return currentAccount;
 
@@ -2637,203 +2528,6 @@ async function saveAccount(account){
     );
 
   }
-
-}
-
-/* =====================================================
-   GET GAMES
-   IMPORTANT:
-   1. Cached games are loaded immediately by renderGames()
-   2. Supabase is refreshed in the background.
-===================================================== */
-
-async function getGamesFromSupabase(){
-
-  const {
-    data,
-    error
-  }=
-    await supabaseClient
-      .from("games")
-      .select(
-        "id,created_at,title,description,thumbnail,game_url,category"
-      )
-      .order(
-        "created_at",
-        {
-          ascending:false
-        }
-      );
-
-  if(error){
-
-    console.error(
-      "Games load error:",
-      error
-    );
-
-    throw error;
-
-  }
-
-  return (data || []).map(function(game){
-
-    return {
-
-      id:game.id,
-
-      name:
-        game.title ||
-        "Game",
-
-      url:
-        game.game_url ||
-        "",
-
-      category:
-        game.category ||
-        "Games",
-
-      iconImage:
-        game.thumbnail ||
-        "",
-
-      description:
-        game.description ||
-        "Play this game on GameRAX.",
-
-      created_at:
-        game.created_at ||
-        ""
-
-    };
-
-  });
-
-}
-
-/*
-   Compatibility wrapper.
-   Existing functions can still call getGames().
-*/
-async function getGames(){
-
-  if(
-    Array.isArray(
-      cachedGamesMemory
-    ) &&
-    cachedGamesMemory.length
-  ){
-
-    return cachedGamesMemory.slice();
-
-  }
-
-  const cached=
-    await readCachedGames();
-
-  if(cached.length){
-
-    cachedGamesMemory=
-      cached.slice();
-
-    return cached;
-
-  }
-
-  return getGamesFromSupabase();
-
-}
-
-/* =====================================================
-   BACKGROUND GAME REFRESH
-===================================================== */
-
-let gameRefreshPromise=null;
-
-async function refreshGamesFromServer(){
-
-  if(!browserIsOnline()){
-
-    setCacheStatus(
-      "No internet available — showing saved games.",
-      "offline"
-    );
-
-    return false;
-
-  }
-
-  if(gameRefreshPromise){
-
-    return gameRefreshPromise;
-
-  }
-
-  gameRefreshPromise=
-    (async function(){
-
-      try{
-
-        const freshGames=
-          await getGamesFromSupabase();
-
-        await writeCachedGames(
-          freshGames
-        );
-
-        cachedGamesMemory=
-          freshGames.slice();
-
-        setCacheStatus(
-          "",
-          ""
-        );
-
-        await renderGames(
-          freshGames
-        );
-
-        return true;
-
-      }catch(error){
-
-        console.error(
-          "Background game refresh failed:",
-          error
-        );
-
-        if(cachedGamesMemory.length){
-
-          setCacheStatus(
-            "No internet available — showing saved games.",
-            "offline"
-          );
-
-          await renderGames(
-            cachedGamesMemory
-          );
-
-        }else{
-
-          setCacheStatus(
-            "Games could not be refreshed right now.",
-            "offline"
-          );
-
-        }
-
-        return false;
-
-      }finally{
-
-        gameRefreshPromise=null;
-
-      }
-
-    })();
-
-  return gameRefreshPromise;
 
 }
 
@@ -3051,377 +2745,92 @@ function todayKey(){
 }
 
 /* =====================================================
-   HOME
+   HOME / NAVIGATION / RENDERING
 ===================================================== */
 
+function setActiveNav(name){document.querySelectorAll(".side-link[data-nav]").forEach(function(btn){btn.classList.toggle("active",btn.dataset.nav===name);});}
+function hideAllMainPages(){
+  document.getElementById("homePage").style.display="none";
+  document.getElementById("settingsPage").style.display="none";
+  document.getElementById("adminPage").style.display="none";
+  document.getElementById("gamePage").style.display="none";
+}
 function showHome(){
-
-  closeGamePlayer(false);
-
-  document.getElementById(
-    "homePage"
-  ).style.display="block";
-
-  document.getElementById(
-    "settingsPage"
-  ).style.display="none";
-
-  window.scrollTo(
-    0,
-    0
-  );
-
+  closeGamePlayer(false,false);hideAllMainPages();document.getElementById("homePage").style.display="block";currentCategory="All";setActiveNav("home");renderGameHome();window.scrollTo(0,0);
 }
-
 async function showGames(){
+  closeGamePlayer(false,false);hideAllMainPages();document.getElementById("homePage").style.display="block";currentCategory="All";setActiveNav("all");document.getElementById("allSection").scrollIntoView({behavior:"smooth",block:"start"});renderGameHome();refreshGamesFromServer();
+}
+function showRecentlyPlayed(){
+  closeGamePlayer(false,false);hideAllMainPages();document.getElementById("homePage").style.display="block";currentCategory="All";setActiveNav("recent");renderGameHome();document.getElementById("recentSection").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function showPopularGames(){
+  closeGamePlayer(false,false);hideAllMainPages();document.getElementById("homePage").style.display="block";currentCategory="All";setActiveNav("popular");renderGameHome();document.getElementById("popularSection").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function showSettings(){closeGamePlayer(false,false);hideAllMainPages();document.getElementById("settingsPage").style.display="block";setActiveNav("settings");updateProfileUI();window.scrollTo(0,0);}
 
-  closeGamePlayer(false);
-
-  document.getElementById(
-    "homePage"
-  ).style.display="block";
-
-  document.getElementById(
-    "settingsPage"
-  ).style.display="none";
-
-  /*
-     Render cached games first.
-     Do not wait for Supabase here.
-  */
-
-  await renderGames();
-
-  document.getElementById(
-    "games"
-  ).scrollIntoView();
-
-  /*
-     Refresh from Internet after the
-     cached list has already appeared.
-  */
-
-  refreshGamesFromServer();
-
+function renderSidebarCategories(games){
+  const wrap=document.getElementById("sidebarCategories");if(!wrap)return;
+  const defaults=["Action","Adventure","Arcade","Board","Casual","Driving","Dress Up","Multiplayer","Puzzle","Racing","Shooting","Sports","Strategy","Simulation","Tycoon"];
+  const cats=[...new Set(defaults.concat((games||[]).map(function(g){return String(g.category||"").trim();}).filter(Boolean)))].sort(function(a,b){return a.localeCompare(b);});
+  wrap.innerHTML='<button class="side-link side-category" onclick="filterCategory(\'All\')"><span class="sidebar-cat-icon">◉</span><span class="side-text">All Categories</span></button>';
+  cats.forEach(function(cat){const btn=document.createElement("button");btn.className="side-link side-category";btn.innerHTML='<span class="sidebar-cat-icon">•</span><span class="side-text">'+escapeHtml(cat)+'</span>';btn.onclick=function(){filterCategory(cat);};wrap.appendChild(btn);});
 }
 
-/* =====================================================
-   SETTINGS
-===================================================== */
-
-function showSettings(){
-
-  closeGamePlayer(false);
-
-  document.getElementById(
-    "homePage"
-  ).style.display="none";
-
-  document.getElementById(
-    "settingsPage"
-  ).style.display="block";
-
-  updateProfileUI();
-
-  window.scrollTo(
-    0,
-    0
-  );
-
+function createMiniCard(game){
+  const card=document.createElement("div");card.className="mini-card";
+  const image=game.iconImage?'<img src="'+escapeHtml(game.iconImage)+'" alt="" loading="lazy" decoding="async">':escapeHtml(game.icon||"🎮");
+  card.innerHTML='<div class="mini-image">'+image+'</div><div class="mini-info"><h3>'+escapeHtml(game.name||"Game")+'</h3><p>'+escapeHtml(game.category||"Games")+'</p></div>';
+  card.onclick=function(){openGamePlayer(game);};
+  return card;
 }
-
-/* =====================================================
-   RENDER GAMES
-===================================================== */
-
-async function renderGames(gamesOverride=null){
-
-  const grid=
-    document.getElementById(
-      "gameGrid"
-    );
-
-  const noGames=
-    document.getElementById(
-      "noGames"
-    );
-
-  if(!grid || !noGames){
-    return;
+function paintMiniRow(elementId,games,emptyId){
+  const row=document.getElementById(elementId),empty=document.getElementById(emptyId);if(!row)return;row.innerHTML="";
+  (games||[]).slice(0,12).forEach(function(game){row.appendChild(createMiniCard(game));});
+  if(empty)empty.style.display=(games&&games.length)?"none":"block";
+}
+function filterGames(games){
+  const input=document.getElementById("searchInput");const search=(input?input.value:"").trim().toLowerCase();
+  return (games||[]).filter(function(game){
+    const cat=String(game.category||"Games");
+    const name=String(game.name||"").toLowerCase();
+    const desc=String(game.description||"").toLowerCase();
+    const matchesCat=currentCategory==="All"||cat.toLowerCase()===String(currentCategory).toLowerCase();
+    const matchesSearch=!search||name.includes(search)||cat.toLowerCase().includes(search)||desc.includes(search);
+    return matchesCat&&matchesSearch;
+  });
+}
+function renderAllGrid(games){
+  const grid=document.getElementById("gameGrid"),noGames=document.getElementById("noGames"),count=document.getElementById("gameCount");if(!grid||!noGames)return;
+  const visible=filterGames(games);grid.innerHTML="";
+  visible.forEach(function(game){
+    const card=document.createElement("div");card.className="game-card";
+    const icon=game.iconImage?'<img src="'+escapeHtml(game.iconImage)+'" alt="'+escapeHtml(game.name)+'" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.parentElement.textContent=\'🎮\';">':escapeHtml(game.icon||"🎮");
+    card.innerHTML='<div class="game-image">'+icon+'</div><div class="game-info"><h3>'+escapeHtml(game.name||"Game")+'</h3><p>'+escapeHtml(game.description||"Play this game on GameRAX.")+'</p><div class="game-meta">'+escapeHtml(game.category||"Games")+' · Free</div></div>';
+    card.onclick=function(){openGamePlayer(game);};grid.appendChild(card);
+  });
+  count.textContent=visible.length+(visible.length===1?" Game":" Games");
+  noGames.style.display=visible.length?"none":"block";
+  noGames.textContent=(games||[]).length?"No games match your search or category.":"No games available yet.";
+  const bar=document.getElementById("searchResultsBar");const input=document.getElementById("searchInput");const term=input?input.value.trim():"";
+  if(bar){if(term||currentCategory!=="All"){bar.style.display="block";bar.textContent=(term?'Search: "'+term+'" · ':'')+(currentCategory!=="All"?'Category: '+currentCategory+' · ':'')+visible.length+' result'+(visible.length===1?'':'s');}else{bar.style.display="none";}}
+  document.getElementById("allGamesTitle").textContent=currentCategory==="All"?"🎮 All Games":"🎮 "+currentCategory+" Games";
+}
+function renderGameHome(gamesOverride){
+  const games=Array.isArray(gamesOverride)?normalizeGames(gamesOverride):(cachedGamesMemory.length?cachedGamesMemory:readFastLocalGames());
+  if(!games.length){
+    renderSidebarCategories([]);renderAllGrid([]);paintMiniRow("recentGamesRow",[],"recentEmpty");paintMiniRow("popularGamesRow",[],"popularEmpty");return;
   }
-
-  try{
-
-    let games=
-      Array.isArray(
-        gamesOverride
-      )
-        ? gamesOverride
-        : null;
-
-    /*
-       If no list was supplied, first use memory,
-       then IndexedDB. Never wait for network here.
-    */
-
-    if(!games){
-
-      if(
-        Array.isArray(
-          cachedGamesMemory
-        ) &&
-        cachedGamesMemory.length
-      ){
-
-        games=
-          cachedGamesMemory.slice();
-
-      }else{
-
-        games=
-          await readCachedGames();
-
-        if(games.length){
-
-          cachedGamesMemory=
-            games.slice();
-
-        }
-
-      }
-
-    }
-
-    /*
-       If there is still no local data and we are online,
-       make one direct fetch so first-time visitors can
-       receive their initial game list.
-    */
-
-    if(
-      !games.length &&
-      browserIsOnline()
-    ){
-
-      try{
-
-        games=
-          await getGamesFromSupabase();
-
-        await writeCachedGames(
-          games
-        );
-
-      }catch(networkError){
-
-        console.warn(
-          "Initial games network load failed:",
-          networkError
-        );
-
-        games=[];
-
-      }
-
-    }
-
-    grid.innerHTML="";
-
-    let visible=0;
-
-    const search=
-      document.getElementById(
-        "searchInput"
-      ).value
-        .trim()
-        .toLowerCase();
-
-    games.forEach(function(game){
-
-      const gameCategory=
-        String(
-          game.category ||
-          "Games"
-        );
-
-      const matchesCategory=
-        currentCategory==="All" ||
-        gameCategory===currentCategory;
-
-      const gameName=
-        String(
-          game.name ||
-          ""
-        );
-
-      const matchesSearch=
-        gameName
-          .toLowerCase()
-          .includes(
-            search
-          );
-
-      if(
-        !matchesCategory ||
-        !matchesSearch
-      ){
-
-        return;
-
-      }
-
-      visible++;
-
-      const card=
-        document.createElement(
-          "div"
-        );
-
-      card.className=
-        "game-card";
-
-      card.setAttribute(
-        "data-name",
-        gameName
-      );
-
-      card.setAttribute(
-        "data-category",
-        gameCategory
-      );
-
-      const iconHtml=
-        game.iconImage
-          ? `
-            <img
-              src="${escapeHtml(game.iconImage)}"
-              alt="${escapeHtml(gameName)} icon"
-              loading="lazy"
-              decoding="async"
-              onerror="this.style.display='none';this.parentElement.textContent='';"
-            >
-          `
-          : escapeHtml(
-              game.icon ||
-              ""
-            );
-
-      card.innerHTML=`
-
-        <div class="game-image">
-          ${iconHtml}
-        </div>
-
-        <div class="game-info">
-
-          <h3>
-            ${escapeHtml(gameName)}
-          </h3>
-
-          <p>
-            ${escapeHtml(
-              game.description ||
-              "Play this game on GameRAX."
-            )}
-          </p>
-
-          <div class="game-meta">
-             ${escapeHtml(gameCategory)}  Free
-          </div>
-
-        </div>
-
-      `;
-
-      card.style.cursor="pointer";
-
-      card.onclick=function(){
-
-        if(!game.url){
-
-          alert(
-            "This game does not have a valid URL."
-          );
-
-          return;
-
-        }
-
-        openGamePlayer(
-          game
-        );
-
-      };
-
-      grid.appendChild(
-        card
-      );
-
-    });
-
-    document.getElementById(
-      "gameCount"
-    ).textContent=
-      visible+
-      (
-        visible===1
-          ? " Game"
-          : " Games"
-      );
-
-    noGames.style.display=
-      visible===0
-        ? "block"
-        : "none";
-
-    if(visible===0){
-
-      if(
-        !browserIsOnline() &&
-        games.length===0
-      ){
-
-        noGames.textContent=
-          "No internet available and no saved games are available yet.";
-
-      }else if(
-        games.length===0
-      ){
-
-        noGames.textContent=
-          "No games available yet.";
-
-      }else{
-
-        noGames.textContent=
-          "No games match your search or category.";
-
-      }
-
-    }else{
-
-      noGames.textContent=
-        "No games available yet.";
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Render games error:",
-      error
-    );
-
-    grid.innerHTML="";
-
-    noGames.style.display="block";
-
-    noGames.textContent=
-      "Games could not be loaded.";
-
-  }
-
+  if(!cachedGamesMemory.length)cachedGamesMemory=games.slice();
+  renderSidebarCategories(games);
+  paintMiniRow("recentGamesRow",getRecentGames(games),"recentEmpty");
+  paintMiniRow("popularGamesRow",getPopularGames(games),"popularEmpty");
+  renderAllGrid(games);
 }
+function renderGames(){renderGameHome();}
+function scheduleRender(){clearTimeout(renderTimer);renderTimer=setTimeout(function(){renderGameHome();},80);}
+function searchGames(){currentCategory="All";setActiveNav("all");scheduleRender();}
+function filterCategory(category){currentCategory=category||"All";setActiveNav(category==="All"?"all":"");renderGameHome();document.getElementById("allSection").scrollIntoView({behavior:"smooth",block:"start"});}
 
 /* =====================================================
    GAMERAX GAME URL ROUTING
@@ -3789,105 +3198,19 @@ async function openGameFromGamerexRoute(){
    GAME PLAYER
 ===================================================== */
 
-async function openGamePlayer(
-  game,
-  updateUrl=true
-){
-
-  if(
-    !game ||
-    !game.url
-  ){
-
-    alert(
-      "This game does not have a valid URL."
-    );
-
-    return;
-
-  }
-
-  if(
-    updateUrl &&
-    game.name
-  ){
-
-    const targetPath=
-      gamerexGamePath(
-        game
-      );
-
-    if(
-      window.location.pathname !==
-      targetPath
-    ){
-
-      gamerexSetRoute(
-        targetPath,
-        false
-      );
-
-    }
-
-  }
-
-  document.getElementById(
-    "homePage"
-  ).style.display="none";
-
-  document.getElementById(
-    "settingsPage"
-  ).style.display="none";
-
-  document.getElementById(
-    "gamePage"
-  ).style.display="block";
-
-  document.getElementById(
-    "currentGameTitle"
-  ).textContent=
-    game.name ||
-    "Game";
-
-  document.getElementById(
-    "gameUnderTitle"
-  ).textContent=
-    game.name ||
-    "Game";
-
-  document.getElementById(
-    "gameUnderDescription"
-  ).textContent=
-    game.description ||
-    "Play this game on GameRAX.";
-
-  const frame=
-    document.getElementById(
-      "gameFrame"
-    );
-
-  frame.src=
-    "about:blank";
-
-  setTimeout(
-    function(){
-
-      frame.src=
-        game.url;
-
-    },
-    20
-  );
-
-  await renderRecommendations(
-    game.id
-  );
-
-  window.scrollTo(
-    0,
-    0
-  );
-
+async function openGamePlayer(game,updateUrl=true){
+  if(!game||!game.url){alert("This game does not have a valid URL.");return;}
+  if(updateUrl&&game.name){const targetPath=gamerexGamePath(game);if(window.location.pathname!==targetPath)gamerexSetRoute(targetPath,false);}
+  trackGamePlay(game);
+  hideAllMainPages();
+  document.getElementById("gamePage").style.display="block";
+  document.getElementById("currentGameTitle").textContent=game.name||"Game";
+  document.getElementById("gameUnderTitle").textContent=game.name||"Game";
+  document.getElementById("gameUnderDescription").textContent=game.description||"Play this game on GameRAX.";
+  const frame=document.getElementById("gameFrame");frame.src=game.url;
+  await renderRecommendations(game.id);
+  if(cachedGamesMemory.length)renderGameHome(cachedGamesMemory);
+  window.scrollTo(0,0);
 }
 
 function closeGamePlayer(
@@ -4145,31 +3468,6 @@ function escapeHtml(text){
     );
 
   return div.innerHTML;
-
-}
-
-/* =====================================================
-   SEARCH
-===================================================== */
-
-async function searchGames(){
-
-  await renderGames();
-
-}
-
-/* =====================================================
-   CATEGORY
-===================================================== */
-
-async function filterCategory(
-  category
-){
-
-  currentCategory=
-    category;
-
-  await showGames();
 
 }
 
@@ -4574,6 +3872,7 @@ async function logout(){
 
   updateHeaderUI();
   updateProfileUI();
+  updateAdminVisibility();
 
   alert(
     "You have been logged out."
@@ -5436,360 +4735,60 @@ function openDeveloper(){
 
 }
 
-function previewGameIcon(
-  event
-){
-
-  const file=
-    event.target.files &&
-    event.target.files[0];
-
-  const previewBox=
-    document.getElementById(
-      "iconPreviewBox"
-    );
-
-  const preview=
-    document.getElementById(
-      "iconPreview"
-    );
-
-  const previewName=
-    document.getElementById(
-      "iconPreviewName"
-    );
-
-  if(!file){
-
-    selectedGameIcon="";
-
-    previewBox.style.display=
-      "none";
-
-    preview.removeAttribute(
-      "src"
-    );
-
-    previewName.textContent="";
-
-    return;
-
-  }
-
-  if(
-    !file.type.startsWith(
-      "image/"
-    )
-  ){
-
-    alert(
-      "Please select an image file."
-    );
-
-    event.target.value="";
-
-    selectedGameIcon="";
-
-    previewBox.style.display=
-      "none";
-
-    return;
-
-  }
-
-  if(
-    file.size>
-    5*1024*1024
-  ){
-
-    alert(
-      "Please choose an image smaller than 5 MB."
-    );
-
-    event.target.value="";
-
-    selectedGameIcon="";
-
-    previewBox.style.display=
-      "none";
-
-    return;
-
-  }
-
-  const reader=
-    new FileReader();
-
-  reader.onload=
-    function(){
-
-      selectedGameIcon=
-        reader.result;
-
-      preview.src=
-        selectedGameIcon;
-
-      previewName.textContent=
-        file.name;
-
-      previewBox.style.display=
-        "block";
-
-    };
-
-  reader.readAsDataURL(
-    file
-  );
-
+function openDeveloper(){
+  selectedGameIcon="";document.getElementById("developerModal").style.display="flex";
+  ["developerGameName","developerGameUrl","developerGameCategory","developerGameDescription","developerEmail","developerName"].forEach(function(id){const el=document.getElementById(id);if(el)el.value="";});
+  const file=document.getElementById("developerGameIconFile");if(file)file.value="";
+  document.getElementById("iconPreviewBox").style.display="none";
+  document.getElementById("iconPreview").removeAttribute("src");
 }
 
-/* =====================================================
-   SUBMIT GAME
-===================================================== */
+let selectedGameIconFile=null;
+function previewGameIcon(event){
+  const file=event.target.files&&event.target.files[0];const box=document.getElementById("iconPreviewBox"),preview=document.getElementById("iconPreview"),name=document.getElementById("iconPreviewName");
+  selectedGameIconFile=null;
+  if(!file){box.style.display="none";preview.removeAttribute("src");return;}
+  if(!file.type.startsWith("image/")){alert("Please select an image file.");event.target.value="";box.style.display="none";return;}
+  if(file.size>8*1024*1024){alert("Please choose an image smaller than 8 MB.");event.target.value="";box.style.display="none";return;}
+  selectedGameIconFile=file;preview.src=URL.createObjectURL(file);name.textContent=file.name;box.style.display="block";
+}
+
+function compressImage(file,maxSize=1200,quality=.82){
+  return new Promise(function(resolve,reject){
+    if(!file){reject(new Error("No image selected."));return;}
+    const img=new Image();const url=URL.createObjectURL(file);
+    img.onload=function(){
+      URL.revokeObjectURL(url);const ratio=Math.min(1,maxSize/Math.max(img.width,img.height));const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(img.width*ratio));canvas.height=Math.max(1,Math.round(img.height*ratio));const ctx=canvas.getContext("2d");ctx.drawImage(img,0,0,canvas.width,canvas.height);canvas.toBlob(function(blob){if(!blob){reject(new Error("Image compression failed."));return;}resolve(blob);},"image/webp",quality);
+    };img.onerror=function(){URL.revokeObjectURL(url);reject(new Error("Could not read image."));};img.src=url;
+  });
+}
+
+async function uploadGameThumbnail(file){
+  const blob=await compressImage(file,1400,.82);const path="games/"+crypto.randomUUID()+".webp";
+  const {error}=await supabaseClient.storage.from("game-thumbnails").upload(path,blob,{contentType:"image/webp",cacheControl:"31536000",upsert:false});
+  if(error)throw error;
+  const {data}=supabaseClient.storage.from("game-thumbnails").getPublicUrl(path);return data.publicUrl;
+}
 
 async function submitGame(){
-
-  const account=
-    getAccount();
-
-  if(!account){
-
-    alert(
-      "Please Login or Sign Up before submitting a game."
-    );
-
-    openAuth(
-      "login"
-    );
-
-    return;
-
-  }
-
-  const name=
-    document.getElementById(
-      "developerGameName"
-    ).value
-      .trim();
-
-  const url=
-    document.getElementById(
-      "developerGameUrl"
-    ).value
-      .trim();
-
-  const category=
-    document.getElementById(
-      "developerGameCategory"
-    ).value
-      .trim() ||
-      "Games";
-
-  if(!name){
-
-    alert(
-      "Please enter the Game Name."
-    );
-
-    return;
-
-  }
-
-  if(!url){
-
-    alert(
-      "Please enter the Game URL."
-    );
-
-    return;
-
-  }
-
+  const account=getAccount();if(!account){alert("Please Login or Sign Up before submitting a game.");openAuth("login");return;}
+  const name=(document.getElementById("developerName")?.value||"").trim()||(account.gamerexId||"");
+  const email=(document.getElementById("developerEmail")?.value||"").trim().toLowerCase()||(account.email||"");
+  const gameName=(document.getElementById("developerGameName")?.value||"").trim();
+  const url=(document.getElementById("developerGameUrl")?.value||"").trim();
+  const category=(document.getElementById("developerGameCategory")?.value||"").trim()||"Games";
+  const description=(document.getElementById("developerGameDescription")?.value||"").trim();
+  if(!gameName||!url||!email){alert("Please enter your name, email, game name and game URL.");return;}
+  try{new URL(url);}catch(e){alert("Please enter a valid Game URL.");return;}
+  if(!selectedGameIconFile){alert("Please choose a Game Icon.");return;}
+  const button=document.querySelector('#developerModal .main-btn');button.disabled=true;button.textContent="Uploading...";
   try{
-
-    new URL(
-      url
-    );
-
-  }catch(e){
-
-    alert(
-      "Please enter a valid Game URL."
-    );
-
-    return;
-
-  }
-
-  if(!selectedGameIcon){
-
-    alert(
-      "Please choose a Game Icon."
-    );
-
-    return;
-
-  }
-
-  try{
-
-    const {
-      data,
-      error
-    }=
-      await supabaseClient
-        .from("games")
-        .insert({
-
-          title:
-            name,
-
-          description:
-            "Play "+
-            name+
-            " on GameRAX.",
-
-          thumbnail:
-            selectedGameIcon,
-
-          game_url:
-            url,
-
-          category:
-            category
-
-        })
-        .select(
-          "id,created_at,title,description,thumbnail,game_url,category"
-        )
-        .maybeSingle();
-
-    if(error){
-      throw error;
-    }
-
-    /*
-       Immediately refresh from server and save the
-       new game into local cache.
-    */
-
-    await refreshGamesFromServer();
-
-    /*
-       If the insert succeeded but refresh had a temporary
-       network issue, add the returned row to local cache.
-    */
-
-    if(
-      data &&
-      data.id
-    ){
-
-      const normalizedGame={
-        id:data.id,
-        name:data.title || name,
-        url:data.game_url || url,
-        category:data.category || category,
-        iconImage:data.thumbnail || selectedGameIcon,
-        description:data.description || "Play this game on GameRAX.",
-        created_at:data.created_at || ""
-      };
-
-      const currentCached=
-        await readCachedGames();
-
-      const exists=
-        currentCached.some(
-          function(game){
-
-            return String(game.id)===
-              String(normalizedGame.id);
-
-          }
-        );
-
-      if(!exists){
-
-        await writeCachedGames(
-          [
-            normalizedGame,
-            ...currentCached
-          ]
-        );
-
-        await renderGames(
-          [
-            normalizedGame,
-            ...currentCached
-          ]
-        );
-
-      }
-
-    }
-
-    closeModal(
-      "developerModal"
-    );
-
-    [
-      "developerGameName",
-      "developerGameUrl",
-      "developerGameCategory",
-      "developerGameIconFile"
-    ].forEach(
-      function(id){
-
-        const el=
-          document.getElementById(
-            id
-          );
-
-        if(el){
-
-          el.value="";
-
-        }
-
-      }
-    );
-
-    document.getElementById(
-      "iconPreviewBox"
-    ).style.display=
-      "none";
-
-    document.getElementById(
-      "iconPreview"
-    ).removeAttribute(
-      "src"
-    );
-
-    document.getElementById(
-      "iconPreviewName"
-    ).textContent=
-      "";
-
-    selectedGameIcon="";
-
-    alert(
-      "Game added successfully and is now visible to everyone!"
-    );
-
-  }catch(error){
-
-    console.error(
-      "Submit game error:",
-      error
-    );
-
-    alert(
-      error.message ||
-      "The game could not be saved."
-    );
-
-  }
-
+    const thumbnail=await uploadGameThumbnail(selectedGameIconFile);
+    const {error}=await supabaseClient.from("game_requests").insert({developer_name:name,developer_email:email,game_name:gameName,game_url:url,category,description,thumbnail,status:"pending",submitted_by:account.id});
+    if(error)throw error;
+    closeModal("developerModal");alert("Game request submitted. We’ll review it before publishing.");
+  }catch(error){console.error("Submit request error:",error);alert(error.message||"The request could not be submitted. Complete the Supabase setup first (game-thumbnails bucket + game_requests table).");}
+  finally{button.disabled=false;button.textContent="Submit Game";}
 }
 
 /* =====================================================
@@ -5832,6 +4831,162 @@ window.onclick=
   };
 
 /* =====================================================
+   ADMIN PANEL
+===================================================== */
+const ADMIN_EMAILS=["uk7186979@gmail.com","m.rayyan.khan.120@gmail.com"];
+function isAdmin(){
+  if(!currentAccount)return false;
+  return ADMIN_EMAILS.includes(String(currentAccount.email||"").trim().toLowerCase());
+}
+function updateAdminVisibility(){
+  const link=document.getElementById("adminSidebarLink"),page=document.getElementById("adminPage"),emailBox=document.getElementById("adminSignedInEmail");
+  const allowed=isAdmin();
+  if(link)link.style.display=allowed?"block":"none";
+  if(emailBox)emailBox.textContent=allowed?"Signed in as: "+String(currentAccount.email||""):"";
+  if(!allowed&&page)page.style.display="none";
+}
+function showAdminPanel(){
+  if(!isAdmin()){alert("Admin access required.");return;}
+  closeGamePlayer(false,false);hideAllMainPages();
+  const page=document.getElementById("adminPage");if(page)page.style.display="block";
+  setActiveNav("admin");updateAdminVisibility();loadAdminPanel();window.scrollTo(0,0);
+}
+function resetAdminGameForm(){
+  ["adminEditGameId","adminGameName","adminGameCategory","adminGameUrl","adminGameDescription"].forEach(function(id){const el=document.getElementById(id);if(el)el.value=id==="adminGameCategory"?"Games":"";});
+  const file=document.getElementById("adminGameIconFile");if(file)file.value="";
+  selectedAdminGameIconFile=null;
+  const box=document.getElementById("adminIconPreviewBox");if(box)box.style.display="none";
+  const img=document.getElementById("adminIconPreview");if(img)img.removeAttribute("src");
+}
+let selectedAdminGameIconFile=null;
+function openAdminAddGame(){if(!isAdmin()){alert("Admin access required.");return;}resetAdminGameForm();document.getElementById("adminGameModalTitle").textContent="➕ Add Game Directly";document.getElementById("adminGameModal").style.display="flex";}
+function previewAdminGameIcon(event){const file=event.target.files&&event.target.files[0];selectedAdminGameIconFile=file||null;const box=document.getElementById("adminIconPreviewBox"),img=document.getElementById("adminIconPreview"),name=document.getElementById("adminIconPreviewName");if(!file){box.style.display="none";img.removeAttribute("src");return;}if(!file.type.startsWith("image/")){alert("Please select an image file.");event.target.value="";selectedAdminGameIconFile=null;box.style.display="none";return;}if(file.size>8*1024*1024){alert("Please choose an image smaller than 8 MB.");event.target.value="";selectedAdminGameIconFile=null;box.style.display="none";return;}img.src=URL.createObjectURL(file);name.textContent=file.name;box.style.display="block";}
+async function saveAdminGame(){
+  if(!isAdmin()){alert("Admin access required.");return;}
+  const id=document.getElementById("adminEditGameId").value.trim();const title=document.getElementById("adminGameName").value.trim();const url=document.getElementById("adminGameUrl").value.trim();const category=document.getElementById("adminGameCategory").value.trim()||"Games";const description=document.getElementById("adminGameDescription").value.trim()||("Play "+title+" on GameRAX.");
+  if(!title||!url){alert("Game name and game URL are required.");return;}try{new URL(url);}catch(e){alert("Please enter a valid game URL.");return;}
+  const button=document.querySelector('#adminGameModal .main-btn');button.disabled=true;button.textContent="Saving...";
+  try{
+    let thumbnail="";
+    if(selectedAdminGameIconFile)thumbnail=await uploadGameThumbnail(selectedAdminGameIconFile);
+    const payload={title,game_url:url,category,description};if(thumbnail)payload.thumbnail=thumbnail;
+    let response;if(id){response=await supabaseClient.from("games").update(payload).eq("id",id);}else{if(!thumbnail){alert("Please choose a game thumbnail for a new game.");return;}response=await supabaseClient.from("games").insert(payload);}
+    if(response.error)throw response.error;
+    await refreshGamesFromServer();closeModal("adminGameModal");resetAdminGameForm();await loadAdminPanel();alert(id?"Game updated successfully.":"Game added directly and published successfully!");
+  }catch(error){console.error("Admin save game error:",error);alert(error.message||"Could not save game. Complete the Supabase Storage/table setup first.");}
+  finally{button.disabled=false;button.textContent="Save Game";}
+}
+async function loadAdminPopularManager(gamesOverride){
+  if(!isAdmin())return;
+  const box=document.getElementById("adminPopularList");if(!box)return;
+  box.innerHTML='<div class="admin-empty">Loading popular games...</div>';
+  try{
+    let games=Array.isArray(gamesOverride)?gamesOverride:null;
+    if(!games){
+      const {data,error}=await supabaseClient.from("games").select("id,created_at,title,description,thumbnail,game_url,category").order("created_at",{ascending:false}).limit(500);
+      if(error)throw error;games=data||[];
+    }
+    const selected=new Set(getAdminPopularIds());
+    if(!games.length){box.innerHTML='<div class="admin-empty">No published games yet.</div>';return;}
+    box.innerHTML="";
+    games.forEach(function(g){
+      const row=document.createElement("div");row.className="admin-item";
+      const thumb=document.createElement("div");thumb.className="admin-thumb";
+      if(g.thumbnail){const img=document.createElement("img");img.src=g.thumbnail;img.alt="";img.loading="lazy";img.decoding="async";thumb.appendChild(img);}else thumb.textContent="🎮";
+      const info=document.createElement("div");const h=document.createElement("h3");h.textContent=g.title||"Game";
+      const p=document.createElement("p");p.textContent=(g.category||"Games")+" · "+(selected.has(String(g.id))?"Selected for Popular":"Not selected");info.appendChild(h);info.appendChild(p);
+      const actions=document.createElement("div");actions.className="admin-actions";
+      const button=document.createElement("button");const chosen=selected.has(String(g.id));button.className="small-btn "+(chosen?"success-btn":"");button.textContent=chosen?"✓ Popular":"＋ Add to Popular";button.onclick=function(){togglePopularGame(g.id);};actions.appendChild(button);
+      row.appendChild(thumb);row.appendChild(info);row.appendChild(actions);box.appendChild(row);
+    });
+  }catch(error){console.error("Popular manager load error:",error);box.innerHTML='<div class="admin-empty">Could not load published games. Complete the Supabase games-table setup first.</div>';}
+}
+function togglePopularGame(gameId){
+  if(!isAdmin()){alert("Admin access required.");return;}
+  const id=String(gameId),ids=getAdminPopularIds(),index=ids.indexOf(id);if(index>=0)ids.splice(index,1);else ids.push(id);saveAdminPopularIds(ids);renderGameHome();loadAdminPopularManager();
+}
+async function selectAllPopularGames(){
+  if(!isAdmin()){alert("Admin access required.");return;}
+  try{const {data,error}=await supabaseClient.from("games").select("id").limit(500);if(error)throw error;saveAdminPopularIds((data||[]).map(function(g){return String(g.id);}));renderGameHome();await loadAdminPopularManager();}catch(error){alert(error.message||"Could not select all games.");}
+}
+async function clearAllPopularGames(){
+  if(!isAdmin()){alert("Admin access required.");return;}
+  saveAdminPopularIds([]);renderGameHome();await loadAdminPopularManager();
+}
+
+async function loadAdminPanel(){
+  if(!isAdmin())return;
+  const reqBox=document.getElementById("adminRequestsList"),gamesBox=document.getElementById("adminGamesList");
+  if(!reqBox||!gamesBox)return;
+  reqBox.innerHTML='<div class="admin-empty">Loading requests...</div>';
+  gamesBox.innerHTML='<div class="admin-empty">Loading games...</div>';
+  try{
+    const [reqRes,gameRes]=await Promise.all([
+      supabaseClient.from("game_requests").select("*").order("created_at",{ascending:false}).limit(200),
+      supabaseClient.from("games").select("id,created_at,title,description,thumbnail,game_url,category").order("created_at",{ascending:false}).limit(500)
+    ]);
+    if(reqRes.error)throw reqRes.error;
+    if(gameRes.error)throw gameRes.error;
+    const requests=reqRes.data||[],games=gameRes.data||[];
+    document.getElementById("adminPendingCount").textContent=requests.filter(function(r){return String(r.status||"pending")==="pending";}).length;
+    document.getElementById("adminPublishedCount").textContent=games.length;
+    document.getElementById("adminCategoryCount").textContent=new Set(games.map(function(g){return String(g.category||"Games");})).size;
+    await loadAdminPopularManager(games);
+
+    reqBox.innerHTML="";
+    if(!requests.length){reqBox.innerHTML='<div class="admin-empty">No game requests yet.</div>';}else{
+      requests.forEach(function(r){
+        const item=document.createElement("div");item.className="admin-item";
+        const thumb=document.createElement("div");thumb.className="admin-thumb";
+        if(r.thumbnail){const img=document.createElement("img");img.src=r.thumbnail;img.alt="";img.loading="lazy";thumb.appendChild(img);}else thumb.textContent="🎮";
+        const info=document.createElement("div");
+        const h=document.createElement("h3");h.textContent=r.game_name||"Game";
+        const p=document.createElement("p");
+        p.innerHTML='<b>Developer:</b> '+escapeHtml(r.developer_name||"-")+" · "+escapeHtml(r.developer_email||"-")+"<br><b>Category:</b> "+escapeHtml(r.category||"Games")+"<br><b>URL:</b> "+escapeHtml(r.game_url||"-")+"<br><span class=\"admin-badge\">"+escapeHtml(r.status||"pending")+"</span>";
+        info.appendChild(h);info.appendChild(p);
+        const actions=document.createElement("div");actions.className="admin-actions";
+        if(String(r.status||"pending")==="pending"){
+          const approve=document.createElement("button");approve.className="small-btn success-btn";approve.textContent="Approve";approve.onclick=function(){approveGameRequest(r.id);};
+          const reject=document.createElement("button");reject.className="small-btn danger-btn";reject.textContent="Reject";reject.onclick=function(){rejectGameRequest(r.id);};
+          actions.appendChild(approve);actions.appendChild(reject);
+        }
+        item.appendChild(thumb);item.appendChild(info);item.appendChild(actions);reqBox.appendChild(item);
+      });
+    }
+
+    gamesBox.innerHTML="";
+    if(!games.length){gamesBox.innerHTML='<div class="admin-empty">No published games.</div>';}else{
+      games.forEach(function(g){
+        const item=document.createElement("div");item.className="admin-item";
+        const thumb=document.createElement("div");thumb.className="admin-thumb";
+        if(g.thumbnail){const img=document.createElement("img");img.src=g.thumbnail;img.alt="";img.loading="lazy";thumb.appendChild(img);}else thumb.textContent="🎮";
+        const info=document.createElement("div");const h=document.createElement("h3");h.textContent=g.title||"Game";const p=document.createElement("p");p.textContent=(g.category||"Games")+" · "+(g.game_url||"");info.appendChild(h);info.appendChild(p);
+        const actions=document.createElement("div");actions.className="admin-actions";
+        const edit=document.createElement("button");edit.className="small-btn";edit.textContent="Edit";edit.onclick=function(){editAdminGame(g.id);};
+        const del=document.createElement("button");del.className="small-btn danger-btn";del.textContent="Delete";del.onclick=function(){deleteAdminGame(g.id);};
+        actions.appendChild(edit);actions.appendChild(del);item.appendChild(thumb);item.appendChild(info);item.appendChild(actions);gamesBox.appendChild(item);
+      });
+    }
+  }catch(error){
+    console.error("Admin load error:",error);
+    reqBox.innerHTML='<div class="admin-empty">Admin backend is not configured yet. Create the <b>game_requests</b> table and <b>game-thumbnails</b> Storage bucket in Supabase, then refresh.</div>';
+    gamesBox.innerHTML='<div class="admin-empty">Published games could not be loaded from the admin panel.</div>';
+  }
+}
+
+async function approveGameRequest(id){
+  if(!isAdmin())return;try{
+    const {data:r,error:getError}=await supabaseClient.from("game_requests").select("*").eq("id",id).maybeSingle();if(getError)throw getError;if(!r)throw new Error("Request not found.");
+    const {error:insertError}=await supabaseClient.from("games").insert({title:r.game_name,description:r.description||("Play "+r.game_name+" on GameRAX."),thumbnail:r.thumbnail||"",game_url:r.game_url,category:r.category||"Games"});if(insertError)throw insertError;
+    const {error:updateError}=await supabaseClient.from("game_requests").update({status:"approved",reviewed_at:new Date().toISOString(),reviewed_by:currentAccount.id}).eq("id",id);if(updateError)throw updateError;
+    await refreshGamesFromServer();await loadAdminPanel();alert("Game approved and published.");
+  }catch(error){console.error(error);alert(error.message||"Could not approve request.");}
+}
+async function rejectGameRequest(id){if(!isAdmin())return;if(!confirm("Reject this game request?"))return;try{const {error}=await supabaseClient.from("game_requests").update({status:"rejected",reviewed_at:new Date().toISOString(),reviewed_by:currentAccount.id}).eq("id",id);if(error)throw error;await loadAdminPanel();alert("Request rejected.");}catch(error){alert(error.message||"Could not reject request.");}}
+async function deleteAdminGame(id){if(!isAdmin())return;if(!confirm("Delete this published game?"))return;try{const {error}=await supabaseClient.from("games").delete().eq("id",id);if(error)throw error;cachedGamesMemory=cachedGamesMemory.filter(function(g){return String(g.id)!==String(id);});await writeCachedGames(cachedGamesMemory);saveAdminPopularIds(getAdminPopularIds().filter(function(popularId){return String(popularId)!==String(id);}));renderGameHome();await loadAdminPanel();alert("Game deleted.");}catch(error){alert(error.message||"Could not delete game.");}}
+async function editAdminGame(id){if(!isAdmin())return;try{const {data,error}=await supabaseClient.from("games").select("id,title,game_url,category,description,thumbnail").eq("id",id).maybeSingle();if(error)throw error;if(!data)throw new Error("Game not found.");resetAdminGameForm();document.getElementById("adminEditGameId").value=data.id;document.getElementById("adminGameName").value=data.title||"";document.getElementById("adminGameUrl").value=data.game_url||"";document.getElementById("adminGameCategory").value=data.category||"Games";document.getElementById("adminGameDescription").value=data.description||"";document.getElementById("adminGameModalTitle").textContent="✏️ Edit Game";document.getElementById("adminGameModal").style.display="flex";}catch(error){alert(error.message||"Could not load game.");}}
+
+/* =====================================================
    INTERNET STATUS
 ===================================================== */
 
@@ -5872,180 +5027,17 @@ window.addEventListener(
    PAGE LOAD
 ===================================================== */
 
-window.addEventListener(
-  "DOMContentLoaded",
-  async function(){
-
-    const searchInput=
-      document.getElementById(
-        "searchInput"
-      );
-
-    if(searchInput){
-
-      searchInput.value="";
-
-      searchInput.setAttribute(
-        "autocomplete",
-        "off"
-      );
-
-      searchInput.addEventListener(
-        "input",
-        searchGames
-      );
-
-    }
-
-    const savedLanguage=
-      localStorage.getItem(
-        "gamerexLanguage"
-      ) ||
-      "en";
-
-    changeLanguage(
-      savedLanguage
-    );
-
-    /*
-       ==================================================
-       IMPORTANT FAST START
-       ==================================================
-
-       First read IndexedDB cache.
-
-       This happens BEFORE account loading and BEFORE
-       Supabase refresh, so returning visitors see their
-       games immediately.
-    */
-
-    try{
-
-      const cached=
-        await readCachedGames();
-
-      if(cached.length){
-
-        cachedGamesMemory=
-          cached.slice();
-
-        await renderGames(
-          cached
-        );
-
-      }else{
-
-        /*
-           No cached games yet.
-           The first visit will need Internet.
-        */
-
-        if(!browserIsOnline()){
-
-          setCacheStatus(
-            "No internet available — no saved games are available yet.",
-            "offline"
-          );
-
-        }
-
-      }
-
-    }catch(cacheError){
-
-      console.warn(
-        "Fast game cache startup failed:",
-        cacheError
-      );
-
-    }
-
-    /*
-       Account loading is separate from game loading.
-       It should NOT block the game list anymore.
-    */
-
-    try{
-
-      await loadAccount();
-
-    }catch(accountError){
-
-      console.error(
-        "Account initialization error:",
-        accountError
-      );
-
-    }
-
-    /*
-       Legacy migration is kept, but it no longer blocks
-       the already visible cached game list.
-    */
-
-    if(browserIsOnline()){
-
-      migrateLegacyGames().catch(
-        function(error){
-
-          console.warn(
-            "Background legacy migration error:",
-            error
-          );
-
-        }
-      );
-
-    }
-
-    /*
-       If this is the first visit and there is no cache,
-       load games now. Otherwise refresh in background.
-    */
-
-    if(
-      cachedGamesMemory.length===0
-    ){
-
-      if(browserIsOnline()){
-
-        await refreshGamesFromServer();
-
-      }
-
-    }else{
-
-      /*
-         Cached games are already visible.
-         Update them silently in the background.
-      */
-
-      refreshGamesFromServer();
-
-    }
-
-    /*
-       Finally check for direct game routes.
-    */
-
-    try{
-
-      await openGameFromGamerexRoute();
-
-    }catch(routeError){
-
-      console.error(
-        "GameRAX route initialization error:",
-        routeError
-      );
-
-    }
-
-    updateHeaderUI();
-    updateProfileUI();
-
-  }
-);
+window.addEventListener("DOMContentLoaded",async function(){
+  const searchInput=document.getElementById("searchInput");
+  if(searchInput){searchInput.value="";searchInput.addEventListener("input",searchGames);}
+  const cached=readFastLocalGames();
+  if(cached.length){cachedGamesMemory=cached.slice();renderGameHome(cached);}else{renderGameHome([]);}
+  renderSidebarCategories(cached);
+  try{await loadAccount();}catch(error){console.warn("Account init error:",error);}
+  updateHeaderUI();updateProfileUI();updateAdminVisibility();
+  if(cached.length){refreshGamesFromServer();}else if(browserIsOnline()){refreshGamesFromServer();}
+  try{await openGameFromGamerexRoute();}catch(error){console.error("Route initialization error:",error);}
+});
 
 /* =====================================================
    BROWSER BACK / FORWARD
@@ -6105,13 +5097,16 @@ supabaseClient.auth.onAuthStateChange(
       setTimeout(
         function(){
 
-          loadAccount().catch(
+          loadAccount().then(function(){
+            updateAdminVisibility();
+          }).catch(
             function(error){
 
               console.error(
                 "Background account load error:",
                 error
               );
+              updateAdminVisibility();
 
             }
           );
@@ -6131,6 +5126,7 @@ supabaseClient.auth.onAuthStateChange(
 
       updateHeaderUI();
       updateProfileUI();
+      updateAdminVisibility();
 
     }
 
@@ -6138,34 +5134,11 @@ supabaseClient.auth.onAuthStateChange(
 );
 
 /* =====================================================
-   REFRESH WHEN TAB BECOMES VISIBLE
+   REFRESH / NETWORK / VISIBILITY
 ===================================================== */
-
-document.addEventListener(
-  "visibilitychange",
-  async function(){
-
-    if(
-      document.visibilityState===
-      "visible"
-    ){
-
-      /*
-         Always show cached games first.
-      */
-
-      await renderGames();
-
-      /*
-         Then silently check for latest games.
-      */
-
-      refreshGamesFromServer();
-
-    }
-
-  }
-);
+window.addEventListener("offline",function(){setCacheStatus("Offline — showing saved games.","offline");renderGameHome();});
+window.addEventListener("online",function(){setCacheStatus("Internet restored — updating games...","online");refreshGamesFromServer();});
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"){renderGameHome();}});
 
 </script>
 
