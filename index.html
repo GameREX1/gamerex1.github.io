@@ -2059,6 +2059,7 @@ const GAMES_LOCAL_CACHE_KEY="gamerax_games_v3";
 const RECENT_GAMES_KEY="gamerax_recent_games_v1";
 const POPULAR_GAMES_KEY="gamerax_popular_games_v1";
 const ADMIN_POPULAR_GAMES_KEY="gamerax_admin_popular_games_v1";
+/* Supabase is the source of truth; localStorage is only an offline fallback/cache. */
 const GAME_CACHE_TTL_MS=24*60*60*1000;
 const GAMES_MAX_CACHE=250;
 const GAMES_SERVER_LIMIT=250;
@@ -2202,12 +2203,48 @@ function browserIsOnline(){return navigator.onLine!==false;}
 
 function getRecentIds(){try{return JSON.parse(localStorage.getItem(RECENT_GAMES_KEY)||"[]");}catch(e){return [];}}
 function saveRecentGame(game){const id=String(game.id);let ids=getRecentIds().filter(function(x){return String(x)!==id;});ids.unshift(game.id);ids=ids.slice(0,24);try{localStorage.setItem(RECENT_GAMES_KEY,JSON.stringify(ids));}catch(e){}}
-function getAdminPopularIds(){try{const value=JSON.parse(localStorage.getItem(ADMIN_POPULAR_GAMES_KEY)||"[]");return Array.isArray(value)?value.map(String):[];}catch(e){return [];}}
+function getAdminPopularIds(){
+  try{
+    const value=JSON.parse(localStorage.getItem(ADMIN_POPULAR_GAMES_KEY)||"[]");
+    return Array.isArray(value)?value.map(String):[];
+  }catch(e){return [];}
+}
 function saveAdminPopularIds(ids){const clean=[...new Set((Array.isArray(ids)?ids:[]).map(String))];try{localStorage.setItem(ADMIN_POPULAR_GAMES_KEY,JSON.stringify(clean));}catch(e){}return clean;}
 function isGameMarkedPopular(gameId){return getAdminPopularIds().includes(String(gameId));}
 function trackGamePlay(game){if(!game)return;saveRecentGame(game);}
 function getRecentGames(allGames){const ids=getRecentIds();const byId=new Map((allGames||[]).map(function(g){return [String(g.id),g];}));return ids.map(function(id){return byId.get(String(id));}).filter(Boolean);}
 function getPopularGames(allGames){const ids=getAdminPopularIds();const byId=new Map((allGames||[]).map(function(g){return [String(g.id),g];}));return ids.map(function(id){return byId.get(String(id));}).filter(Boolean);}
+
+let popularIdsLoaded=false;
+let popularIdsLoadingPromise=null;
+
+async function loadPopularIdsFromSupabase(){
+  if(popularIdsLoadingPromise)return popularIdsLoadingPromise;
+  if(!browserIsOnline()){
+    popularIdsLoaded=true;
+    return getAdminPopularIds();
+  }
+  popularIdsLoadingPromise=(async function(){
+    try{
+      const {data,error}=await supabaseClient
+        .from("popular_games")
+        .select("game_id")
+        .order("created_at",{ascending:true});
+      if(error)throw error;
+      const ids=(data||[]).map(function(row){return String(row.game_id);});
+      saveAdminPopularIds(ids);
+      popularIdsLoaded=true;
+      return ids;
+    }catch(error){
+      console.warn("Popular Games sync failed:",error);
+      popularIdsLoaded=true;
+      return getAdminPopularIds();
+    }finally{
+      popularIdsLoadingPromise=null;
+    }
+  })();
+  return popularIdsLoadingPromise;
+}
 
 /* Fetch lightweight metadata first. Old Base64 thumbnails cannot block the game list. */
 async function getGamesFromSupabase(){
@@ -4996,12 +5033,13 @@ async function loadAdminPopularManager(gamesOverride){
   selectedBox.innerHTML='<div class="admin-empty">Loading popular games...</div>';
 
   try{
+    await loadPopularIdsFromSupabase();
     let games=Array.isArray(gamesOverride)?gamesOverride:null;
 
     if(!games){
       const {data,error}=await supabaseClient
         .from("games")
-        .select("id,title,category,game_url,description")
+        .select("id,title,category,game_url,description,thumbnail")
         .order("created_at",{ascending:false})
         .limit(GAMES_SERVER_LIMIT);
       if(error)throw error;
@@ -5118,32 +5156,76 @@ function searchAdminPopularGames(){
   });
 }
 
-function togglePopularGame(gameId){
+async function togglePopularGame(gameId){
   if(!isAdmin()){alert("Admin access required.");return;}
   const id=String(gameId);
   const ids=getAdminPopularIds();
   const index=ids.indexOf(id);
-  if(index>=0)ids.splice(index,1);else ids.push(id);
-  saveAdminPopularIds(ids);
-  renderGameHome();
-  renderAdminSelectedPopularGames(adminPopularGamesPool);
-  searchAdminPopularGames();
+  try{
+    if(index>=0){
+      const {error}=await supabaseClient
+        .from("popular_games")
+        .delete()
+        .eq("game_id",gameId);
+      if(error)throw error;
+      ids.splice(index,1);
+    }else{
+      const {error}=await supabaseClient
+        .from("popular_games")
+        .insert({game_id:gameId,added_by:currentAccount.id});
+      if(error && !String(error.message||"").toLowerCase().includes("duplicate"))throw error;
+      if(index<0)ids.push(id);
+    }
+    saveAdminPopularIds(ids);
+    popularIdsLoaded=true;
+    renderGameHome();
+    renderAdminSelectedPopularGames(adminPopularGamesPool);
+    searchAdminPopularGames();
+  }catch(error){
+    console.error("Popular game update error:",error);
+    alert(error.message||"Could not update Popular Games.");
+  }
 }
 
 async function clearAllPopularGames(){
   if(!isAdmin()){alert("Admin access required.");return;}
-  saveAdminPopularIds([]);
-  renderGameHome();
-  renderAdminSelectedPopularGames(adminPopularGamesPool);
-  searchAdminPopularGames();
+  try{
+    const {error}=await supabaseClient
+      .from("popular_games")
+      .delete()
+      .neq("game_id",-1);
+    if(error)throw error;
+    saveAdminPopularIds([]);
+    popularIdsLoaded=true;
+    renderGameHome();
+    renderAdminSelectedPopularGames(adminPopularGamesPool);
+    searchAdminPopularGames();
+  }catch(error){
+    console.error("Clear Popular Games error:",error);
+    alert(error.message||"Could not clear Popular Games.");
+  }
 }
 
 async function selectAllPopularGames(){
   if(!isAdmin()){alert("Admin access required.");return;}
-  saveAdminPopularIds((adminPopularGamesPool||[]).map(function(g){return String(g.id);}));
-  renderGameHome();
-  renderAdminSelectedPopularGames(adminPopularGamesPool);
-  searchAdminPopularGames();
+  const games=adminPopularGamesPool||[];
+  if(!games.length)return;
+  try{
+    const rows=games.map(function(g){return {game_id:g.id,added_by:currentAccount.id};});
+    const {error}=await supabaseClient
+      .from("popular_games")
+      .upsert(rows,{onConflict:"game_id",ignoreDuplicates:true});
+    if(error)throw error;
+    const ids=games.map(function(g){return String(g.id);});
+    saveAdminPopularIds(ids);
+    popularIdsLoaded=true;
+    renderGameHome();
+    renderAdminSelectedPopularGames(adminPopularGamesPool);
+    searchAdminPopularGames();
+  }catch(error){
+    console.error("Select all Popular Games error:",error);
+    alert(error.message||"Could not select all Popular Games.");
+  }
 }
 
 async function loadAdminPanel(){
@@ -5223,7 +5305,8 @@ async function loadAdminPanel(){
       }else{
         games.forEach(function(g){
           const item=document.createElement("div");item.className="admin-item";
-          const thumb=document.createElement("div");thumb.className="admin-thumb";thumb.textContent="🎮";
+          const thumb=document.createElement("div");thumb.className="admin-thumb";
+          if(g.thumbnail){const img=document.createElement("img");img.src=g.thumbnail;img.alt="";img.loading="lazy";img.decoding="async";img.onerror=function(){this.remove();thumb.textContent="🎮";};thumb.appendChild(img);}else{thumb.textContent="🎮";}
           const info=document.createElement("div");
           const h=document.createElement("h3");h.textContent=g.title||"Game";
           const p=document.createElement("p");p.textContent=(g.category||"Games")+" · "+(g.game_url||"");
@@ -5320,6 +5403,7 @@ window.addEventListener("DOMContentLoaded",function(){
   if(browserIsOnline()){
     /* Do NOT wait for account/profile loading. */
     refreshGamesFromServer();
+    loadPopularIdsFromSupabase().then(function(){renderGameHome();}).catch(function(error){console.warn("Popular Games startup sync failed:",error);});
   }else{
     setCacheStatus("Offline — showing saved games.","offline");
   }
@@ -5435,7 +5519,7 @@ supabaseClient.auth.onAuthStateChange(
    REFRESH / NETWORK / VISIBILITY
 ===================================================== */
 window.addEventListener("offline",function(){setCacheStatus("Offline — showing saved games.","offline");renderGameHome();});
-window.addEventListener("online",function(){setCacheStatus("Internet restored — updating games...","online");refreshGamesFromServer();});
+window.addEventListener("online",function(){setCacheStatus("Internet restored — updating games...","online");refreshGamesFromServer();loadPopularIdsFromSupabase().then(function(){renderGameHome();});});
 document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"){renderGameHome();}});
 
 </script>
