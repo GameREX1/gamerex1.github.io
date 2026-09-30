@@ -1219,6 +1219,11 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
 .admin-item h3{font-size:15px;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.admin-item p{font-size:12px;color:#7f7f91;line-height:1.45;word-break:break-word;}.admin-actions{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end;}
 .admin-empty{padding:25px;text-align:center;color:#747486;}.admin-badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#252538;color:#c2c2d0;font-size:11px;font-weight:700;}
 .danger-btn{color:#ff7272!important;border-color:#452c2c!important;}.success-btn{color:#7ff7b3!important;border-color:#284b3a!important;}
+.admin-popular-search-wrap{position:relative;margin:6px 0 14px;max-width:520px;}
+.admin-popular-search-wrap .search-icon-mini{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#77778a;font-size:14px;pointer-events:none;}
+.admin-popular-search{width:100%;padding:11px 12px 11px 35px;background:#08080d;color:#fff;border:1px solid #29293a;border-radius:8px;outline:none;}
+.admin-popular-search:focus{border-color:var(--gx-cyan);box-shadow:0 0 0 2px rgba(0,217,255,.07);}
+.admin-subheading{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#77778a;margin:15px 0 6px;}
 
 .modal-box.wide{max-width:700px;}
 .modal-box input,.modal-box textarea,.modal-box select{font-family:'Roboto',sans-serif;}
@@ -1546,13 +1551,22 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
 
     <div class="admin-card">
       <h2>🔥 Popular Games Manager</h2>
-      <p style="color:#77778a;font-size:13px;line-height:1.5;margin-bottom:14px;">Select exactly which published games should appear in the Popular Games section for visitors. This control is visible only to the two GameRAX admin accounts.</p>
+      <p style="color:#77778a;font-size:13px;line-height:1.5;margin-bottom:14px;">Only games you select here appear in the Popular Games section for visitors. Search a published game below and add it to Popular.</p>
+
       <div class="admin-toolbar">
-        <button class="small-btn" onclick="selectAllPopularGames()">Select All</button>
         <button class="small-btn" onclick="clearAllPopularGames()">Clear All</button>
         <button class="small-btn" onclick="loadAdminPopularManager()">Refresh</button>
       </div>
-      <div id="adminPopularList"><div class="admin-empty">Loading popular game controls...</div></div>
+
+      <div class="admin-subheading">⭐ Current Popular Games</div>
+      <div id="adminPopularSelectedList"><div class="admin-empty">No popular games selected yet.</div></div>
+
+      <div class="admin-subheading">🔎 Find a game to add</div>
+      <div class="admin-popular-search-wrap">
+        <span class="search-icon-mini">⌕</span>
+        <input class="admin-popular-search" id="adminPopularSearch" type="search" autocomplete="off" spellcheck="false" placeholder="Search published games..." oninput="searchAdminPopularGames()">
+      </div>
+      <div id="adminPopularSearchResults"><div class="admin-empty">Type a game name to search.</div></div>
     </div>
 
     <div class="admin-card">
@@ -2038,16 +2052,20 @@ let selectedGameIcon="";
 ===================================================== */
 
 const GAME_CACHE_DB_NAME="GameRAXGameCache";
-const GAME_CACHE_DB_VERSION=2;
+const GAME_CACHE_DB_VERSION=4;
 const GAME_CACHE_STORE="games";
 const GAME_CACHE_META_STORE="meta";
-const GAMES_LOCAL_CACHE_KEY="gamerax_games_v2";
+const GAMES_LOCAL_CACHE_KEY="gamerax_games_v3";
 const RECENT_GAMES_KEY="gamerax_recent_games_v1";
 const POPULAR_GAMES_KEY="gamerax_popular_games_v1";
 const ADMIN_POPULAR_GAMES_KEY="gamerax_admin_popular_games_v1";
-const GAME_CACHE_TTL_MS=6*60*60*1000;
+const GAME_CACHE_TTL_MS=24*60*60*1000;
+const GAMES_MAX_CACHE=250;
+const GAMES_SERVER_LIMIT=250;
 let cachedGamesMemory=[];
 let gameRefreshPromise=null;
+let thumbnailRefreshPromise=null;
+let lastServerRefreshAt=0;
 let renderTimer=null;
 
 function openGameCacheDB(){
@@ -2066,28 +2084,55 @@ function openGameCacheDB(){
 
 function normalizeGames(games){
   return (Array.isArray(games)?games:[]).map(function(game){
-    return {id:game.id,name:game.name||game.title||"Game",url:game.url||game.game_url||"",category:game.category||"Games",iconImage:game.iconImage||game.thumbnail||"",description:game.description||"Play this game on GameRAX.",created_at:game.created_at||""};
-  }).filter(function(game){return game.id!==undefined&&game.id!==null&&game.url;});
+    return {
+      id:game.id,
+      name:game.name||game.title||"Game",
+      url:game.url||game.game_url||"",
+      category:game.category||"Games",
+      iconImage:game.iconImage||game.thumbnail||"",
+      description:game.description||"Play this game on GameRAX.",
+      created_at:game.created_at||""
+    };
+  }).filter(function(game){
+    return game.id!==undefined&&game.id!==null&&game.url;
+  }).slice(0,GAMES_MAX_CACHE);
+}
+
+/* Never store large Base64 thumbnails in localStorage. */
+function lightweightGames(games){
+  return normalizeGames(games).map(function(game){
+    return {
+      id:game.id,
+      name:game.name,
+      url:game.url,
+      category:game.category,
+      description:game.description,
+      created_at:game.created_at,
+      iconImage:(typeof game.iconImage==="string" && /^https?:\/\//i.test(game.iconImage)) ? game.iconImage : ""
+    };
+  });
 }
 
 function readFastLocalGames(){
   try{
     const raw=localStorage.getItem(GAMES_LOCAL_CACHE_KEY);
-    if(!raw) return [];
+    if(!raw)return [];
     const parsed=JSON.parse(raw);
-    if(!parsed || !Array.isArray(parsed.games)) return [];
-    if(Date.now()-Number(parsed.savedAt||0)>GAME_CACHE_TTL_MS*2) return [];
+    if(!parsed||!Array.isArray(parsed.games))return [];
+    if(Date.now()-Number(parsed.savedAt||0)>GAME_CACHE_TTL_MS)return [];
     return normalizeGames(parsed.games);
   }catch(e){return [];}
 }
 
 function writeFastLocalGames(games){
-  try{localStorage.setItem(GAMES_LOCAL_CACHE_KEY,JSON.stringify({savedAt:Date.now(),games:normalizeGames(games)}));}catch(e){}
+  try{
+    localStorage.setItem(GAMES_LOCAL_CACHE_KEY,JSON.stringify({savedAt:Date.now(),games:lightweightGames(games)}));
+  }catch(e){}
 }
 
 async function readCachedGames(){
   const fast=readFastLocalGames();
-  if(fast.length){ cachedGamesMemory=fast.slice(); return fast; }
+  if(fast.length){cachedGamesMemory=fast.slice();return fast;}
   try{
     const db=await openGameCacheDB();
     return await new Promise(function(resolve,reject){
@@ -2101,7 +2146,7 @@ async function readCachedGames(){
       };
       request.onerror=function(){db.close();reject(request.error||new Error("Could not read game cache."));};
     });
-  }catch(error){console.warn("Game cache read failed:",error);return []}
+  }catch(error){console.warn("Game cache read failed:",error);return [];}
 }
 
 async function writeCachedGames(games){
@@ -2123,10 +2168,28 @@ async function writeCachedGames(games){
   }catch(error){console.warn("Game cache write failed:",error);}
 }
 
+function mergeGamesKeepCache(existing,fresh){
+  const byId=new Map();
+  normalizeGames(existing).forEach(function(game){byId.set(String(game.id),game);});
+  normalizeGames(fresh).forEach(function(game){
+    const old=byId.get(String(game.id));
+    byId.set(String(game.id),Object.assign({},old||{},game));
+  });
+  return Array.from(byId.values()).sort(function(a,b){return String(b.created_at).localeCompare(String(a.created_at));}).slice(0,GAMES_MAX_CACHE);
+}
+
 async function clearGameCache(){
   cachedGamesMemory=[];
   try{localStorage.removeItem(GAMES_LOCAL_CACHE_KEY);}catch(e){}
-  try{const db=await openGameCacheDB();await new Promise(function(resolve,reject){const tx=db.transaction(GAME_CACHE_STORE,"readwrite");tx.objectStore(GAME_CACHE_STORE).clear();tx.oncomplete=function(){db.close();resolve();};tx.onerror=function(){db.close();reject(tx.error);};});}catch(error){console.warn("Game cache clear failed:",error);}
+  try{
+    const db=await openGameCacheDB();
+    await new Promise(function(resolve,reject){
+      const tx=db.transaction(GAME_CACHE_STORE,"readwrite");
+      tx.objectStore(GAME_CACHE_STORE).clear();
+      tx.oncomplete=function(){db.close();resolve();};
+      tx.onerror=function(){db.close();reject(tx.error);};
+    });
+  }catch(error){console.warn("Game cache clear failed:",error);}
 }
 
 function setCacheStatus(message,type){
@@ -2138,31 +2201,67 @@ function setCacheStatus(message,type){
 function browserIsOnline(){return navigator.onLine!==false;}
 
 function getRecentIds(){try{return JSON.parse(localStorage.getItem(RECENT_GAMES_KEY)||"[]");}catch(e){return [];}}
-function saveRecentGame(game){
-  const id=String(game.id);let ids=getRecentIds().filter(function(x){return String(x)!==id;});ids.unshift(game.id);ids=ids.slice(0,24);try{localStorage.setItem(RECENT_GAMES_KEY,JSON.stringify(ids));}catch(e){}
-}
-function getAdminPopularIds(){
-  try{const value=JSON.parse(localStorage.getItem(ADMIN_POPULAR_GAMES_KEY)||"[]");return Array.isArray(value)?value.map(String):[];}catch(e){return [];}
-}
-function saveAdminPopularIds(ids){
-  const clean=[...new Set((Array.isArray(ids)?ids:[]).map(String))];
-  try{localStorage.setItem(ADMIN_POPULAR_GAMES_KEY,JSON.stringify(clean));}catch(e){}
-  return clean;
-}
+function saveRecentGame(game){const id=String(game.id);let ids=getRecentIds().filter(function(x){return String(x)!==id;});ids.unshift(game.id);ids=ids.slice(0,24);try{localStorage.setItem(RECENT_GAMES_KEY,JSON.stringify(ids));}catch(e){}}
+function getAdminPopularIds(){try{const value=JSON.parse(localStorage.getItem(ADMIN_POPULAR_GAMES_KEY)||"[]");return Array.isArray(value)?value.map(String):[];}catch(e){return [];}}
+function saveAdminPopularIds(ids){const clean=[...new Set((Array.isArray(ids)?ids:[]).map(String))];try{localStorage.setItem(ADMIN_POPULAR_GAMES_KEY,JSON.stringify(clean));}catch(e){}return clean;}
 function isGameMarkedPopular(gameId){return getAdminPopularIds().includes(String(gameId));}
 function trackGamePlay(game){if(!game)return;saveRecentGame(game);}
-function getRecentGames(allGames){
-  const ids=getRecentIds();const byId=new Map((allGames||[]).map(function(g){return [String(g.id),g];}));return ids.map(function(id){return byId.get(String(id));}).filter(Boolean);
-}
-function getPopularGames(allGames){
-  const ids=getAdminPopularIds();const byId=new Map((allGames||[]).map(function(g){return [String(g.id),g];}));return ids.map(function(id){return byId.get(String(id));}).filter(Boolean);
-}
+function getRecentGames(allGames){const ids=getRecentIds();const byId=new Map((allGames||[]).map(function(g){return [String(g.id),g];}));return ids.map(function(id){return byId.get(String(id));}).filter(Boolean);}
+function getPopularGames(allGames){const ids=getAdminPopularIds();const byId=new Map((allGames||[]).map(function(g){return [String(g.id),g];}));return ids.map(function(id){return byId.get(String(id));}).filter(Boolean);}
 
+/* Fetch lightweight metadata first. Old Base64 thumbnails cannot block the game list. */
 async function getGamesFromSupabase(){
-  const {data,error}=await supabaseClient.from("games").select("id,created_at,title,description,thumbnail,game_url,category").order("created_at",{ascending:false}).limit(500);
-  if(error){console.error("Games load error:",error);throw error;}
+  const promise=supabaseClient
+    .from("games")
+    .select("id,created_at,title,description,game_url,category")
+    .order("created_at",{ascending:false})
+    .limit(GAMES_SERVER_LIMIT);
+
+  const timeout=new Promise(function(_,reject){setTimeout(function(){reject(new Error("Game list request timed out."));},10000);});
+  const result=await Promise.race([promise,timeout]);
+  const {data,error}=result;
+  if(error)throw error;
   return normalizeGames(data||[]);
 }
+
+/* Load thumbnails only after the game cards are already visible. */
+async function refreshGameThumbnails(){
+  if(!browserIsOnline()||thumbnailRefreshPromise)return thumbnailRefreshPromise;
+  if(!cachedGamesMemory.length)return false;
+  thumbnailRefreshPromise=(async function(){
+    try{
+      const ids=cachedGamesMemory.map(function(game){return game.id;}).filter(Boolean);
+      if(!ids.length)return true;
+      const {data,error}=await supabaseClient.from("games").select("id,thumbnail").in("id",ids);
+      if(error)throw error;
+      const thumbs=new Map((data||[]).map(function(row){return [String(row.id),row.thumbnail||""];}));
+      let changed=false;
+      cachedGamesMemory=cachedGamesMemory.map(function(game){
+        const thumb=thumbs.get(String(game.id));
+        if(thumb!==undefined&&thumb!==game.iconImage){changed=true;return Object.assign({},game,{iconImage:thumb});}
+        return game;
+      });
+      if(changed){
+        try{
+          const db=await openGameCacheDB();
+          await new Promise(function(resolve,reject){
+            const tx=db.transaction(GAME_CACHE_STORE,"readwrite");
+            const store=tx.objectStore(GAME_CACHE_STORE);
+            cachedGamesMemory.forEach(function(game){store.put(game);});
+            tx.oncomplete=function(){db.close();resolve();};
+            tx.onerror=function(){db.close();reject(tx.error);};
+            tx.onabort=function(){db.close();reject(tx.error);};
+          });
+        }catch(cacheError){console.warn("Thumbnail cache write failed:",cacheError);}
+        renderGameHome(cachedGamesMemory);
+      }
+      return true;
+    }catch(error){console.warn("Thumbnail refresh failed:",error);return false;}
+    finally{thumbnailRefreshPromise=null;}
+  })();
+  return thumbnailRefreshPromise;
+}
+
 async function getGames(){
   if(cachedGamesMemory.length)return cachedGamesMemory.slice();
   const cached=await readCachedGames();
@@ -2173,13 +2272,17 @@ async function getGames(){
 async function refreshGamesFromServer(){
   if(!browserIsOnline()){setCacheStatus("Offline — showing saved games.","offline");return false;}
   if(gameRefreshPromise)return gameRefreshPromise;
+  if(lastServerRefreshAt&&Date.now()-lastServerRefreshAt<30000)return true;
   gameRefreshPromise=(async function(){
     try{
       const fresh=await getGamesFromSupabase();
-      await writeCachedGames(fresh);
-      renderGameHome(fresh);
-      renderSidebarCategories(fresh);
+      const merged=mergeGamesKeepCache(cachedGamesMemory,fresh);
+      await writeCachedGames(merged);
+      renderGameHome(merged);
+      renderSidebarCategories(merged);
+      lastServerRefreshAt=Date.now();
       setCacheStatus("","");
+      refreshGameThumbnails();
       return true;
     }catch(error){
       console.warn("Background game refresh failed:",error);
@@ -2758,8 +2861,15 @@ function hideAllMainPages(){
 function showHome(){
   closeGamePlayer(false,false);hideAllMainPages();document.getElementById("homePage").style.display="block";currentCategory="All";setActiveNav("home");renderGameHome();window.scrollTo(0,0);
 }
-async function showGames(){
-  closeGamePlayer(false,false);hideAllMainPages();document.getElementById("homePage").style.display="block";currentCategory="All";setActiveNav("all");document.getElementById("allSection").scrollIntoView({behavior:"smooth",block:"start"});renderGameHome();refreshGamesFromServer();
+function showGames(){
+  closeGamePlayer(false,false);
+  hideAllMainPages();
+  const home=document.getElementById("homePage");
+  if(home)home.style.display="block";
+  renderGameHome(cachedGamesMemory);
+  const gamesSection=document.getElementById("games");
+  if(gamesSection)gamesSection.scrollIntoView({behavior:"smooth",block:"start"});
+  if(browserIsOnline())refreshGamesFromServer();
 }
 function showRecentlyPlayed(){
   closeGamePlayer(false,false);hideAllMainPages();document.getElementById("homePage").style.display="block";currentCategory="All";setActiveNav("recent");renderGameHome();document.getElementById("recentSection").scrollIntoView({behavior:"smooth",block:"start"});
@@ -2779,7 +2889,7 @@ function renderSidebarCategories(games){
 
 function createMiniCard(game){
   const card=document.createElement("div");card.className="mini-card";
-  const image=game.iconImage?'<img src="'+escapeHtml(game.iconImage)+'" alt="" loading="lazy" decoding="async">':escapeHtml(game.icon||"🎮");
+  const image=game.iconImage?'<img src="'+escapeHtml(game.iconImage)+'" alt="" loading="lazy" decoding="async" fetchpriority="low">':escapeHtml(game.icon||"🎮");
   card.innerHTML='<div class="mini-image">'+image+'</div><div class="mini-info"><h3>'+escapeHtml(game.name||"Game")+'</h3><p>'+escapeHtml(game.category||"Games")+'</p></div>';
   card.onclick=function(){openGamePlayer(game);};
   return card;
@@ -2805,7 +2915,7 @@ function renderAllGrid(games){
   const visible=filterGames(games);grid.innerHTML="";
   visible.forEach(function(game){
     const card=document.createElement("div");card.className="game-card";
-    const icon=game.iconImage?'<img src="'+escapeHtml(game.iconImage)+'" alt="'+escapeHtml(game.name)+'" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.parentElement.textContent=\'🎮\';">':escapeHtml(game.icon||"🎮");
+    const icon=game.iconImage?'<img src="'+escapeHtml(game.iconImage)+'" alt="'+escapeHtml(game.name)+'" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.display=\'none\';this.parentElement.textContent=\'🎮\';">':escapeHtml(game.icon||"🎮");
     card.innerHTML='<div class="game-image">'+icon+'</div><div class="game-info"><h3>'+escapeHtml(game.name||"Game")+'</h3><p>'+escapeHtml(game.description||"Play this game on GameRAX.")+'</p><div class="game-meta">'+escapeHtml(game.category||"Games")+' · Free</div></div>';
     card.onclick=function(){openGamePlayer(game);};grid.appendChild(card);
   });
@@ -3410,7 +3520,7 @@ async function renderRecommendations(
         const imageHtml=
           game.iconImage
 
-            ? `<img src="${escapeHtml(game.iconImage)}" alt="${escapeHtml(game.name || "Game")} icon" loading="lazy" decoding="async" onerror="this.style.display='none';this.parentElement.textContent='';">`
+            ? `<img src="${escapeHtml(game.iconImage)}" alt="${escapeHtml(game.name || "Game")} icon" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.display='none';this.parentElement.textContent='';">`
 
             : escapeHtml(
                 game.icon ||
@@ -4878,99 +4988,260 @@ async function saveAdminGame(){
 }
 async function loadAdminPopularManager(gamesOverride){
   if(!isAdmin())return;
-  const box=document.getElementById("adminPopularList");if(!box)return;
-  box.innerHTML='<div class="admin-empty">Loading popular games...</div>';
+  const selectedBox=document.getElementById("adminPopularSelectedList");
+  const searchBox=document.getElementById("adminPopularSearchResults");
+  const searchInput=document.getElementById("adminPopularSearch");
+  if(!selectedBox||!searchBox)return;
+
+  selectedBox.innerHTML='<div class="admin-empty">Loading popular games...</div>';
+
   try{
     let games=Array.isArray(gamesOverride)?gamesOverride:null;
+
     if(!games){
-      const {data,error}=await supabaseClient.from("games").select("id,created_at,title,description,thumbnail,game_url,category").order("created_at",{ascending:false}).limit(500);
-      if(error)throw error;games=data||[];
+      const {data,error}=await supabaseClient
+        .from("games")
+        .select("id,title,category,game_url,description")
+        .order("created_at",{ascending:false})
+        .limit(GAMES_SERVER_LIMIT);
+      if(error)throw error;
+      games=data||[];
     }
-    const selected=new Set(getAdminPopularIds());
-    if(!games.length){box.innerHTML='<div class="admin-empty">No published games yet.</div>';return;}
-    box.innerHTML="";
-    games.forEach(function(g){
-      const row=document.createElement("div");row.className="admin-item";
-      const thumb=document.createElement("div");thumb.className="admin-thumb";
-      if(g.thumbnail){const img=document.createElement("img");img.src=g.thumbnail;img.alt="";img.loading="lazy";img.decoding="async";thumb.appendChild(img);}else thumb.textContent="🎮";
-      const info=document.createElement("div");const h=document.createElement("h3");h.textContent=g.title||"Game";
-      const p=document.createElement("p");p.textContent=(g.category||"Games")+" · "+(selected.has(String(g.id))?"Selected for Popular":"Not selected");info.appendChild(h);info.appendChild(p);
-      const actions=document.createElement("div");actions.className="admin-actions";
-      const button=document.createElement("button");const chosen=selected.has(String(g.id));button.className="small-btn "+(chosen?"success-btn":"");button.textContent=chosen?"✓ Popular":"＋ Add to Popular";button.onclick=function(){togglePopularGame(g.id);};actions.appendChild(button);
-      row.appendChild(thumb);row.appendChild(info);row.appendChild(actions);box.appendChild(row);
-    });
-  }catch(error){console.error("Popular manager load error:",error);box.innerHTML='<div class="admin-empty">Could not load published games. Complete the Supabase games-table setup first.</div>';}
+
+    adminPopularGamesPool=games.slice();
+    renderAdminSelectedPopularGames(games);
+    if(searchInput && searchInput.value.trim()){
+      searchAdminPopularGames();
+    }else{
+      searchBox.innerHTML='<div class="admin-empty">Type a game name to search.</div>';
+    }
+  }catch(error){
+    console.error("Popular manager load error:",error);
+    adminPopularGamesPool=[];
+    selectedBox.innerHTML='<div class="admin-empty">Could not load Popular Games.</div>';
+    searchBox.innerHTML='<div class="admin-empty">Could not load published games.</div>';
+  }
 }
+
+let adminPopularGamesPool=[];
+
+function renderAdminSelectedPopularGames(games){
+  const box=document.getElementById("adminPopularSelectedList");
+  if(!box)return;
+  const selectedIds=new Set(getAdminPopularIds());
+  const selected=(games||[]).filter(function(g){return selectedIds.has(String(g.id));});
+
+  box.innerHTML="";
+  if(!selected.length){
+    box.innerHTML='<div class="admin-empty">No popular games selected yet.</div>';
+    return;
+  }
+
+  selected.forEach(function(g){
+    const row=document.createElement("div");
+    row.className="admin-item";
+    row.style.gridTemplateColumns="minmax(0,1fr) auto";
+
+    const info=document.createElement("div");
+    const h=document.createElement("h3");
+    h.textContent=g.title||"Game";
+    const p=document.createElement("p");
+    p.textContent=(g.category||"Games")+" · Popular";
+    info.appendChild(h);
+    info.appendChild(p);
+
+    const actions=document.createElement("div");
+    actions.className="admin-actions";
+    const remove=document.createElement("button");
+    remove.className="small-btn danger-btn";
+    remove.textContent="Remove";
+    remove.onclick=function(){togglePopularGame(g.id);};
+    actions.appendChild(remove);
+
+    row.appendChild(info);
+    row.appendChild(actions);
+    box.appendChild(row);
+  });
+}
+
+function searchAdminPopularGames(){
+  if(!isAdmin())return;
+  const input=document.getElementById("adminPopularSearch");
+  const box=document.getElementById("adminPopularSearchResults");
+  if(!input||!box)return;
+
+  const term=input.value.trim().toLowerCase();
+  if(!term){
+    box.innerHTML='<div class="admin-empty">Type a game name to search.</div>';
+    return;
+  }
+
+  const selectedIds=new Set(getAdminPopularIds());
+  const matches=adminPopularGamesPool.filter(function(g){
+    const title=String(g.title||"").toLowerCase();
+    const category=String(g.category||"").toLowerCase();
+    return title.includes(term)||category.includes(term);
+  }).filter(function(g){
+    return !selectedIds.has(String(g.id));
+  }).slice(0,30);
+
+  box.innerHTML="";
+  if(!matches.length){
+    box.innerHTML='<div class="admin-empty">No matching unpublished-to-Popular games found.</div>';
+    return;
+  }
+
+  matches.forEach(function(g){
+    const row=document.createElement("div");
+    row.className="admin-item";
+    row.style.gridTemplateColumns="minmax(0,1fr) auto";
+
+    const info=document.createElement("div");
+    const h=document.createElement("h3");
+    h.textContent=g.title||"Game";
+    const p=document.createElement("p");
+    p.textContent=(g.category||"Games")+" · Published";
+    info.appendChild(h);
+    info.appendChild(p);
+
+    const actions=document.createElement("div");
+    actions.className="admin-actions";
+    const add=document.createElement("button");
+    add.className="small-btn success-btn";
+    add.textContent="＋ Add to Popular";
+    add.onclick=function(){togglePopularGame(g.id);};
+    actions.appendChild(add);
+
+    row.appendChild(info);
+    row.appendChild(actions);
+    box.appendChild(row);
+  });
+}
+
 function togglePopularGame(gameId){
   if(!isAdmin()){alert("Admin access required.");return;}
-  const id=String(gameId),ids=getAdminPopularIds(),index=ids.indexOf(id);if(index>=0)ids.splice(index,1);else ids.push(id);saveAdminPopularIds(ids);renderGameHome();loadAdminPopularManager();
+  const id=String(gameId);
+  const ids=getAdminPopularIds();
+  const index=ids.indexOf(id);
+  if(index>=0)ids.splice(index,1);else ids.push(id);
+  saveAdminPopularIds(ids);
+  renderGameHome();
+  renderAdminSelectedPopularGames(adminPopularGamesPool);
+  searchAdminPopularGames();
 }
-async function selectAllPopularGames(){
-  if(!isAdmin()){alert("Admin access required.");return;}
-  try{const {data,error}=await supabaseClient.from("games").select("id").limit(500);if(error)throw error;saveAdminPopularIds((data||[]).map(function(g){return String(g.id);}));renderGameHome();await loadAdminPopularManager();}catch(error){alert(error.message||"Could not select all games.");}
-}
+
 async function clearAllPopularGames(){
   if(!isAdmin()){alert("Admin access required.");return;}
-  saveAdminPopularIds([]);renderGameHome();await loadAdminPopularManager();
+  saveAdminPopularIds([]);
+  renderGameHome();
+  renderAdminSelectedPopularGames(adminPopularGamesPool);
+  searchAdminPopularGames();
+}
+
+async function selectAllPopularGames(){
+  if(!isAdmin()){alert("Admin access required.");return;}
+  saveAdminPopularIds((adminPopularGamesPool||[]).map(function(g){return String(g.id);}));
+  renderGameHome();
+  renderAdminSelectedPopularGames(adminPopularGamesPool);
+  searchAdminPopularGames();
 }
 
 async function loadAdminPanel(){
   if(!isAdmin())return;
   const reqBox=document.getElementById("adminRequestsList"),gamesBox=document.getElementById("adminGamesList");
   if(!reqBox||!gamesBox)return;
-  reqBox.innerHTML='<div class="admin-empty">Loading requests...</div>';
-  gamesBox.innerHTML='<div class="admin-empty">Loading games...</div>';
-  try{
-    const [reqRes,gameRes]=await Promise.all([
-      supabaseClient.from("game_requests").select("*").order("created_at",{ascending:false}).limit(200),
-      supabaseClient.from("games").select("id,created_at,title,description,thumbnail,game_url,category").order("created_at",{ascending:false}).limit(500)
-    ]);
-    if(reqRes.error)throw reqRes.error;
-    if(gameRes.error)throw gameRes.error;
-    const requests=reqRes.data||[],games=gameRes.data||[];
-    document.getElementById("adminPendingCount").textContent=requests.filter(function(r){return String(r.status||"pending")==="pending";}).length;
-    document.getElementById("adminPublishedCount").textContent=games.length;
-    document.getElementById("adminCategoryCount").textContent=new Set(games.map(function(g){return String(g.category||"Games");})).size;
-    await loadAdminPopularManager(games);
 
-    reqBox.innerHTML="";
-    if(!requests.length){reqBox.innerHTML='<div class="admin-empty">No game requests yet.</div>';}else{
-      requests.forEach(function(r){
-        const item=document.createElement("div");item.className="admin-item";
-        const thumb=document.createElement("div");thumb.className="admin-thumb";
-        if(r.thumbnail){const img=document.createElement("img");img.src=r.thumbnail;img.alt="";img.loading="lazy";thumb.appendChild(img);}else thumb.textContent="🎮";
-        const info=document.createElement("div");
-        const h=document.createElement("h3");h.textContent=r.game_name||"Game";
-        const p=document.createElement("p");
-        p.innerHTML='<b>Developer:</b> '+escapeHtml(r.developer_name||"-")+" · "+escapeHtml(r.developer_email||"-")+"<br><b>Category:</b> "+escapeHtml(r.category||"Games")+"<br><b>URL:</b> "+escapeHtml(r.game_url||"-")+"<br><span class=\"admin-badge\">"+escapeHtml(r.status||"pending")+"</span>";
-        info.appendChild(h);info.appendChild(p);
-        const actions=document.createElement("div");actions.className="admin-actions";
-        if(String(r.status||"pending")==="pending"){
-          const approve=document.createElement("button");approve.className="small-btn success-btn";approve.textContent="Approve";approve.onclick=function(){approveGameRequest(r.id);};
-          const reject=document.createElement("button");reject.className="small-btn danger-btn";reject.textContent="Reject";reject.onclick=function(){rejectGameRequest(r.id);};
-          actions.appendChild(approve);actions.appendChild(reject);
-        }
-        item.appendChild(thumb);item.appendChild(info);item.appendChild(actions);reqBox.appendChild(item);
-      });
+  reqBox.innerHTML='<div class="admin-empty">Loading requests...</div>';
+  gamesBox.innerHTML='<div class="admin-empty">Loading published games...</div>';
+
+  const reqPromise=supabaseClient
+    .from("game_requests")
+    .select("id,created_at,developer_name,developer_email,game_name,game_url,category,description,status")
+    .order("created_at",{ascending:false})
+    .limit(200);
+
+  const gamesPromise=supabaseClient
+    .from("games")
+    .select("id,created_at,title,description,game_url,category")
+    .order("created_at",{ascending:false})
+    .limit(GAMES_SERVER_LIMIT);
+
+  try{
+    const [reqRes,gameRes]=await Promise.all([reqPromise,gamesPromise]);
+
+    const requestsOk=!reqRes.error;
+    const gamesOk=!gameRes.error;
+    const requests=requestsOk?(reqRes.data||[]):[];
+    const games=gamesOk?(gameRes.data||[]):[];
+
+    if(gamesOk){
+      document.getElementById("adminPendingCount").textContent=requestsOk?requests.filter(function(r){return String(r.status||"pending")==="pending";}).length:"—";
+      document.getElementById("adminPublishedCount").textContent=games.length;
+      document.getElementById("adminCategoryCount").textContent=new Set(games.map(function(g){return String(g.category||"Games");})).size;
+      await loadAdminPopularManager(games);
+    }else{
+      document.getElementById("adminPublishedCount").textContent="—";
+      document.getElementById("adminCategoryCount").textContent="—";
+      adminPopularGamesPool=[];
+      renderAdminSelectedPopularGames([]);
+      const searchResults=document.getElementById("adminPopularSearchResults");
+      if(searchResults)searchResults.innerHTML='<div class="admin-empty">Published games could not be loaded: '+escapeHtml(gameRes.error?.message||"Unknown error")+'</div>';
+    }
+
+    if(requestsOk){
+      reqBox.innerHTML="";
+      if(!requests.length){
+        reqBox.innerHTML='<div class="admin-empty">No game requests yet.</div>';
+      }else{
+        requests.forEach(function(r){
+          const item=document.createElement("div");item.className="admin-item";
+          const thumb=document.createElement("div");thumb.className="admin-thumb";thumb.textContent="🎮";
+          const info=document.createElement("div");
+          const h=document.createElement("h3");h.textContent=r.game_name||"Game";
+          const p=document.createElement("p");
+          p.innerHTML='<b>Developer:</b> '+escapeHtml(r.developer_name||"-")+" · "+escapeHtml(r.developer_email||"-")+"<br><b>Category:</b> "+escapeHtml(r.category||"Games")+"<br><b>URL:</b> "+escapeHtml(r.game_url||"-")+"<br><span class=\"admin-badge\">"+escapeHtml(r.status||"pending")+"</span>";
+          info.appendChild(h);info.appendChild(p);
+          const actions=document.createElement("div");actions.className="admin-actions";
+          if(String(r.status||"pending")==="pending"){
+            const approve=document.createElement("button");approve.className="small-btn success-btn";approve.textContent="Approve";approve.onclick=function(){approveGameRequest(r.id);};
+            const reject=document.createElement("button");reject.className="small-btn danger-btn";reject.textContent="Reject";reject.onclick=function(){rejectGameRequest(r.id);};
+            actions.appendChild(approve);actions.appendChild(reject);
+          }
+          item.appendChild(thumb);item.appendChild(info);item.appendChild(actions);reqBox.appendChild(item);
+        });
+      }
+    }else{
+      console.warn("Admin requests load error:",reqRes.error);
+      reqBox.innerHTML='<div class="admin-empty">Game requests are unavailable. Create/configure the <b>game_requests</b> table in Supabase.</div>';
+      document.getElementById("adminPendingCount").textContent="—";
     }
 
     gamesBox.innerHTML="";
-    if(!games.length){gamesBox.innerHTML='<div class="admin-empty">No published games.</div>';}else{
-      games.forEach(function(g){
-        const item=document.createElement("div");item.className="admin-item";
-        const thumb=document.createElement("div");thumb.className="admin-thumb";
-        if(g.thumbnail){const img=document.createElement("img");img.src=g.thumbnail;img.alt="";img.loading="lazy";thumb.appendChild(img);}else thumb.textContent="🎮";
-        const info=document.createElement("div");const h=document.createElement("h3");h.textContent=g.title||"Game";const p=document.createElement("p");p.textContent=(g.category||"Games")+" · "+(g.game_url||"");info.appendChild(h);info.appendChild(p);
-        const actions=document.createElement("div");actions.className="admin-actions";
-        const edit=document.createElement("button");edit.className="small-btn";edit.textContent="Edit";edit.onclick=function(){editAdminGame(g.id);};
-        const del=document.createElement("button");del.className="small-btn danger-btn";del.textContent="Delete";del.onclick=function(){deleteAdminGame(g.id);};
-        actions.appendChild(edit);actions.appendChild(del);item.appendChild(thumb);item.appendChild(info);item.appendChild(actions);gamesBox.appendChild(item);
-      });
+    if(gamesOk){
+      if(!games.length){
+        gamesBox.innerHTML='<div class="admin-empty">No published games.</div>';
+      }else{
+        games.forEach(function(g){
+          const item=document.createElement("div");item.className="admin-item";
+          const thumb=document.createElement("div");thumb.className="admin-thumb";thumb.textContent="🎮";
+          const info=document.createElement("div");
+          const h=document.createElement("h3");h.textContent=g.title||"Game";
+          const p=document.createElement("p");p.textContent=(g.category||"Games")+" · "+(g.game_url||"");
+          info.appendChild(h);info.appendChild(p);
+          const actions=document.createElement("div");actions.className="admin-actions";
+          const edit=document.createElement("button");edit.className="small-btn";edit.textContent="Edit";edit.onclick=function(){editAdminGame(g.id);};
+          const del=document.createElement("button");del.className="small-btn danger-btn";del.textContent="Delete";del.onclick=function(){deleteAdminGame(g.id);};
+          actions.appendChild(edit);actions.appendChild(del);
+          item.appendChild(thumb);item.appendChild(info);item.appendChild(actions);gamesBox.appendChild(item);
+        });
+      }
+    }else{
+      gamesBox.innerHTML='<div class="admin-empty">Published games could not be loaded from the admin panel.<br><span style="display:block;margin-top:8px;font-size:11px;color:#666;">'+escapeHtml(gameRes.error?.message||"Unknown Supabase error")+'</span></div>';
     }
   }catch(error){
     console.error("Admin load error:",error);
-    reqBox.innerHTML='<div class="admin-empty">Admin backend is not configured yet. Create the <b>game_requests</b> table and <b>game-thumbnails</b> Storage bucket in Supabase, then refresh.</div>';
-    gamesBox.innerHTML='<div class="admin-empty">Published games could not be loaded from the admin panel.</div>';
+    reqBox.innerHTML='<div class="admin-empty">Admin panel could not load the request data right now.</div>';
+    gamesBox.innerHTML='<div class="admin-empty">Admin panel could not load the published games right now.</div>';
   }
 }
 
@@ -5027,16 +5298,43 @@ window.addEventListener(
    PAGE LOAD
 ===================================================== */
 
-window.addEventListener("DOMContentLoaded",async function(){
+(function cleanupOldGameCacheKeys(){try{localStorage.removeItem("gamerax_games_v2");}catch(e){}})();
+
+window.addEventListener("DOMContentLoaded",function(){
   const searchInput=document.getElementById("searchInput");
-  if(searchInput){searchInput.value="";searchInput.addEventListener("input",searchGames);}
+  if(searchInput){
+    searchInput.value="";
+    searchInput.addEventListener("input",searchGames);
+  }
+
+  /* FAST BOOT: paint cached games first, then refresh in background. */
   const cached=readFastLocalGames();
-  if(cached.length){cachedGamesMemory=cached.slice();renderGameHome(cached);}else{renderGameHome([]);}
-  renderSidebarCategories(cached);
-  try{await loadAccount();}catch(error){console.warn("Account init error:",error);}
-  updateHeaderUI();updateProfileUI();updateAdminVisibility();
-  if(cached.length){refreshGamesFromServer();}else if(browserIsOnline()){refreshGamesFromServer();}
-  try{await openGameFromGamerexRoute();}catch(error){console.error("Route initialization error:",error);}
+  if(cached.length){
+    cachedGamesMemory=cached.slice();
+    renderGameHome(cached);
+    renderSidebarCategories(cached);
+  }else{
+    renderGameHome([]);
+  }
+
+  if(browserIsOnline()){
+    /* Do NOT wait for account/profile loading. */
+    refreshGamesFromServer();
+  }else{
+    setCacheStatus("Offline — showing saved games.","offline");
+  }
+
+  /* Account/admin is secondary and must never block games. */
+  Promise.resolve().then(async function(){
+    try{await loadAccount();}catch(error){console.warn("Account init error:",error);}
+    updateHeaderUI();
+    updateProfileUI();
+    updateAdminVisibility();
+  });
+
+  Promise.resolve().then(async function(){
+    try{await openGameFromGamerexRoute();}catch(error){console.error("Route initialization error:",error);}
+  });
 });
 
 /* =====================================================
