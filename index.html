@@ -1236,6 +1236,30 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
 @media(max-width:900px){.admin-grid{grid-template-columns:1fr 1fr;}.game-grid{grid-template-columns:repeat(auto-fill,minmax(165px,1fr));}.horizontal-games{grid-auto-columns:175px;}}
 @media(max-width:650px){header{height:auto;min-height:58px;flex-wrap:wrap;padding:8px 12px}.top-search{order:3;width:100%;max-width:none;margin:6px 0}.sidebar{top:58px}.main{margin-left:58px;padding-top:58px}.hero{padding:24px 18px 14px}.hero h1{font-size:27px}.games{padding:15px 14px 35px}.admin-page{padding:20px 14px}.admin-grid{grid-template-columns:1fr}.admin-item{grid-template-columns:55px minmax(0,1fr)}.admin-actions{grid-column:2;justify-content:flex-start}.admin-thumb{width:55px;height:42px}.form-row{grid-template-columns:1fr}.logo{min-width:auto;font-size:20px}.auth-buttons{margin-left:auto}.login-btn,.signup-btn,.logout-btn{padding:8px 10px;font-size:12px}}
 
+
+/* ================= REQUESTED GAME FEEDBACK / ANALYTICS ================= */
+.game-rating-panel{margin-top:18px;padding-top:16px;border-top:1px solid #292939;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.game-rating-summary{display:flex;align-items:center;gap:9px;flex-wrap:wrap;color:#9696a8;font-size:13px;}
+.game-rating-summary>strong{font-size:24px;color:#fff;}
+.game-rating-counts{display:inline-flex;gap:12px;margin-left:8px;color:#d0d0dc;}
+.game-rating-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.game-vote-btn{padding:10px 13px;border:1px solid #343448;border-radius:8px;background:#161622;color:#e8e8f0;font-weight:700;cursor:pointer;}
+.game-vote-btn:hover{border-color:var(--gx-cyan);}
+.game-vote-btn.active-like{border-color:#49d99a;background:#143126;color:#a7f5d1;}
+.game-vote-btn.active-dislike{border-color:#ff7474;background:#351c25;color:#ffc0c0;}
+.game-rating-message{flex-basis:100%;margin:0!important;font-size:12px!important;color:#77778a!important;}
+.game-controls-box{margin-top:16px;padding:15px;background:#11111a;border:1px solid var(--gx-border);border-radius:10px;}
+.game-controls-box h3{font-size:16px;margin-bottom:8px;}
+.game-controls-box p{white-space:pre-line;line-height:1.6;color:#c0c0ce;}
+.admin-analytics-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px;}
+.admin-analytics-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.admin-analytics-table-wrap{overflow-x:auto;}
+.admin-analytics-table{width:100%;border-collapse:collapse;min-width:660px;font-size:13px;}
+.admin-analytics-table th,.admin-analytics-table td{padding:11px 10px;border-bottom:1px solid #262635;text-align:left;white-space:nowrap;}
+.admin-analytics-table th{color:#9393a6;font-size:11px;text-transform:uppercase;letter-spacing:.4px;}
+.admin-analytics-table td:first-child{white-space:normal;max-width:240px;font-weight:700;}
+@media(max-width:900px){.admin-analytics-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:650px){.admin-analytics-grid{grid-template-columns:1fr;}.game-rating-panel{align-items:flex-start;}}
 </style>
 </head>
 
@@ -1337,6 +1361,22 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
         <div class="game-underbar">
           <h2 id="gameUnderTitle">Game</h2>
           <p id="gameUnderDescription">Play this game on GameRAX.</p>
+          <div class="game-rating-panel" id="gameRatingPanel" aria-live="polite">
+            <div class="game-rating-summary">
+              <strong id="gameLikePercent">—</strong>
+              <span>players like this game</span>
+              <span class="game-rating-counts"><span>👍 <b id="gameLikesCount">0</b></span><span>👎 <b id="gameDislikesCount">0</b></span></span>
+            </div>
+            <div class="game-rating-actions">
+              <button type="button" class="game-vote-btn" id="gameLikeBtn" onclick="castGameVote(1)">👍 Like</button>
+              <button type="button" class="game-vote-btn" id="gameDislikeBtn" onclick="castGameVote(-1)">👎 Dislike</button>
+            </div>
+            <p class="game-rating-message" id="gameRatingMessage">You can change your vote later.</p>
+          </div>
+          <div class="game-controls-box" id="gameControlsBox">
+            <h3>⌨️ Game Controls</h3>
+            <p id="gameControlsText">Controls have not been added for this game yet.</p>
+          </div>
         </div>
       </div>
 
@@ -1541,6 +1581,22 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
       <div class="admin-stat"><span>Published games</span><strong id="adminPublishedCount">0</strong></div>
       <div class="admin-stat"><span>Pending requests</span><strong id="adminPendingCount">0</strong></div>
       <div class="admin-stat"><span>Categories</span><strong id="adminCategoryCount">0</strong></div>
+    </div>
+
+    <div class="admin-card" id="adminAnalyticsCard">
+      <h2>📊 Visitor & Game Analytics</h2>
+      <p style="color:#77778a;font-size:13px;line-height:1.5;margin-bottom:14px;">Visitor and playtime tracking begins after analytics is enabled; it cannot recover historical activity.</p>
+      <div class="admin-analytics-grid">
+        <div class="admin-stat"><span>Unique visitors today</span><strong id="analyticsVisitorsToday">—</strong></div>
+        <div class="admin-stat"><span>Total unique visitors</span><strong id="analyticsVisitorsTotal">—</strong></div>
+        <div class="admin-stat"><span>Games started today</span><strong id="analyticsGamesToday">—</strong></div>
+        <div class="admin-stat"><span>Playtime today</span><strong id="analyticsPlaytimeToday">—</strong></div>
+      </div>
+      <div class="admin-analytics-toolbar">
+        <button class="small-btn" onclick="loadAdminAnalytics()">Refresh Analytics</button>
+        <span id="adminAnalyticsUpdated" style="color:#77778a;font-size:12px;align-self:center;"></span>
+      </div>
+      <div id="adminAnalyticsGames"><div class="admin-empty">Analytics will appear when the Supabase setup is complete.</div></div>
     </div>
 
     <div class="admin-card">
@@ -2031,6 +2087,7 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
     </div>
     <input type="url" id="adminGameUrl" placeholder="Game URL">
     <textarea id="adminGameDescription" placeholder="Game description"></textarea>
+    <textarea id="adminGameControls" placeholder="Game controls (e.g. WASD to move, Space to jump, mouse to aim)"></textarea>
     <label class="game-icon-label" for="adminGameIconFile">🖼️ Game thumbnail</label>
     <input class="game-icon-input" type="file" id="adminGameIconFile" accept="image/png,image/jpeg,image/jpg,image/webp" onchange="previewAdminGameIcon(event)">
     <div class="upload-note">Images are compressed in the browser and uploaded to Supabase Storage instead of being saved as huge Base64 data in the database.</div>
@@ -2097,6 +2154,7 @@ function normalizeGames(games){
       category:game.category||"Games",
       iconImage:game.iconImage||game.thumbnail||"",
       description:game.description||"Play this game on GameRAX.",
+      controls:game.controls||"",
       created_at:game.created_at||""
     };
   }).filter(function(game){
@@ -2113,6 +2171,7 @@ function lightweightGames(games){
       url:game.url,
       category:game.category,
       description:game.description,
+      controls:game.controls,
       created_at:game.created_at,
       iconImage:(typeof game.iconImage==="string" && /^https?:\/\//i.test(game.iconImage)) ? game.iconImage : ""
     };
@@ -2255,7 +2314,7 @@ async function loadPopularIdsFromSupabase(){
 async function getGamesFromSupabase(){
   const promise=supabaseClient
     .from("games")
-    .select("id,created_at,title,description,game_url,category")
+    .select("id,created_at,title,description,game_url,category,controls")
     .order("created_at",{ascending:false})
     .limit(GAMES_SERVER_LIMIT);
 
@@ -3347,6 +3406,166 @@ async function openGameFromGamerexRoute(){
 }
 
 /* =====================================================
+   REQUESTED GAME ANALYTICS + RATINGS
+===================================================== */
+let activeAnalyticsGameSession=null;
+let analyticsTimer=null;
+let activeVoteGameId=null;
+let voteSummaryRequestToken=0;
+let analyticsWarningShown=false;
+
+function getStableBrowserId(key){
+  try{
+    let value=localStorage.getItem(key);
+    if(value)return value;
+    value=(window.crypto&&typeof crypto.randomUUID==="function")?crypto.randomUUID():("gx-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2));
+    localStorage.setItem(key,value);
+    return value;
+  }catch(error){
+    return (window.crypto&&typeof crypto.randomUUID==="function")?crypto.randomUUID():("gx-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2));
+  }
+}
+function getGameRAXVisitorId(){return getStableBrowserId("gamerax_visitor_id_v1");}
+function getGameRAXVoterId(){return getStableBrowserId("gamerax_voter_id_v1");}
+function getBrowserSessionId(){
+  try{let value=sessionStorage.getItem("gamerax_analytics_session_v1");if(!value){value=(window.crypto&&typeof crypto.randomUUID==="function")?crypto.randomUUID():("gxs-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2));sessionStorage.setItem("gamerax_analytics_session_v1",value);}return value;}
+  catch(error){return (window.crypto&&typeof crypto.randomUUID==="function")?crypto.randomUUID():("gxs-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2));}
+}
+async function recordGameRAXVisit(){
+  if(!browserIsOnline())return;
+  try{
+    const {error}=await supabaseClient.rpc("gamerax_record_visit",{p_session_id:getBrowserSessionId(),p_visitor_id:getGameRAXVisitorId()});
+    if(error)throw error;
+  }catch(error){if(!analyticsWarningShown){console.warn("GameRAX visitor analytics is not configured yet. Apply the included Supabase SQL setup.",error);analyticsWarningShown=true;}}
+}
+function formatGameRAXDuration(seconds){
+  const value=Math.max(0,Math.floor(Number(seconds)||0));
+  const hours=Math.floor(value/3600),minutes=Math.floor((value%3600)/60),secs=value%60;
+  if(hours)return hours+"h "+minutes+"m";
+  if(minutes)return minutes+"m "+secs+"s";
+  return secs+"s";
+}
+function getAdminAnalyticsDayStart(){const d=new Date();d.setHours(0,0,0,0);return d.toISOString();}
+function normalizeRpcRow(data){return Array.isArray(data)?(data[0]||{}):(data||{});}
+function renderGameVoteSummary(stats){
+  const likes=Number(stats&&stats.likes)||0,dislikes=Number(stats&&stats.dislikes)||0,total=likes+dislikes;
+  const percent=total?Math.round(likes/total*100):0;
+  const likesEl=document.getElementById("gameLikesCount"),dislikesEl=document.getElementById("gameDislikesCount"),percentEl=document.getElementById("gameLikePercent");
+  if(likesEl)likesEl.textContent=likes.toLocaleString();
+  if(dislikesEl)dislikesEl.textContent=dislikes.toLocaleString();
+  if(percentEl)percentEl.textContent=total?percent+"%":"—";
+  const userVote=Number(stats&&stats.user_vote)||0;
+  const likeBtn=document.getElementById("gameLikeBtn"),dislikeBtn=document.getElementById("gameDislikeBtn");
+  if(likeBtn)likeBtn.classList.toggle("active-like",userVote===1);
+  if(dislikeBtn)dislikeBtn.classList.toggle("active-dislike",userVote===-1);
+  const message=document.getElementById("gameRatingMessage");
+  if(message)message.textContent=userVote?"Your vote is saved. You can change it anytime.":"Vote once on this browser; you can change your vote later.";
+}
+async function loadGameVoteSummary(gameId){
+  activeVoteGameId=String(gameId);
+  const requestToken=++voteSummaryRequestToken;
+  const message=document.getElementById("gameRatingMessage");
+  if(message)message.textContent="Loading ratings...";
+  try{
+    const {data,error}=await supabaseClient.rpc("gamerax_get_vote_summary",{p_game_id:String(gameId),p_voter_id:getGameRAXVoterId()});
+    if(error)throw error;
+    if(requestToken!==voteSummaryRequestToken)return;
+    renderGameVoteSummary(normalizeRpcRow(data));
+  }catch(error){
+    if(requestToken!==voteSummaryRequestToken)return;
+    if(message)message.textContent="Ratings need the GameRAX Supabase setup to be enabled.";
+    console.warn("GameRAX vote summary unavailable:",error);
+  }
+}
+async function castGameVote(vote){
+  if(!activeVoteGameId){return;}
+  const likeBtn=document.getElementById("gameLikeBtn"),dislikeBtn=document.getElementById("gameDislikeBtn"),message=document.getElementById("gameRatingMessage");
+  if(likeBtn)likeBtn.disabled=true;if(dislikeBtn)dislikeBtn.disabled=true;
+  if(message)message.textContent="Saving your vote...";
+  try{
+    const {data,error}=await supabaseClient.rpc("gamerax_cast_vote",{p_game_id:String(activeVoteGameId),p_voter_id:getGameRAXVoterId(),p_vote:Number(vote)});
+    if(error)throw error;
+    renderGameVoteSummary(normalizeRpcRow(data));
+  }catch(error){
+    console.warn("GameRAX vote failed:",error);
+    if(message)message.textContent="Could not save vote. Check the Supabase setup and try again.";
+  }finally{if(likeBtn)likeBtn.disabled=false;if(dislikeBtn)dislikeBtn.disabled=false;}
+}
+async function persistAnalyticsGameSession(session,ended){
+  if(!session||!browserIsOnline())return;
+  const {error}=await supabaseClient.rpc("gamerax_record_game_session",{
+    p_session_id:session.sessionId,
+    p_visitor_id:session.visitorId,
+    p_game_id:String(session.gameId),
+    p_game_name:String(session.gameName||"Game").slice(0,200),
+    p_started_at:session.startedAt,
+    p_duration_seconds:Math.min(86400,Math.max(0,Math.floor(session.durationSeconds||0))),
+    p_ended:Boolean(ended)
+  });
+  if(error)throw error;
+}
+function tickAnalyticsGameSession(forceSave,ended){
+  const session=activeAnalyticsGameSession;if(!session)return;
+  const now=Date.now();
+  const page=document.getElementById("gamePage");
+  if(!document.hidden&&page&&page.style.display!=="none"){
+    const elapsed=Math.max(0,Math.floor((now-session.lastTickAt)/1000));
+    session.durationSeconds=Math.min(86400,session.durationSeconds+elapsed);
+  }
+  session.lastTickAt=now;
+  if(forceSave||session.durationSeconds-session.lastSavedSeconds>=15){
+    session.lastSavedSeconds=session.durationSeconds;
+    persistAnalyticsGameSession(session,Boolean(ended)).catch(function(error){if(!analyticsWarningShown){console.warn("GameRAX playtime tracking is not configured yet. Apply the included Supabase SQL setup.",error);analyticsWarningShown=true;}});
+  }
+}
+async function endAnalyticsGameSession(){
+  const session=activeAnalyticsGameSession;if(!session)return;
+  tickAnalyticsGameSession(false,false);
+  activeAnalyticsGameSession=null;
+  if(analyticsTimer){clearInterval(analyticsTimer);analyticsTimer=null;}
+  try{await persistAnalyticsGameSession(session,true);}catch(error){console.warn("Could not finish GameRAX play session:",error);}
+}
+async function startAnalyticsGameSession(game){
+  if(!game||!game.id||!browserIsOnline())return;
+  await endAnalyticsGameSession();
+  const session={sessionId:(window.crypto&&typeof crypto.randomUUID==="function")?crypto.randomUUID():("gxp-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2)),visitorId:getGameRAXVisitorId(),gameId:String(game.id),gameName:game.name||"Game",startedAt:new Date().toISOString(),durationSeconds:0,lastSavedSeconds:-1,lastTickAt:Date.now()};
+  activeAnalyticsGameSession=session;
+  try{await persistAnalyticsGameSession(session,false);session.lastSavedSeconds=0;}catch(error){if(!analyticsWarningShown){console.warn("GameRAX playtime tracking is not configured yet. Apply the included Supabase SQL setup.",error);analyticsWarningShown=true;}}
+  if(analyticsTimer)clearInterval(analyticsTimer);
+  analyticsTimer=setInterval(function(){tickAnalyticsGameSession(false,false);},5000);
+}
+
+async function loadAdminAnalytics(){
+  if(!isAdmin())return;
+  const gameBox=document.getElementById("adminAnalyticsGames");
+  const updated=document.getElementById("adminAnalyticsUpdated");
+  if(gameBox)gameBox.innerHTML='<div class="admin-empty">Loading analytics...</div>';
+  try{
+    const {data,error}=await supabaseClient.rpc("gamerax_get_admin_analytics",{p_today_start:getAdminAnalyticsDayStart()});
+    if(error)throw error;
+    const stats=normalizeRpcRow(data);
+    const put=function(id,value){const el=document.getElementById(id);if(el)el.textContent=value;};
+    put("analyticsVisitorsToday",Number(stats.visitors_today||0).toLocaleString());
+    put("analyticsVisitorsTotal",Number(stats.visitors_total||0).toLocaleString());
+    put("analyticsGamesToday",Number(stats.games_played_today||0).toLocaleString());
+    put("analyticsPlaytimeToday",formatGameRAXDuration(stats.playtime_today_seconds||0));
+    const games=Array.isArray(stats.game_stats)?stats.game_stats:[];
+    if(gameBox){
+      if(!games.length){gameBox.innerHTML='<div class="admin-empty">No tracked gameplay yet. New sessions will appear here.</div>';}
+      else{
+        const rows=games.map(function(g){return '<tr><td>'+escapeHtml(g.game_name||"Game")+'</td><td>'+Number(g.plays_today||0).toLocaleString()+'</td><td>'+Number(g.plays_total||0).toLocaleString()+'</td><td>'+escapeHtml(formatGameRAXDuration(g.playtime_today_seconds||0))+'</td><td>'+escapeHtml(formatGameRAXDuration(g.playtime_total_seconds||0))+'</td><td>'+escapeHtml(formatGameRAXDuration(g.average_playtime_seconds||0))+'</td></tr>';}).join("");
+        gameBox.innerHTML='<div class="admin-analytics-table-wrap"><table class="admin-analytics-table"><thead><tr><th>Game</th><th>Plays today</th><th>Total plays</th><th>Time today</th><th>Total time</th><th>Average</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+      }
+    }
+    if(updated)updated.textContent="Updated "+new Date().toLocaleTimeString();
+  }catch(error){
+    console.warn("Admin analytics unavailable:",error);
+    if(gameBox)gameBox.innerHTML='<div class="admin-empty">Analytics setup is missing or unavailable. Run the included GameRAX Supabase SQL file, then refresh.</div>';
+    ["analyticsVisitorsToday","analyticsVisitorsTotal","analyticsGamesToday","analyticsPlaytimeToday"].forEach(function(id){const el=document.getElementById(id);if(el)el.textContent="—";});
+  }
+}
+
+/* =====================================================
    GAME PLAYER
 ===================================================== */
 
@@ -3359,6 +3578,13 @@ async function openGamePlayer(game,updateUrl=true){
   document.getElementById("currentGameTitle").textContent=game.name||"Game";
   document.getElementById("gameUnderTitle").textContent=game.name||"Game";
   document.getElementById("gameUnderDescription").textContent=game.description||"Play this game on GameRAX.";
+  const controlsBox=document.getElementById("gameControlsBox"),controlsText=document.getElementById("gameControlsText");
+  if(controlsText)controlsText.textContent=String(game.controls||"").trim()||"Controls have not been added for this game yet. The GameRAX admin can add them from Edit Game.";
+  if(controlsBox)controlsBox.style.display="block";
+  activeVoteGameId=String(game.id);
+  renderGameVoteSummary({likes:0,dislikes:0,user_vote:0});
+  loadGameVoteSummary(game.id);
+  startAnalyticsGameSession(game).catch(function(error){console.warn("Could not start analytics session:",error);});
   const frame=document.getElementById("gameFrame");frame.src=game.url;
   await renderRecommendations(game.id);
   if(cachedGamesMemory.length)renderGameHome(cachedGamesMemory);
@@ -3380,6 +3606,10 @@ function closeGamePlayer(
       "gameFrame"
     );
 
+  if(activeAnalyticsGameSession && page && page.style.display!=="none"){
+    tickAnalyticsGameSession(false,false);
+  }
+
   if(page){
 
     page.style.display=
@@ -3393,6 +3623,9 @@ function closeGamePlayer(
       "about:blank";
 
   }
+
+  if(activeAnalyticsGameSession){endAnalyticsGameSession();}
+  activeVoteGameId=null;
 
   if(
     updateUrl &&
@@ -5053,10 +5286,10 @@ function showAdminPanel(){
   if(!isAdmin()){alert("Admin access required.");return;}
   closeGamePlayer(false,false);hideAllMainPages();
   const page=document.getElementById("adminPage");if(page)page.style.display="block";
-  setActiveNav("admin");updateAdminVisibility();loadAdminPanel();window.scrollTo(0,0);
+  setActiveNav("admin");updateAdminVisibility();loadAdminPanel();loadAdminAnalytics();window.scrollTo(0,0);
 }
 function resetAdminGameForm(){
-  ["adminEditGameId","adminGameName","adminGameCategory","adminGameUrl","adminGameDescription"].forEach(function(id){const el=document.getElementById(id);if(el)el.value=id==="adminGameCategory"?"Games":"";});
+  ["adminEditGameId","adminGameName","adminGameCategory","adminGameUrl","adminGameDescription","adminGameControls"].forEach(function(id){const el=document.getElementById(id);if(el)el.value=id==="adminGameCategory"?"Games":"";});
   const file=document.getElementById("adminGameIconFile");if(file)file.value="";
   selectedAdminGameIconFile=null;
   const box=document.getElementById("adminIconPreviewBox");if(box)box.style.display="none";
@@ -5067,13 +5300,13 @@ function openAdminAddGame(){if(!isAdmin()){alert("Admin access required.");retur
 function previewAdminGameIcon(event){const file=event.target.files&&event.target.files[0];selectedAdminGameIconFile=file||null;const box=document.getElementById("adminIconPreviewBox"),img=document.getElementById("adminIconPreview"),name=document.getElementById("adminIconPreviewName");if(!file){box.style.display="none";img.removeAttribute("src");return;}if(!file.type.startsWith("image/")){alert("Please select an image file.");event.target.value="";selectedAdminGameIconFile=null;box.style.display="none";return;}if(file.size>8*1024*1024){alert("Please choose an image smaller than 8 MB.");event.target.value="";selectedAdminGameIconFile=null;box.style.display="none";return;}img.src=URL.createObjectURL(file);name.textContent=file.name;box.style.display="block";}
 async function saveAdminGame(){
   if(!isAdmin()){alert("Admin access required.");return;}
-  const id=document.getElementById("adminEditGameId").value.trim();const title=document.getElementById("adminGameName").value.trim();const url=document.getElementById("adminGameUrl").value.trim();const category=document.getElementById("adminGameCategory").value.trim()||"Games";const description=document.getElementById("adminGameDescription").value.trim()||("Play "+title+" on GameRAX.");
+  const id=document.getElementById("adminEditGameId").value.trim();const title=document.getElementById("adminGameName").value.trim();const url=document.getElementById("adminGameUrl").value.trim();const category=document.getElementById("adminGameCategory").value.trim()||"Games";const description=document.getElementById("adminGameDescription").value.trim()||("Play "+title+" on GameRAX.");const controls=document.getElementById("adminGameControls").value.trim();
   if(!title||!url){alert("Game name and game URL are required.");return;}try{new URL(url);}catch(e){alert("Please enter a valid game URL.");return;}
   const button=document.querySelector('#adminGameModal .main-btn');button.disabled=true;button.textContent="Saving...";
   try{
     let thumbnail="";
     if(selectedAdminGameIconFile)thumbnail=await uploadGameThumbnail(selectedAdminGameIconFile);
-    const payload={title,game_url:url,category,description};if(thumbnail)payload.thumbnail=thumbnail;
+    const payload={title,game_url:url,category,description,controls};if(thumbnail)payload.thumbnail=thumbnail;
     let response;if(id){response=await supabaseClient.from("games").update(payload).eq("id",id);}else{if(!thumbnail){alert("Please choose a game thumbnail for a new game.");return;}response=await supabaseClient.from("games").insert(payload);}
     if(response.error)throw response.error;
     await refreshGamesFromServer();closeModal("adminGameModal");resetAdminGameForm();await loadAdminPanel();alert(id?"Game updated successfully.":"Game added directly and published successfully!");
@@ -5395,7 +5628,7 @@ async function approveGameRequest(id){
 }
 async function rejectGameRequest(id){if(!isAdmin())return;if(!confirm("Reject this game request?"))return;try{const {error}=await supabaseClient.from("game_requests").update({status:"rejected",reviewed_at:new Date().toISOString(),reviewed_by:currentAccount.id}).eq("id",id);if(error)throw error;await loadAdminPanel();alert("Request rejected.");}catch(error){alert(error.message||"Could not reject request.");}}
 async function deleteAdminGame(id){if(!isAdmin())return;if(!confirm("Delete this published game?"))return;try{const {error}=await supabaseClient.from("games").delete().eq("id",id);if(error)throw error;cachedGamesMemory=cachedGamesMemory.filter(function(g){return String(g.id)!==String(id);});await writeCachedGames(cachedGamesMemory);saveAdminPopularIds(getAdminPopularIds().filter(function(popularId){return String(popularId)!==String(id);}));renderGameHome();await loadAdminPanel();alert("Game deleted.");}catch(error){alert(error.message||"Could not delete game.");}}
-async function editAdminGame(id){if(!isAdmin())return;try{const {data,error}=await supabaseClient.from("games").select("id,title,game_url,category,description,thumbnail").eq("id",id).maybeSingle();if(error)throw error;if(!data)throw new Error("Game not found.");resetAdminGameForm();document.getElementById("adminEditGameId").value=data.id;document.getElementById("adminGameName").value=data.title||"";document.getElementById("adminGameUrl").value=data.game_url||"";document.getElementById("adminGameCategory").value=data.category||"Games";document.getElementById("adminGameDescription").value=data.description||"";document.getElementById("adminGameModalTitle").textContent="✏️ Edit Game";document.getElementById("adminGameModal").style.display="flex";}catch(error){alert(error.message||"Could not load game.");}}
+async function editAdminGame(id){if(!isAdmin())return;try{const {data,error}=await supabaseClient.from("games").select("id,title,game_url,category,description,thumbnail,controls").eq("id",id).maybeSingle();if(error)throw error;if(!data)throw new Error("Game not found.");resetAdminGameForm();document.getElementById("adminEditGameId").value=data.id;document.getElementById("adminGameName").value=data.title||"";document.getElementById("adminGameUrl").value=data.game_url||"";document.getElementById("adminGameCategory").value=data.category||"Games";document.getElementById("adminGameDescription").value=data.description||"";document.getElementById("adminGameControls").value=data.controls||"";document.getElementById("adminGameModalTitle").textContent="✏️ Edit Game";document.getElementById("adminGameModal").style.display="flex";}catch(error){alert(error.message||"Could not load game.");}}
 
 /* =====================================================
    INTERNET STATUS
@@ -5441,6 +5674,7 @@ window.addEventListener(
 (function cleanupOldGameCacheKeys(){try{localStorage.removeItem("gamerax_games_v2");}catch(e){}})();
 
 window.addEventListener("DOMContentLoaded",function(){
+  if(browserIsOnline())recordGameRAXVisit();
   const searchInput=document.getElementById("searchInput");
   if(searchInput){
     searchInput.value="";
@@ -5477,6 +5711,13 @@ window.addEventListener("DOMContentLoaded",function(){
     try{await openGameFromGamerexRoute();}catch(error){console.error("Route initialization error:",error);}
   });
 });
+
+document.addEventListener("visibilitychange",function(){
+  if(!activeAnalyticsGameSession)return;
+  if(document.hidden){tickAnalyticsGameSession(true,false);}
+  else{activeAnalyticsGameSession.lastTickAt=Date.now();}
+});
+window.addEventListener("pagehide",function(){if(activeAnalyticsGameSession)endAnalyticsGameSession();});
 
 /* =====================================================
    BROWSER BACK / FORWARD
