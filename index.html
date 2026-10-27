@@ -3690,42 +3690,67 @@ async function copyGameInviteLink(){
 
   const currentParams=new URLSearchParams(window.location.search);
   let originalInvite=currentParams.get("gx_invite")||"";
+
+  // Reopen the box when an invite link already exists.
+  if(originalInvite){
+    const answer=prompt("Edit the existing invite/share link:",originalInvite);
+    if(answer===null)return;
+    if(!answer.trim()){
+      alert("Invite link cannot be empty.");
+      return;
+    }
+    originalInvite=answer.trim();
+  }
+
   if(!originalInvite){
-    const hasGameSpecificParams=[...currentParams.keys()].some(function(key){return !["__gamerex_path","__gamerax_redirect"].includes(key);});
+    const hasGameSpecificParams=[...currentParams.keys()].some(function(key){
+      return !["__gamerex_path","__gamerax_redirect"].includes(key);
+    });
+
     const storedUrl=new URL(activeGameRaxGame.url,window.location.href);
     const storedUrlHasRoomInfo=storedUrl.pathname!=="/"||storedUrl.search!==""||storedUrl.hash!=="";
+
     if(hasGameSpecificParams||storedUrlHasRoomInfo){
       originalInvite=gameraxBuildGameLaunchUrl(activeGameRaxGame);
     }
   }
 
   if(!originalInvite){
-    const answer=prompt("Paste the original Invite/Share link from inside this game's own menu. GameRAX will wrap it so your friend opens the lobby through GameRAX:","");
+    const answer=prompt("Paste the original Invite/Share link from inside this game's own menu:","");
     if(answer===null||!answer.trim())return;
-    try{
-      const original=new URL(answer.trim());
-      if(original.protocol!=="https:"&&original.protocol!=="http:")throw new Error("Only http/https invite links are supported.");
-      originalInvite=original.href;
-    }catch(error){alert("Please paste a valid http:// or https:// invite link from this game.");return;}
+    originalInvite=answer.trim();
   }
 
   let originalUrl;
-  try{originalUrl=new URL(originalInvite);}catch(error){alert("The original game invite link is invalid.");return;}
-  if(originalUrl.protocol!=="https:"&&originalUrl.protocol!=="http:"){alert("Only http/https game invite links are supported.");return;}
+  try{
+    originalUrl=new URL(originalInvite);
+  }catch(error){
+    alert("Please enter a valid http:// or https:// invite link.");
+    return;
+  }
+
+  if(originalUrl.protocol!=="https:"&&originalUrl.protocol!=="http:"){
+    alert("Only http:// and https:// invite links are supported.");
+    return;
+  }
 
   const gameraxUrl=new URL(gamerexGamePath(activeGameRaxGame),window.location.origin);
   gameraxUrl.searchParams.set("gx_invite",originalUrl.href);
   const inviteUrl=gameraxUrl.href;
 
-  // Keep the browser address bar on GameRAX and make the current player use the same invite URL.
   gamerexSetRoute(gameraxUrl.pathname+gameraxUrl.search,true);
+
   const frame=document.getElementById("gameFrame");
-  if(frame&&frame.src!==originalUrl.href)frame.src=originalUrl.href;
+  if(frame&&frame.src!==originalUrl.href){
+    frame.src=originalUrl.href;
+  }
 
   try{
     await gamerexCopyText(inviteUrl);
-    alert("GameRAX invite link copied! Your friend will open this game through GameRAX. Joining the exact room depends on the game accepting its original invite URL.");
-  }catch(error){prompt("Copy your GameRAX invite link:",inviteUrl);}
+    alert("GameRAX invite link copied! You can change this link again next time.");
+  }catch(error){
+    prompt("Copy your GameRAX invite link:",inviteUrl);
+  }
 }
 async function openGamePlayer(game,updateUrl=true){
   if(!game||!game.url){alert("This game does not have a valid URL.");return;}
