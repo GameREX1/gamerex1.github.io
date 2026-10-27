@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GameRAX - 37 Free Online Games</title>
+<title>GameRAX - Free Online Games</title>
 
 <meta name="description" content="Play 37 free online games on GameRAX. Discover racing, action, multiplayer, shooting, strategy, sports and casual browser games and start playing instantly.">
 
@@ -24,6 +24,8 @@
 {"@context":"https://schema.org","@type":"ItemList","name":"GameRAX Free Online Games","numberOfItems":37,"itemListElement":[]}
 </script>
 
+<link rel="preconnect" href="https://pmmrwjdadzjsedshrhnq.supabase.co" crossorigin>
+<link rel="dns-prefetch" href="//pmmrwjdadzjsedshrhnq.supabase.co">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3052,16 +3054,18 @@ function renderSidebarCategories(games){
   cats.forEach(function(cat){const btn=document.createElement("button");btn.className="side-link side-category";btn.innerHTML='<span class="sidebar-cat-icon">•</span><span class="side-text">'+escapeHtml(cat)+'</span>';btn.onclick=function(){filterCategory(cat);};wrap.appendChild(btn);});
 }
 
-function createMiniCard(game){
+function createMiniCard(game,index){
   const card=document.createElement("div");card.className="mini-card";
-  const image=game.iconImage?'<img src="'+escapeHtml(game.iconImage)+'" alt="" loading="lazy" decoding="async" fetchpriority="low">':escapeHtml(game.icon||"🎮");
+  /* Prioritize only the first few cards; leave the rest lazy-loaded. */
+  const imageLoading=(index<2)?'loading="eager" fetchpriority="high"':'loading="lazy"';
+  const image=game.iconImage?'<img src="'+escapeHtml(game.iconImage)+'" alt="" '+imageLoading+' decoding="async">':escapeHtml(game.icon||"🎮");
   card.innerHTML='<div class="mini-image">'+image+'</div><div class="mini-info"><h3>'+escapeHtml(game.name||"Game")+'</h3><p>'+escapeHtml(game.category||"Games")+'</p></div>';
   card.onclick=function(){openGamePlayer(game);};
   return card;
 }
 function paintMiniRow(elementId,games,emptyId){
   const row=document.getElementById(elementId),empty=document.getElementById(emptyId);if(!row)return;row.innerHTML="";
-  (games||[]).slice(0,12).forEach(function(game){row.appendChild(createMiniCard(game));});
+  (games||[]).slice(0,12).forEach(function(game,index){row.appendChild(createMiniCard(game,index));});
   if(empty)empty.style.display=(games&&games.length)?"none":"block";
 }
 function filterGames(games){
@@ -3078,9 +3082,10 @@ function filterGames(games){
 function renderAllGrid(games){
   const grid=document.getElementById("gameGrid"),noGames=document.getElementById("noGames"),count=document.getElementById("gameCount");if(!grid||!noGames)return;
   const visible=filterGames(games);grid.innerHTML="";
-  visible.forEach(function(game){
+  visible.forEach(function(game,index){
     const card=document.createElement("div");card.className="game-card";
-    const icon=game.iconImage?'<img src="'+escapeHtml(game.iconImage)+'" alt="'+escapeHtml(game.name)+'" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.display=\'none\';this.parentElement.textContent=\'🎮\';">':escapeHtml(game.icon||"🎮");
+    const imageLoading=(index<6)?'loading="eager" fetchpriority="high"':'loading="lazy"';
+    const icon=game.iconImage?'<img src="'+escapeHtml(game.iconImage)+'" alt="'+escapeHtml(game.name)+'" '+imageLoading+' decoding="async" onerror="this.style.display=\'none\';this.parentElement.textContent=\'🎮\';">':escapeHtml(game.icon||"🎮");
     card.innerHTML='<div class="game-image">'+icon+'</div><div class="game-info"><h3>'+escapeHtml(game.name||"Game")+'</h3><p>'+escapeHtml(game.description||"Play this game on GameRAX.")+'</p><div class="game-meta">'+escapeHtml(game.category||"Games")+' · Free</div></div>';
     card.onclick=function(){openGamePlayer(game);};grid.appendChild(card);
   });
@@ -3958,7 +3963,7 @@ async function renderRecommendations(
         const imageHtml=
           game.iconImage
 
-            ? `<img src="${escapeHtml(game.iconImage)}" alt="${escapeHtml(game.name || "Game")} icon" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.display='none';this.parentElement.textContent='';">`
+            ? `<img src="${escapeHtml(game.iconImage)}" alt="${escapeHtml(game.name || "Game")} icon" loading="lazy" decoding="async" onerror="this.style.display='none';this.parentElement.textContent='';">`
 
             : escapeHtml(
                 game.icon ||
