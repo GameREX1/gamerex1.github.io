@@ -1240,6 +1240,10 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
 .modal-box select{width:100%;padding:13px;margin-bottom:12px;background:#000;color:#fff;border:1px solid #292929;border-radius:7px;outline:none;}
 .modal-box textarea:focus,.modal-box select:focus{border-color:var(--gx-cyan);}
 .upload-note{font-size:11px;color:#66677a;margin:-4px 0 12px;line-height:1.45;}
+.game-multiplayer-option{display:flex;align-items:flex-start;gap:10px;padding:12px;margin:8px 0 14px;border:1px solid #29293a;border-radius:9px;background:#101018;color:#d0d0dd;font-size:13px;cursor:pointer;}
+.game-multiplayer-option input{width:17px;height:17px;flex:0 0 17px;padding:0;margin:1px 0 0;border:0;border-radius:3px;background:transparent;color:inherit;accent-color:#00d9ff;}
+.game-multiplayer-option span{display:flex;flex-direction:column;gap:4px;}
+.game-multiplayer-option small{color:#858597;font-size:11px;line-height:1.4;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 
 @media(max-width:900px){.admin-grid{grid-template-columns:1fr 1fr;}.game-grid{grid-template-columns:repeat(auto-fill,minmax(165px,1fr));}.horizontal-games{grid-auto-columns:175px;}}
@@ -1257,9 +1261,6 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
 .game-vote-btn.active-like{border-color:#49d99a;background:#143126;color:#a7f5d1;}
 .game-vote-btn.active-dislike{border-color:#ff7474;background:#351c25;color:#ffc0c0;}
 .game-rating-message{flex-basis:100%;margin:0!important;font-size:12px!important;color:#77778a!important;}
-.game-controls-box{margin-top:16px;padding:15px;background:#11111a;border:1px solid var(--gx-border);border-radius:10px;}
-.game-controls-box h3{font-size:16px;margin-bottom:8px;}
-.game-controls-box p{white-space:pre-line;line-height:1.6;color:#c0c0ce;}
 .admin-analytics-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px;}
 .admin-analytics-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
 .admin-analytics-table-wrap{overflow-x:auto;}
@@ -1356,7 +1357,7 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
           <button class="game-back-btn" onclick="closeGamePlayer()"> Back to Games</button>
           <div class="current-game-title" id="currentGameTitle">Game</div>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
-            <button class="game-invite-btn" id="gameInviteBtn" type="button" onclick="copyGameInviteLink()">🔗 Copy Invite Link</button>
+            <button class="game-invite-btn" id="gameInviteBtn" type="button" onclick="copyGameInviteLink()" style="display:none;">🔗 Copy Invite Link</button>
             <button class="game-fullscreen-btn" id="gameFullscreenBtn" onclick="toggleGameFullscreen()"> Full Screen</button>
           </div>
         </div>
@@ -1384,10 +1385,6 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
               <button type="button" class="game-vote-btn" id="gameDislikeBtn" onclick="castGameVote(-1)">👎 Dislike</button>
             </div>
             <p class="game-rating-message" id="gameRatingMessage">You can change your vote later.</p>
-          </div>
-          <div class="game-controls-box" id="gameControlsBox">
-            <h3>⌨️ Game Controls</h3>
-            <p id="gameControlsText">Controls have not been added for this game yet.</p>
           </div>
         </div>
       </div>
@@ -2051,6 +2048,8 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
       placeholder="Category (Racing, Sports, Puzzle, Dress Up...)"
     >
 
+    <label class="game-multiplayer-option"><input type="checkbox" id="developerGameMultiplayer"> <span><strong>Online multiplayer game</strong><small>Check this only if players can join the same online game or lobby.</small></span></label>
+
     <div class="game-icon-upload">
 
       <label
@@ -2116,7 +2115,7 @@ header{height:58px;background:#1a1a29;border-bottom:1px solid #2b2b3b;padding:0 
     </div>
     <input type="url" id="adminGameUrl" placeholder="Game URL">
     <textarea id="adminGameDescription" placeholder="Game description"></textarea>
-    <textarea id="adminGameControls" placeholder="Game controls (e.g. WASD to move, Space to jump, mouse to aim)"></textarea>
+    <label class="game-multiplayer-option"><input type="checkbox" id="adminGameMultiplayer"> <span><strong>Online multiplayer game</strong><small>Enable Copy Invite Link for games that support online rooms/lobbies.</small></span></label>
     <label class="game-icon-label" for="adminGameIconFile">🖼️ Game thumbnail</label>
     <input class="game-icon-input" type="file" id="adminGameIconFile" accept="image/png,image/jpeg,image/jpg,image/webp" onchange="previewAdminGameIcon(event)">
     <input type="url" id="adminGameThumbnailUrl" placeholder="Or paste a public image URL (no Storage upload)" style="width:100%;padding:12px;margin:10px 0;background:#000;color:#fff;border:1px solid #292929;border-radius:7px;">
@@ -2184,7 +2183,7 @@ function normalizeGames(games){
       category:game.category||"Games",
       iconImage:game.iconImage||game.thumbnail||"",
       description:game.description||"Play this game on GameRAX.",
-      controls:game.controls||"",
+      is_multiplayer:typeof game.is_multiplayer === "boolean" ? game.is_multiplayer : null,
       created_at:game.created_at||""
     };
   }).filter(function(game){
@@ -2201,7 +2200,7 @@ function lightweightGames(games){
       url:game.url,
       category:game.category,
       description:game.description,
-      controls:game.controls,
+      is_multiplayer:typeof game.is_multiplayer === "boolean" ? game.is_multiplayer : null,
       created_at:game.created_at,
       iconImage:(typeof game.iconImage==="string" && /^https?:\/\//i.test(game.iconImage)) ? game.iconImage : ""
     };
@@ -2376,7 +2375,7 @@ async function loadPopularIdsFromSupabase(){
 async function getGamesFromSupabase(){
   const promise=supabaseClient
     .from("games")
-    .select("id,created_at,title,description,game_url,category,controls")
+    .select("id,created_at,title,description,game_url,category,is_multiplayer")
     .order("created_at",{ascending:false})
     .limit(GAMES_SERVER_LIMIT);
 
@@ -3629,10 +3628,45 @@ async function loadAdminAnalytics(){
 ===================================================== */
 let activeGameRaxGame=null;
 
+function gamerexIsKnownMultiplayerGame(game){
+  if(!game)return false;
+  const name=String(game.name||game.title||"").toLowerCase();
+  const category=String(game.category||"").toLowerCase();
+  const description=String(game.description||"").toLowerCase();
+  const titleAndMetadata=name+" "+category+" "+description;
+  if(/\b(multiplayer|multiplayer online|online pvp|pvp|co-op|coop|lobby|play with friends)\b/i.test(titleAndMetadata))return true;
+  const knownHosts=[
+    "bloxd.io","surviv.io","shellshock.io","krunker.io","slither.io","agar.io","diep.io",
+    "paper.io","moomoo.io","ev.io","skribbl.io","gartic.io","lolbeans.io","smashkarts.io",
+    "zombsroyale.io","territorial.io","wings.io","deeeep.io","curvefever.io","powerline.io",
+    "littlebigsnake.com","taming.io","1v1.lol","roblox.com"
+  ];
+  try{
+    const host=new URL(String(game.url||game.game_url||"")).hostname.toLowerCase().replace(/^www\./,"");
+    if(knownHosts.some(function(domain){return host===domain||host.endsWith("."+domain);}))return true;
+  }catch(error){}
+  if(/\b(surviv\.io|shellshockers?|krunker|slither\.io|agar\.io|diep\.io|paper\.io|bloxd(?:\.io)?|smash karts|zombs royale|territorial\.io|roblox)\b/i.test(titleAndMetadata))return true;
+  return false;
+}
+
+function gamerexIsOnlineMultiplayerGame(game){
+  if(game&&typeof game.is_multiplayer==="boolean")return game.is_multiplayer;
+  return gamerexIsKnownMultiplayerGame(game);
+}
+
 function gameraxBuildGameLaunchUrl(game){
-  const target=new URL(game.url,window.location.href);
   const currentParams=new URLSearchParams(window.location.search);
-  const reserved=new Set(["__gamerex_path","__gamerax_redirect"]);
+  const wrappedInvite=currentParams.get("gx_invite");
+  if(wrappedInvite){
+    try{
+      const original=new URL(wrappedInvite);
+      if(original.protocol==="https:"||original.protocol==="http:")return original.href;
+    }catch(error){console.warn("Invalid GameRAX wrapped invite URL.",error);}
+  }
+  const target=new URL(game.url,window.location.href);
+  const customPath=currentParams.get("gx_path");
+  if(customPath&&customPath.startsWith("/")&&!customPath.startsWith("//"))target.pathname=customPath;
+  const reserved=new Set(["__gamerex_path","__gamerax_redirect","gx_invite","gx_path"]);
   currentParams.forEach(function(value,key){
     if(!reserved.has(key))target.searchParams.set(key,value);
   });
@@ -3640,31 +3674,55 @@ function gameraxBuildGameLaunchUrl(game){
   return target.href;
 }
 
-async function copyGameInviteLink(){
-  if(!activeGameRaxGame){alert("Open a game first.");return;}
-  const params=new URLSearchParams(window.location.search);
-  params.delete("__gamerex_path");params.delete("__gamerax_redirect");
-  if(!params.toString()){
-    const answer=prompt("Optional game/lobby URL parameters (only works if that game supports them). Example: g=greenville&lobby=richest_ville_rich\nLeave empty for a normal game invite:","");
-    if(answer&&answer.trim()){
-      const added=new URLSearchParams(answer.trim().replace(/^\?/,""));
-      added.forEach(function(value,key){params.set(key,value);});
-    }
-  }
-  const url=new URL(gamerexGamePath(activeGameRaxGame),window.location.origin);
-  params.forEach(function(value,key){url.searchParams.set(key,value);});
-  const inviteUrl=url.href;
-  try{
-    if(navigator.clipboard&&navigator.clipboard.writeText){
-      await navigator.clipboard.writeText(inviteUrl);
-    }else{
-      const helper=document.createElement("textarea");helper.value=inviteUrl;helper.style.position="fixed";helper.style.opacity="0";document.body.appendChild(helper);helper.select();
-      const copied=document.execCommand("copy");helper.remove();if(!copied)throw new Error("Clipboard unavailable");
-    }
-    alert("Invite link copied. Lobby joining is supported only for games that accept lobby details through URL parameters.");
-  }catch(error){prompt("Copy your GameRAX invite link:",inviteUrl);}
+async function gamerexCopyText(text){
+  if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(text);return;}
+  const helper=document.createElement("textarea");helper.value=text;helper.style.position="fixed";helper.style.opacity="0";document.body.appendChild(helper);helper.select();
+  const copied=document.execCommand("copy");helper.remove();if(!copied)throw new Error("Clipboard unavailable");
 }
 
+async function copyGameInviteLink(){
+  if(!activeGameRaxGame){alert("Open a game first.");return;}
+  if(!gamerexIsOnlineMultiplayerGame(activeGameRaxGame)){alert("Invite links are available only for online multiplayer games.");return;}
+
+  const currentParams=new URLSearchParams(window.location.search);
+  let originalInvite=currentParams.get("gx_invite")||"";
+  if(!originalInvite){
+    const hasGameSpecificParams=[...currentParams.keys()].some(function(key){return !["__gamerex_path","__gamerax_redirect"].includes(key);});
+    const storedUrl=new URL(activeGameRaxGame.url,window.location.href);
+    const storedUrlHasRoomInfo=storedUrl.pathname!=="/"||storedUrl.search!==""||storedUrl.hash!=="";
+    if(hasGameSpecificParams||storedUrlHasRoomInfo){
+      originalInvite=gameraxBuildGameLaunchUrl(activeGameRaxGame);
+    }
+  }
+
+  if(!originalInvite){
+    const answer=prompt("Paste the original Invite/Share link from inside this game's own menu. GameRAX will wrap it so your friend opens the lobby through GameRAX:","");
+    if(answer===null||!answer.trim())return;
+    try{
+      const original=new URL(answer.trim());
+      if(original.protocol!=="https:"&&original.protocol!=="http:")throw new Error("Only http/https invite links are supported.");
+      originalInvite=original.href;
+    }catch(error){alert("Please paste a valid http:// or https:// invite link from this game.");return;}
+  }
+
+  let originalUrl;
+  try{originalUrl=new URL(originalInvite);}catch(error){alert("The original game invite link is invalid.");return;}
+  if(originalUrl.protocol!=="https:"&&originalUrl.protocol!=="http:"){alert("Only http/https game invite links are supported.");return;}
+
+  const gameraxUrl=new URL(gamerexGamePath(activeGameRaxGame),window.location.origin);
+  gameraxUrl.searchParams.set("gx_invite",originalUrl.href);
+  const inviteUrl=gameraxUrl.href;
+
+  // Keep the browser address bar on GameRAX and make the current player use the same invite URL.
+  gamerexSetRoute(gameraxUrl.pathname+gameraxUrl.search,true);
+  const frame=document.getElementById("gameFrame");
+  if(frame&&frame.src!==originalUrl.href)frame.src=originalUrl.href;
+
+  try{
+    await gamerexCopyText(inviteUrl);
+    alert("GameRAX invite link copied! Your friend will open this game through GameRAX. Joining the exact room depends on the game accepting its original invite URL.");
+  }catch(error){prompt("Copy your GameRAX invite link:",inviteUrl);}
+}
 async function openGamePlayer(game,updateUrl=true){
   if(!game||!game.url){alert("This game does not have a valid URL.");return;}
   if(updateUrl&&game.name){
@@ -3683,9 +3741,8 @@ async function openGamePlayer(game,updateUrl=true){
   document.getElementById("currentGameTitle").textContent=game.name||"Game";
   document.getElementById("gameUnderTitle").textContent=game.name||"Game";
   document.getElementById("gameUnderDescription").textContent=game.description||"Play this game on GameRAX.";
-  const controlsBox=document.getElementById("gameControlsBox"),controlsText=document.getElementById("gameControlsText");
-  if(controlsText)controlsText.textContent=String(game.controls||"").trim()||"Controls have not been added for this game yet. The GameRAX admin can add them from Edit Game.";
-  if(controlsBox)controlsBox.style.display="block";
+  const inviteButton=document.getElementById("gameInviteBtn");
+  if(inviteButton)inviteButton.style.display=gamerexIsOnlineMultiplayerGame(game)?"inline-flex":"none";
   activeVoteGameId=String(game.id);
   renderGameVoteSummary({likes:0,dislikes:0,user_vote:0});
   loadGameVoteSummary(game.id);
@@ -5431,7 +5488,8 @@ async function submitGame(){
   const button=document.querySelector('#developerModal .main-btn');button.disabled=true;button.textContent="Submitting...";
   try{
     const thumbnail=await resolveGameThumbnail(selectedGameIconFile,imageUrl);
-    const {error}=await supabaseClient.from("game_requests").insert({developer_name:name,developer_email:email,game_name:gameName,game_url:url,category,description,thumbnail,status:"pending",submitted_by:account.id});
+    const isMultiplayer=!!document.getElementById("developerGameMultiplayer")?.checked;
+    const {error}=await supabaseClient.from("game_requests").insert({developer_name:name,developer_email:email,game_name:gameName,game_url:url,category,description,thumbnail,status:"pending",submitted_by:account.id,is_multiplayer:isMultiplayer});
     if(error)throw error;
     closeModal("developerModal");alert("Game request submitted. We’ll review it before publishing.");
   }catch(error){console.error("Submit request error:",error);alert(error.message||"The request could not be submitted. Complete the Supabase setup first (game-thumbnails bucket + game_requests table).");}
@@ -5560,7 +5618,8 @@ async function loadAdminUsers(){
   }
 }
 function resetAdminGameForm(){
-  ["adminEditGameId","adminGameName","adminGameCategory","adminGameUrl","adminGameDescription","adminGameControls","adminGameThumbnailUrl"].forEach(function(id){const el=document.getElementById(id);if(el)el.value=id==="adminGameCategory"?"Games":"";});
+  ["adminEditGameId","adminGameName","adminGameCategory","adminGameUrl","adminGameDescription","adminGameThumbnailUrl"].forEach(function(id){const el=document.getElementById(id);if(el)el.value=id==="adminGameCategory"?"Games":"";});
+  const multiplayer=document.getElementById("adminGameMultiplayer");if(multiplayer)multiplayer.checked=false;
   const file=document.getElementById("adminGameIconFile");if(file)file.value="";
   selectedAdminGameIconFile=null;
   const box=document.getElementById("adminIconPreviewBox");if(box)box.style.display="none";
@@ -5571,14 +5630,14 @@ function openAdminAddGame(){if(!isAdmin()){alert("Admin access required.");retur
 function previewAdminGameIcon(event){const file=event.target.files&&event.target.files[0];selectedAdminGameIconFile=file||null;const box=document.getElementById("adminIconPreviewBox"),img=document.getElementById("adminIconPreview"),name=document.getElementById("adminIconPreviewName");if(!file){box.style.display="none";img.removeAttribute("src");return;}if(!file.type.startsWith("image/")){alert("Please select an image file.");event.target.value="";selectedAdminGameIconFile=null;box.style.display="none";return;}if(file.size>8*1024*1024){alert("Please choose an image smaller than 8 MB.");event.target.value="";selectedAdminGameIconFile=null;box.style.display="none";return;}img.src=URL.createObjectURL(file);name.textContent=file.name;box.style.display="block";}
 async function saveAdminGame(){
   if(!isAdmin()){alert("Admin access required.");return;}
-  const id=document.getElementById("adminEditGameId").value.trim();const title=document.getElementById("adminGameName").value.trim();const url=document.getElementById("adminGameUrl").value.trim();const category=document.getElementById("adminGameCategory").value.trim()||"Games";const description=document.getElementById("adminGameDescription").value.trim()||("Play "+title+" on GameRAX.");const controls=document.getElementById("adminGameControls").value.trim();
+  const id=document.getElementById("adminEditGameId").value.trim();const title=document.getElementById("adminGameName").value.trim();const url=document.getElementById("adminGameUrl").value.trim();const category=document.getElementById("adminGameCategory").value.trim()||"Games";const description=document.getElementById("adminGameDescription").value.trim()||("Play "+title+" on GameRAX.");const isMultiplayer=!!document.getElementById("adminGameMultiplayer")?.checked;
   if(!title||!url){alert("Game name and game URL are required.");return;}try{new URL(url);}catch(e){alert("Please enter a valid game URL.");return;}
   const button=document.querySelector('#adminGameModal .main-btn');button.disabled=true;button.textContent="Saving...";
   try{
     let thumbnail="";
     const thumbnailUrlInput=(document.getElementById("adminGameThumbnailUrl")?.value||"").trim();
     if(thumbnailUrlInput||selectedAdminGameIconFile)thumbnail=await resolveGameThumbnail(selectedAdminGameIconFile,thumbnailUrlInput);
-    const payload={title,game_url:url,category,description,controls};if(thumbnail)payload.thumbnail=thumbnail;
+    const payload={title,game_url:url,category,description,is_multiplayer:isMultiplayer};if(thumbnail)payload.thumbnail=thumbnail;
     let response;if(id){response=await supabaseClient.from("games").update(payload).eq("id",id);}else{if(!thumbnail){alert("Choose a thumbnail file or paste a public image URL.");return;}response=await supabaseClient.from("games").insert(payload);}
     if(response.error)throw response.error;
     await refreshGamesFromServer();closeModal("adminGameModal");resetAdminGameForm();await loadAdminPanel();alert(id?"Game updated successfully.":"Game added directly and published successfully!");
@@ -5800,13 +5859,13 @@ async function loadAdminPanel(){
 
   const reqPromise=supabaseClient
     .from("game_requests")
-    .select("id,created_at,developer_name,developer_email,game_name,game_url,category,description,status")
+    .select("id,created_at,developer_name,developer_email,game_name,game_url,category,description,status,is_multiplayer")
     .order("created_at",{ascending:false})
     .limit(200);
 
   const gamesPromise=supabaseClient
     .from("games")
-    .select("id,created_at,title,description,game_url,category,thumbnail")
+    .select("id,created_at,title,description,game_url,category,thumbnail,is_multiplayer")
     .order("created_at",{ascending:false})
     .limit(GAMES_SERVER_LIMIT);
 
@@ -5879,14 +5938,14 @@ async function loadAdminPanel(){
 async function approveGameRequest(id){
   if(!isAdmin())return;try{
     const {data:r,error:getError}=await supabaseClient.from("game_requests").select("*").eq("id",id).maybeSingle();if(getError)throw getError;if(!r)throw new Error("Request not found.");
-    const {error:insertError}=await supabaseClient.from("games").insert({title:r.game_name,description:r.description||("Play "+r.game_name+" on GameRAX."),thumbnail:r.thumbnail||"",game_url:r.game_url,category:r.category||"Games"});if(insertError)throw insertError;
+    const {error:insertError}=await supabaseClient.from("games").insert({title:r.game_name,description:r.description||("Play "+r.game_name+" on GameRAX."),thumbnail:r.thumbnail||"",game_url:r.game_url,category:r.category||"Games",is_multiplayer:typeof r.is_multiplayer==="boolean"?r.is_multiplayer:null});if(insertError)throw insertError;
     const {error:updateError}=await supabaseClient.from("game_requests").update({status:"approved",reviewed_at:new Date().toISOString(),reviewed_by:currentAccount.id}).eq("id",id);if(updateError)throw updateError;
     await refreshGamesFromServer();await loadAdminPanel();alert("Game approved and published.");
   }catch(error){console.error(error);alert(error.message||"Could not approve request.");}
 }
 async function rejectGameRequest(id){if(!isAdmin())return;if(!confirm("Reject this game request?"))return;try{const {error}=await supabaseClient.from("game_requests").update({status:"rejected",reviewed_at:new Date().toISOString(),reviewed_by:currentAccount.id}).eq("id",id);if(error)throw error;await loadAdminPanel();alert("Request rejected.");}catch(error){alert(error.message||"Could not reject request.");}}
 async function deleteAdminGame(id){if(!isAdmin())return;if(!confirm("Delete this published game?"))return;try{const {error}=await supabaseClient.from("games").delete().eq("id",id);if(error)throw error;cachedGamesMemory=cachedGamesMemory.filter(function(g){return String(g.id)!==String(id);});await writeCachedGames(cachedGamesMemory);saveAdminPopularIds(getAdminPopularIds().filter(function(popularId){return String(popularId)!==String(id);}));renderGameHome();await loadAdminPanel();alert("Game deleted.");}catch(error){alert(error.message||"Could not delete game.");}}
-async function editAdminGame(id){if(!isAdmin())return;try{const {data,error}=await supabaseClient.from("games").select("id,title,game_url,category,description,thumbnail,controls").eq("id",id).maybeSingle();if(error)throw error;if(!data)throw new Error("Game not found.");resetAdminGameForm();document.getElementById("adminEditGameId").value=data.id;document.getElementById("adminGameName").value=data.title||"";document.getElementById("adminGameUrl").value=data.game_url||"";document.getElementById("adminGameCategory").value=data.category||"Games";document.getElementById("adminGameDescription").value=data.description||"";document.getElementById("adminGameControls").value=data.controls||"";document.getElementById("adminGameThumbnailUrl").value=/^https?:\/\//i.test(String(data.thumbnail||""))?data.thumbnail:"";document.getElementById("adminGameModalTitle").textContent="✏️ Edit Game";document.getElementById("adminGameModal").style.display="flex";}catch(error){alert(error.message||"Could not load game.");}}
+async function editAdminGame(id){if(!isAdmin())return;try{const {data,error}=await supabaseClient.from("games").select("id,title,game_url,category,description,thumbnail,is_multiplayer").eq("id",id).maybeSingle();if(error)throw error;if(!data)throw new Error("Game not found.");resetAdminGameForm();document.getElementById("adminEditGameId").value=data.id;document.getElementById("adminGameName").value=data.title||"";document.getElementById("adminGameUrl").value=data.game_url||"";document.getElementById("adminGameCategory").value=data.category||"Games";document.getElementById("adminGameDescription").value=data.description||"";document.getElementById("adminGameMultiplayer").checked=typeof data.is_multiplayer==="boolean"?data.is_multiplayer:gamerexIsKnownMultiplayerGame({name:data.title,url:data.game_url,category:data.category,description:data.description});document.getElementById("adminGameThumbnailUrl").value=/^https?:\/\//i.test(String(data.thumbnail||""))?data.thumbnail:"";document.getElementById("adminGameModalTitle").textContent="✏️ Edit Game";document.getElementById("adminGameModal").style.display="flex";}catch(error){alert(error.message||"Could not load game.");}}
 
 /* =====================================================
    INTERNET STATUS
