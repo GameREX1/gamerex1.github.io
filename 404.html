@@ -8,20 +8,21 @@
 </head>
 <body>
   <p>Opening GameRAX…</p>
+
   <script>
     (function () {
       "use strict";
-      /*
-       * GitHub Pages sends unknown /game/... routes here.
-       * Keep the entire path, query string and hash so game invite parameters
-       * can be restored by index.html instead of being dropped.
-       */
-      var targetPath = window.location.pathname +
+
+      // Preserve the complete game route, invite parameters and hash.
+      var targetPath =
+        window.location.pathname +
         window.location.search +
         window.location.hash;
 
       var query = new URLSearchParams();
       query.set("__gamerex_path", targetPath);
+
+      // Redirect to GameRAX while preserving the original route.
       window.location.replace("/?" + query.toString());
     })();
   </script>
