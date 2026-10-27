@@ -15,13 +15,13 @@
 <link rel="icon" type="image/png" href="https://cdn.corenexis.com/f/i2qQMduvFbC.png">
 <link rel="apple-touch-icon" href="https://cdn.corenexis.com/f/i2qQMduvFbC.png">
 
-<meta property="og:title" content="GameRAX - 37 Free Online Games">
-<meta property="og:description" content="Play 37 free online games on GameRAX. Discover racing, action, multiplayer, shooting, strategy, sports and casual browser games and start playing instantly.">
+<meta property="og:title" content="GameRAX - Free Online Games">
+<meta property="og:description" content="Play free online games on GameRAX. Discover racing, action, multiplayer, shooting, strategy, sports and casual browser games and start playing instantly.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://gamerax.online/">
 <meta property="og:image" content="https://cdn.corenexis.com/f/i2qQMduvFbC.png">
 <script type="application/ld+json" id="gameraxGamesJsonLd">
-{"@context":"https://schema.org","@type":"ItemList","name":"GameRAX Free Online Games","numberOfItems":37,"itemListElement":[]}
+{"@context":"https://schema.org","@type":"ItemList","name":"GameRAX Free Online Games","numberOfItems":0,"itemListElement":[]}
 </script>
 
 <link rel="preconnect" href="https://pmmrwjdadzjsedshrhnq.supabase.co" crossorigin>
@@ -3098,13 +3098,12 @@ function renderAllGrid(games){
 }
 function updateGameRAXDirectoryStructuredData(games){
   const list=Array.isArray(games)?games:[];
-  if(!list.length)return;
-  const description="Play "+list.length+" free online games on GameRAX, including multiplayer, racing, action, puzzle and casual browser games.";
+  const description="Play free online games on GameRAX, including multiplayer, racing, action, puzzle and casual browser games.";
   const meta=document.querySelector('meta[name="description"]');
   const og=document.querySelector('meta[property="og:description"]');
   if(meta)meta.setAttribute("content",description);
   if(og)og.setAttribute("content",description);
-  document.title="GameRAX - "+list.length+" Free Online Games";
+  document.title="GameRAX - Free Online Games";
   const script=document.getElementById("gameraxGamesJsonLd");
   if(script){
     const items=list.map(function(game,index){return {"@type":"ListItem","position":index+1,"name":game.name||"Game","url":window.location.origin+gamerexGamePath(game)};});
