@@ -1,22 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gamerex</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Opening GameRAX…</title>
 </head>
 <body>
-<script>
-(function () {
-  const targetPath =
-    window.location.pathname +
-    window.location.search +
-    window.location.hash;
+  <p>Opening GameRAX…</p>
+  <script>
+    (function () {
+      "use strict";
+      /*
+       * GitHub Pages sends unknown /game/... routes here.
+       * Keep the entire path, query string and hash so game invite parameters
+       * can be restored by index.html instead of being dropped.
+       */
+      var targetPath = window.location.pathname +
+        window.location.search +
+        window.location.hash;
 
-  window.location.replace(
-    "/?__gamerex_path=" + encodeURIComponent(targetPath)
-  );
-})();
-</script>
+      var query = new URLSearchParams();
+      query.set("__gamerex_path", targetPath);
+      window.location.replace("/?" + query.toString());
+    })();
+  </script>
 </body>
 </html>
